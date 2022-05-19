@@ -1,16 +1,11 @@
-import os
-import yaml
 import argparse
-from pathlib import Path
-from models import *
+import os
+
+import yaml
+
+from dataset import CelebAZipDataModule
 from experiment import VAEXperiment
-from pytorch_lightning import Trainer
-from pytorch_lightning.loggers import TensorBoardLogger
-from pytorch_lightning.utilities.seed import seed_everything
-from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
-from dataset import CelebADataModule, CelebAZipDataModule
-from pytorch_lightning.plugins import DDPPlugin
-from torch import optim
+from models import *
 
 parser = argparse.ArgumentParser(description='Generic runner for VAE models')
 parser.add_argument('--config', '-c',
