@@ -14,19 +14,25 @@ from pytorch_lightning.plugins import DDPPlugin
 print(f"torch: {torch.__version__}")
 print(f"CUDA #devices: {torch.cuda.device_count()}")
 
-parser = argparse.ArgumentParser(description='Generic runner for VAE models')
-parser.add_argument('--config', '-c',
-                    dest="filename",
-                    metavar='FILE',
-                    help='path to the config file',
-                    default='configs/vae.yaml')
 
-args = parser.parse_args()
-with open(args.filename, 'r') as file:
-    try:
-        config = yaml.safe_load(file)
-    except yaml.YAMLError as exc:
-        print(exc)
+def parse_config():
+    parser = argparse.ArgumentParser(description='Generic runner for VAE models')
+    parser.add_argument('--config', '-c',
+                        dest="filename",
+                        metavar='FILE',
+                        help='path to the config file',
+                        default='configs/vae.yaml')
+
+    args = parser.parse_args()
+    with open(args.filename, 'r') as file:
+        try:
+            config = yaml.safe_load(file)
+        except yaml.YAMLError as exc:
+            print(exc)
+    return config
+
+
+config = parse_config()
 
 tb_logger = TensorBoardLogger(save_dir=config['logging_params']['save_dir'],
                               name=config['model_params']['name'], )
