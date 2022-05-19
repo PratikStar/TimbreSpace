@@ -8,7 +8,6 @@ from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
 from torchvision.datasets import VisionDataset
 from torchvision.datasets.celeba import CSV, CelebA
-from torchvision.transforms import ToTensor
 import zipfile
 import cv2
 import numpy as np
