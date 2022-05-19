@@ -2,11 +2,8 @@ import argparse
 import os
 import yaml
 from dataset import CelebAZipDataModule
-from experiment import VAEXperiment
+from experiment import VAELightningModule
 from models import *
-
-
-
 
 parser = argparse.ArgumentParser(description='Generic runner for VAE models')
 parser.add_argument('--config', '-c',

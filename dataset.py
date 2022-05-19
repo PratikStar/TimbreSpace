@@ -1,5 +1,6 @@
 import os
 import io
+from abc import ABC
 from typing import List, Optional, Sequence, Union, Any
 
 from PIL import Image
@@ -14,9 +15,10 @@ import numpy as np
 import torch
 import csv
 
+
 # Reference: https://github.com/pytorch/vision/blob/main/torchvision/datasets/celeba.py
 # https://discuss.pytorch.org/t/dataloader-with-zipfile-failed/42795
-class ZipDataset(VisionDataset):
+class CelebAZipDataset(VisionDataset):
     def __init__(self, root_path, transform=None, cache_into_memory=True):
         super().__init__(root_path, transform=transform)
 
@@ -76,7 +78,7 @@ class ZipDataset(VisionDataset):
         return len(self.name_list)
 
 
-class CelebAZipDataModule(LightningDataModule):
+class CelebAZipDataModule(LightningDataModule, ABC):
     """
     PyTorch Lightning data module 
 
@@ -120,7 +122,7 @@ class CelebAZipDataModule(LightningDataModule):
                                              transforms.Resize(self.patch_size),
                                              transforms.ToTensor(), ])
 
-        self.train_dataset = ZipDataset(
+        self.train_dataset = CelebAZipDataset(
             self.data_dir,
             # split='train',
             transform=train_transforms,
@@ -128,7 +130,7 @@ class CelebAZipDataModule(LightningDataModule):
         )
 
         # Replace CelebA with your dataset
-        self.val_dataset = ZipDataset(
+        self.val_dataset = CelebAZipDataset(
             self.data_dir,
             # split='test',
             transform=val_transforms,
@@ -165,7 +167,7 @@ class CelebAZipDataModule(LightningDataModule):
         )
 
 
-class CelebADataModule(LightningDataModule):
+class CelebADataModule(LightningDataModule, ABC):
     """
     PyTorch Lightning data module
 

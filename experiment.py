@@ -1,5 +1,7 @@
 import os
 import math
+from abc import ABC
+
 import torch
 from torch import optim
 from models import BaseVAE
@@ -12,12 +14,12 @@ from torchvision.datasets import CelebA
 from torch.utils.data import DataLoader
 
 
-class VAEXperiment(pl.LightningModule):
+class VAELightningModule(pl.LightningModule, ABC):
 
     def __init__(self,
                  vae_model: BaseVAE,
                  params: dict) -> None:
-        super(VAEXperiment, self).__init__()
+        super(VAELightningModule, self).__init__()
 
         self.model = vae_model
         self.params = params
