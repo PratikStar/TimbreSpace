@@ -14,7 +14,6 @@ import numpy as np
 import torch
 import csv
 
-
 # Reference: https://github.com/pytorch/vision/blob/main/torchvision/datasets/celeba.py
 # https://discuss.pytorch.org/t/dataloader-with-zipfile-failed/42795
 class ZipDataset(VisionDataset):
