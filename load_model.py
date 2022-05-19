@@ -21,13 +21,10 @@ inputs, classes = next(iter(dl))
 
 # datapoint = data.train_dataset.__getitem__(45)
 
-print(inputs.size())
-print(classes.size())
 f = model.forward(inputs)
 print(f[0].size())
 print(f[1].size())
 
-## Same thing using torch load
-
+# Same thing using torch load
 checkpoint = torch.load(chk_path, map_location=torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
-print([k.size() for k in checkpoint.keys()])
+print(checkpoint.keys())
