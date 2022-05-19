@@ -38,7 +38,7 @@ $ pip install -r requirements.txt
 ### Usage
 ```
 $ cd PyTorch-VAE
-$ python run.py -c configs/<config-file-name.yaml>
+$ python3 run.py -c configs/<config-file-name.yaml>
 ```
 **Config file template**
 

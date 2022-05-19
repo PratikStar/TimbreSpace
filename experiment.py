@@ -62,7 +62,7 @@ class VAEXperiment(pl.LightningModule):
         self.sample_images()
         
     def sample_images(self):
-        # Get sample reconstruction image            
+        # Get sample reconstruction image
         test_input, test_label = next(iter(self.trainer.datamodule.test_dataloader()))
         test_input = test_input.to(self.curr_device)
         test_label = test_label.to(self.curr_device)

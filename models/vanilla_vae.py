@@ -81,6 +81,7 @@ class VanillaVAE(BaseVAE):
         :param input: (Tensor) Input tensor to encoder [N x C x H x W]
         :return: (Tensor) List of latent codes
         """
+        print("encode")
         result = self.encoder(input)
         result = torch.flatten(result, start_dim=1)
 
@@ -98,6 +99,7 @@ class VanillaVAE(BaseVAE):
         :param z: (Tensor) [B x D]
         :return: (Tensor) [B x C x H x W]
         """
+        print("decode")
         result = self.decoder_input(z)
         result = result.view(-1, 512, 2, 2)
         result = self.decoder(result)
@@ -117,6 +119,7 @@ class VanillaVAE(BaseVAE):
         return eps * std + mu
 
     def forward(self, input: Tensor, **kwargs) -> List[Tensor]:
+        print("forward")
         mu, log_var = self.encode(input)
         z = self.reparameterize(mu, log_var)
         return  [self.decode(z), input, mu, log_var]
