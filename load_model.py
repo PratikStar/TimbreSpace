@@ -1,8 +1,6 @@
 import argparse
 import os
-
 import yaml
-
 from dataset import CelebAZipDataModule
 from experiment import VAEXperiment
 from models import *
