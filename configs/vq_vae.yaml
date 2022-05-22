@@ -26,5 +26,5 @@ trainer_params:
   max_epochs: 1
 
 logging_params:
-  save_dir: "logs-vqvae/"
+  save_dir: "logs/"
   name: 'VQVAE'
