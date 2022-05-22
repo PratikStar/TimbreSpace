@@ -7,7 +7,7 @@ model_params:
   beta: 0.25
 
 data_params:
-  data_path: "Data/"
+  data_path: "../../data"
   train_batch_size: 64
   val_batch_size:  64
   patch_size: 64
@@ -22,9 +22,9 @@ exp_params:
   manual_seed: 1265
 
 trainer_params:
-  gpus: [1]
-  max_epochs: 10
+  gpus: []
+  max_epochs: 1
 
 logging_params:
-  save_dir: "logs/"
+  save_dir: "logs-vqvae/"
   name: 'VQVAE'
