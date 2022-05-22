@@ -8,14 +8,17 @@ rsync -av --exclude-from=".rsyncignore_upload" "/Users/pratik/repos/PyTorch-VAE"
 2. Rsync log files from wisteria
 `rsync -av w:/work/gk77/k77021/repos/PyTorch-VAE/logs "/Users/pratik/repos/PyTorch-VAE"`
 
-
-2. Watch: Online editing
+## Watch: Online editing
 
 Pytorch-VAE repo
 `watch -d -n5 "rsync -av --exclude-from=\".rsyncignore_upload\" \"/Users/pratik/repos/PyTorch-VAE\" w:/work/gk77/k77021/repos"`
 
 log files from wisteria
 `watch -d -n5 "rsync -av w:/work/gk77/k77021/repos/PyTorch-VAE/logs \"/Users/pratik/repos/PyTorch-VAE\""`
+
+## Watch git push
+
+`watch-2 acp-live`
 
 ## Install pyenv & python
 
