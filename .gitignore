@@ -1,5 +1,6 @@
 Data/
 logs/
+logs-vqvae/
 __pycache__/
 .ipynb_checkpoints/
 sliding/
