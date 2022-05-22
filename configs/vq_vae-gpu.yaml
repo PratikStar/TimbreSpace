@@ -23,8 +23,8 @@ exp_params:
 
 trainer_params:
   gpus: [0, 1, 2, 3]
-  max_epochs: 1
+  max_epochs: 10
 
 logging_params:
-  save_dir: "logs-vqvae/"
+  save_dir: "logs/"
   name: 'VQVAE'
