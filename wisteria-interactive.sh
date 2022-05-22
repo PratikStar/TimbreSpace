@@ -5,4 +5,4 @@
 #PJM -j
 
 # run commands
-python3 run.py -c configs/vae-gpu.yaml
+python3 run-vae.py -c configs/vae-gpu.yaml

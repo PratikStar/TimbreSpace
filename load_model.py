@@ -5,6 +5,8 @@ from dataset import CelebAZipDataModule
 from experiment import VAELightningModule
 from models import *
 from utils import parse_config
+import torchvision.utils as vutils
+import numpy as np
 
 config = parse_config()
 
@@ -13,18 +15,26 @@ model = VAELightningModule.load_from_checkpoint(checkpoint_path=chk_path,
                                                 map_location=torch.device('cpu'),
                                                 vae_model=VanillaVAE(**config['model_params']),
                                                 params=config['exp_params'])
+# Same thing using torch load
+# checkpoint = torch.load(chk_path, map_location=torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
+# print(checkpoint.keys())
 
 data = CelebAZipDataModule(**config["data_params"], pin_memory=len(config['trainer_params']['gpus']) != 0)
 data.setup()
 dl = data.train_dataloader()
 inputs, classes = next(iter(dl))
-
-# datapoint = data.train_dataset.__getitem__(45)
-
 f = model.forward(inputs)
-print(f[0].size())
-print(f[1].size())
 
-# Same thing using torch load
-checkpoint = torch.load(chk_path, map_location=torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
-print(checkpoint.keys())
+z = torch.randn(128)
+s = model.model.decode(z)
+
+vutils.save_image(s, f'sliding/sample-OG.png', normalize=True)
+for dim in range(0, 128):
+    arr = []
+    for i in np.arange(-10, 10, 1):
+        z[dim] = i
+        arr.append(model.model.decode(z))
+    res = torch.cat(arr, dim=0)
+    vutils.save_image(res, f'sliding/sample-{dim}.png', normalize=True, nrow=20)
+
+

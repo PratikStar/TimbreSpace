@@ -34,7 +34,7 @@ data.setup()
 trainer = Trainer(logger=tb_logger,
                   callbacks=[
                       LearningRateMonitor(),
-                      ModelCheckpoint(save_top_k=10,
+                      ModelCheckpoint(save_top_k=100,
                                       dirpath=os.path.join(tb_logger.log_dir, "checkpoints"),
                                       every_n_epochs=1,
                                       monitor="val_loss",
