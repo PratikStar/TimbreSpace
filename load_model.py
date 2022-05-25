@@ -7,7 +7,7 @@ from utils import *
 
 # config = get_config(parse_args())
 
-config = get_config(os.path.join(os.getcwd(), 'configs/vq_vae-gpu.yaml'))
+config = get_config(os.path.join(os.getcwd(), 'configs/vq_vae.yaml'))
 
 chk_path = os.path.join(os.getcwd(), f"logs/{config['model_params']['name']}/version_4/checkpoints/last.ckpt")
 model = VAELightningModule.load_from_checkpoint(checkpoint_path=chk_path,
