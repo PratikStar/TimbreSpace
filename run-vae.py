@@ -1,6 +1,5 @@
 import os
 import yaml
-import argparse
 from pathlib import Path
 from models import *
 from experiment import VAELightningModule
@@ -11,12 +10,12 @@ from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
 from dataset import CelebADataModule, CelebAZipDataModule
 from pytorch_lightning.plugins import DDPPlugin
 
-from utils import parse_config
+from utils import *
 
 print(f"torch: {torch.__version__}")
 print(f"CUDA #devices: {torch.cuda.device_count()}")
 
-config = parse_config()
+config = get_config(parse_args())
 
 tb_logger = TensorBoardLogger(save_dir=config['logging_params']['save_dir'],
                               name=config['model_params']['name'], )

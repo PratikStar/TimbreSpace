@@ -24,7 +24,16 @@ def data_loader(fn):
     return func_wrapper
 
 
-def parse_config():
+def get_config(f):
+    with open(f, 'r') as file:
+        try:
+            config = yaml.safe_load(file)
+        except yaml.YAMLError as exc:
+            print(exc)
+    return config
+
+
+def parse_args():
     parser = argparse.ArgumentParser(description='Generic runner for VAE models')
     parser.add_argument('--config', '-c',
                         dest="filename",
@@ -33,9 +42,4 @@ def parse_config():
                         default='configs/vae.yaml')
 
     args = parser.parse_args()
-    with open(args.filename, 'r') as file:
-        try:
-            config = yaml.safe_load(file)
-        except yaml.YAMLError as exc:
-            print(exc)
-    return config
+    return args
