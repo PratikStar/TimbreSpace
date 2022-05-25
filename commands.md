@@ -22,6 +22,16 @@ log files from wisteria
 
 `watch-2 acp-live`
 
+## Wisteria
+
+```
+# for debug jobs 
+pjsub wisteria-debug.sh
+
+# for interactive jobs
+pjsub --interact wisteria-interactive.sh
+
+```
 ## Install pyenv & python
 
 ```

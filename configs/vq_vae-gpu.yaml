@@ -11,7 +11,7 @@ data_params:
   train_batch_size: 64
   val_batch_size:  64
   patch_size: 64
-  num_workers: 4
+  num_workers: 32
 
 
 exp_params:
@@ -23,7 +23,7 @@ exp_params:
 
 trainer_params:
   gpus: [0, 1, 2, 3]
-  max_epochs: 10
+  max_epochs: 50
 
 logging_params:
   save_dir: "logs/"
