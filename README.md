@@ -257,3 +257,11 @@ Additionally, if you would like to contribute some models, please submit a PR.
 
 [license-image]:https://img.shields.io/badge/license-Apache2.0-blue.svg
 [license-url]:https://github.com/AntixK/PyTorch-VAE/blob/master/LICENSE.md
+
+## Resources
+### VQ-VAE
+* [Original implementation in tf](https://github.com/deepmind/sonnet/blob/v2/sonnet/src/nets/vqvae.py)
+* [zalandoresearch/pytorch-vq-vae](https://github.com/zalandoresearch/pytorch-vq-vae)
+* [rosinality/vq-vae-2-pytorch](https://github.com/rosinality/vq-vae-2-pytorch)
+* [nadavbh12/VQ-VAE](https://github.com/nadavbh12/VQ-VAE)
+* [ritheshkumar95/pytorch-vqvae](https://github.com/ritheshkumar95/pytorch-vqvae)

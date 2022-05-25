@@ -15,7 +15,7 @@ from utils import *
 print(f"torch: {torch.__version__}")
 print(f"CUDA #devices: {torch.cuda.device_count()}")
 
-config = get_config(parse_args())
+config = get_config(parse_args().filename)
 
 tb_logger = TensorBoardLogger(save_dir=config['logging_params']['save_dir'],
                               name=config['model_params']['name'], )
