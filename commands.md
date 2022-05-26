@@ -16,7 +16,9 @@ watch -d -n5 "rsync -av --exclude-from=\".rsyncignore_upload\" \"/Users/pratik/r
 `
 
 log files from wisteria
-`watch -d -n5 "rsync -av w:/work/gk77/k77021/repos/PyTorch-VAE/logs \"/Users/pratik/repos/PyTorch-VAE\""`
+`
+watch -d -n5 "rsync -av w:/work/gk77/k77021/repos/PyTorch-VAE/logs \"/Users/pratik/repos/PyTorch-VAE\""
+`
 
 ## Watch git push
 
