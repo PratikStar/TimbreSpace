@@ -72,7 +72,7 @@ class CelebAZipDataset(VisionDataset):
         # if self.target_transform is not None:
         #     target = self.target_transform(target)
 
-        return pil_img, target
+        return pil_img, target, key
 
     def __len__(self):
         return len(self.name_list)
@@ -82,7 +82,7 @@ train_transforms = transforms.Compose([transforms.RandomHorizontalFlip(),
                                                transforms.Resize(64),
                                                transforms.ToTensor(), ])
 dataset = CelebAZipDataset('../../data/celeba',
-                           transforms=train_transforms)
+                           transform=train_transforms)
 
 dataloader = DataLoader(
             dataset,
@@ -92,4 +92,4 @@ dataloader = DataLoader(
             pin_memory=False,
         )
 
-train_features, train_labels = next(iter(dataloader))
+x, y, k = next(iter(dataloader))
