@@ -32,9 +32,9 @@ class CelebAZipDataset(VisionDataset):
         else:
             self.zip_file = zipfile.ZipFile(zip_file_path, 'r')
 
-        headers, self.datadict = self._load_csv(os.path.join(self.root_path, "list_attr_celeba.txt"), attribute, header=1)
+        self.datadict = self._load_csv(os.path.join(self.root_path, "list_attr_celeba.txt"), attribute, header=1)
 
-        print(headers)
+        print(self.datadict[:10])
         print(len(self.datadict))
 
 
