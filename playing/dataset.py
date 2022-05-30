@@ -35,7 +35,7 @@ class CelebAZipDataset(VisionDataset):
         self.name_list = list(filter(lambda x: x[-4:] == '.jpg', self.zip_file.namelist()))
 
         mask = slice(None)
-        self.attrCSV = self._load_csv(os.path.join(self.root_path, "list_attr_celeba.txt"), attribute, header=1)
+        headers, datadict = self._load_csv(os.path.join(self.root_path, "list_attr_celeba.txt"), attribute, header=1)
         # print(attr)
         print(self.attrCSV.header)
         print(len(self.attrCSV.index))
@@ -43,6 +43,7 @@ class CelebAZipDataset(VisionDataset):
         self.attr = self.attrCSV.data[mask]
         self.attr = torch.div(self.attr + 1, 2, rounding_mode="floor")
         print(self.attr)
+
     def _load_csv(
             self,
             filename: str,
@@ -65,8 +66,7 @@ class CelebAZipDataset(VisionDataset):
 
         d = [(x, y) for x, y in zip(indices, data_int) if y == attribute[1]]
 
-
-        return CSV(headers, d)
+        return headers, d
 
     def __getitem__(self, key):
         buf = self.zip_file.read(name=self.name_list[key])
@@ -86,19 +86,20 @@ class CelebAZipDataset(VisionDataset):
     def __len__(self):
         return len(self.name_list)
 
+
 train_transforms = transforms.Compose([transforms.RandomHorizontalFlip(),
-                                               transforms.CenterCrop(148),
-                                               transforms.Resize(64),
-                                               transforms.ToTensor(), ])
+                                       transforms.CenterCrop(148),
+                                       transforms.Resize(64),
+                                       transforms.ToTensor(), ])
 dataset = CelebAZipDataset('../../data/celeba', ('Male', -1),
                            transform=train_transforms)
 
 dataloader = DataLoader(
-            dataset,
-            batch_size=64,
-            num_workers=0,
-            shuffle=False,
-            pin_memory=False,
-        )
+    dataset,
+    batch_size=64,
+    num_workers=0,
+    shuffle=False,
+    pin_memory=False,
+)
 
 x, y, k = next(iter(dataloader))
