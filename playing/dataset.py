@@ -35,7 +35,7 @@ class CelebAZipDataset(VisionDataset):
         self.name_list = list(filter(lambda x: x[-4:] == '.jpg', self.zip_file.namelist()))
 
         mask = slice(None)
-        self.attrCSV = self._load_csv(os.path.join(self.root_path, "list_attr_celeba.txt"), header=1)
+        self.attrCSV = self._load_csv(os.path.join(self.root_path, "list_attr_celeba.txt"), attribute, header=1)
         # print(attr)
         print(self.attrCSV.header)
         print(len(self.attrCSV.index))
@@ -86,7 +86,7 @@ train_transforms = transforms.Compose([transforms.RandomHorizontalFlip(),
                                                transforms.CenterCrop(148),
                                                transforms.Resize(64),
                                                transforms.ToTensor(), ])
-dataset = CelebAZipDataset('../../data/celeba', {'Male': -1},
+dataset = CelebAZipDataset('../../data/celeba', ('Male', -1),
                            transform=train_transforms)
 
 dataloader = DataLoader(
