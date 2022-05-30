@@ -61,7 +61,7 @@ class CelebAZipDataset(VisionDataset):
 
         indices = [row[0] for row in data]
         data = [row[1:][i] for row in data]
-        [(x,y) for x, y in zip(indices, data)  if y==attribute[1]]
+        d = [(x,int(y)) for x, y in zip(indices, data)  if y==attribute[1]]
 
         data_int = [int(i) for i in data]
 
