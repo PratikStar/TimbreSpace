@@ -42,7 +42,7 @@ class CelebAZipDataset(VisionDataset):
         print(self.attrCSV.data.size())
         self.attr = self.attrCSV.data[mask]
         self.attr = torch.div(self.attr + 1, 2, rounding_mode="floor")
-
+        print(self.attr)
     def _load_csv(
             self,
             filename: str,
@@ -71,7 +71,7 @@ class CelebAZipDataset(VisionDataset):
 
         pil_img = Image.fromarray(arr[:, :, ::-1])  # because the current mode is BGR
         # pil_img.save('savedimage.jpg')
-        target = self.attr[key, :]
+        target = self.attr[key]
 
         if self.transform is not None:
             pil_img = self.transform(pil_img)
