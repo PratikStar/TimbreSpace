@@ -66,7 +66,7 @@ class CelebAZipDataset(VisionDataset):
         return headers, d
 
     def __getitem__(self, key):
-        buf = self.zip_file.read(name=self.name_list[key])
+        buf = self.zip_file.read(name=self.datadict[key])
         arr = cv2.imdecode(np.frombuffer(buf, dtype=np.uint8), cv2.IMREAD_COLOR)
 
         pil_img = Image.fromarray(arr[:, :, ::-1])  # because the current mode is BGR
