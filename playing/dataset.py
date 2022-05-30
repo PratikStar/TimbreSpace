@@ -89,11 +89,11 @@ ds = CelebAZipDataset('../../data/celeba', ('Male', -1),
                            transform=train_transforms)
 
 dl = DataLoader(
-    dataset,
+    ds,
     batch_size=64,
     num_workers=0,
     shuffle=False,
     pin_memory=False,
 )
 
-x, y, k = next(iter(dataloader))
+x, y, k = next(iter(dl))
