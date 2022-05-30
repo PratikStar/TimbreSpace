@@ -63,12 +63,12 @@ class CelebAZipDataset(VisionDataset):
         return d
 
     def __getitem__(self, key):
-        buf = self.zip_file.read(name=self.datadict[key])
+        buf = self.zip_file.read(name=self.datadict[key][0])
         arr = cv2.imdecode(np.frombuffer(buf, dtype=np.uint8), cv2.IMREAD_COLOR)
 
         pil_img = Image.fromarray(arr[:, :, ::-1])  # because the current mode is BGR
         # pil_img.save('savedimage.jpg')
-        target = self.attr[key]
+        target = self.datadict[key][1]
 
         if self.transform is not None:
             pil_img = self.transform(pil_img)
@@ -78,17 +78,17 @@ class CelebAZipDataset(VisionDataset):
         return pil_img, target, key
 
     def __len__(self):
-        return len(self.name_list)
+        return len(self.datadict)
 
 
 train_transforms = transforms.Compose([transforms.RandomHorizontalFlip(),
                                        transforms.CenterCrop(148),
                                        transforms.Resize(64),
                                        transforms.ToTensor(), ])
-dataset = CelebAZipDataset('../../data/celeba', ('Male', -1),
+ds = CelebAZipDataset('../../data/celeba', ('Male', -1),
                            transform=train_transforms)
 
-dataloader = DataLoader(
+dl = DataLoader(
     dataset,
     batch_size=64,
     num_workers=0,
