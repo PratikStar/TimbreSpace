@@ -32,6 +32,8 @@ class CelebAZipDataset(VisionDataset):
         else:
             self.zip_file = zipfile.ZipFile(zip_file_path, 'r')
 
+        self.name_list = list(filter(lambda x: x[-4:] == '.jpg', self.zip_file.namelist()))
+        print(self.name_list[:10])
         self.datadict = self._load_csv(os.path.join(self.root_path, "list_attr_celeba.txt"), attribute, header=1)
 
         print(self.datadict[:10])
