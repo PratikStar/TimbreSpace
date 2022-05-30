@@ -77,7 +77,7 @@ class CelebAZipDataset(VisionDataset):
     def __len__(self):
         return len(self.name_list)
 
-dataset = CelebAZipDataset('../../data')
+dataset = CelebAZipDataset('../../data/celeba')
 
 dataloader = DataLoader(
             dataset,
