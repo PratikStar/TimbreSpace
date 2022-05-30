@@ -96,10 +96,8 @@ dl = DataLoader(
 
 iterdl = iter(dl)
 x, y, k = next(iterdl)
-
+i=1315
 while k is not None:
-    print(x)
-    print(y)
-    print(k)
-    x, y, k = next(iterdl)
-    break
+    i -=1
+    if i==0:
+        break
