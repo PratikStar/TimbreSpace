@@ -61,11 +61,12 @@ class CelebAZipDataset(VisionDataset):
 
         indices = [row[0] for row in data]
         data = [row[1:][i] for row in data]
-        d = [(x,int(y)) for x, y in zip(indices, data)  if y==attribute[1]]
-
         data_int = [int(i) for i in data]
 
-        return CSV(headers, indices, torch.tensor(data_int))
+        d = [(x, y) for x, y in zip(indices, data_int) if y == attribute[1]]
+
+
+        return CSV(headers, d)
 
     def __getitem__(self, key):
         buf = self.zip_file.read(name=self.name_list[key])
