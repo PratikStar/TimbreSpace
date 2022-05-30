@@ -88,7 +88,7 @@ dataloader = DataLoader(
             dataset,
             batch_size=64,
             num_workers=0,
-            shuffle=True,
+            shuffle=False,
             pin_memory=False,
         )
 
