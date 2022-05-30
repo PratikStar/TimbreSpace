@@ -46,6 +46,7 @@ class CelebAZipDataset(VisionDataset):
     def _load_csv(
             self,
             filename: str,
+            attribute,
             header: Optional[int] = None,
     ) -> CSV:
         with open(filename) as csv_file:
