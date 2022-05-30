@@ -21,7 +21,7 @@ import csv
 class CelebAZipDataset(VisionDataset):
     def __init__(self, root_path, attribute, transform=None, cache_into_memory=True, ):
         super().__init__(root_path, transform=transform)
-        print(attribute)
+
         self.root_path = root_path
         zip_file_path = os.path.join(root_path, 'img_align_celeba.zip')
         if cache_into_memory:
@@ -43,7 +43,7 @@ class CelebAZipDataset(VisionDataset):
             filename: str,
             attribute: tuple = None,
             header: Optional[int] = None,
-    ) -> tuple:
+    ) -> list:
         with open(filename) as csv_file:
             data = list(csv.reader(csv_file, delimiter=" ", skipinitialspace=True))
 
@@ -60,7 +60,7 @@ class CelebAZipDataset(VisionDataset):
 
         d = [(x, y) for x, y in zip(indices, data_int) if y == attribute[1]]
 
-        return headers, d
+        return d
 
     def __getitem__(self, key):
         buf = self.zip_file.read(name=self.datadict[key])
