@@ -36,7 +36,9 @@ class CelebAZipDataset(VisionDataset):
 
         mask = slice(None)
         attr = self._load_csv(os.path.join(self.root_path, "list_attr_celeba.txt"), header=1)
+        print(attr)
         self.attr = attr.data[mask]
+        print(self.attr)
         self.attr = torch.div(self.attr + 1, 2, rounding_mode="floor")
         print(self.attr)
 
