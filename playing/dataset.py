@@ -98,6 +98,8 @@ iterdl = iter(dl)
 x, y, k = next(iterdl)
 
 while k is not None:
+    print(x)
+    print(y)
     print(k)
     x, y, k = next(iterdl)
     break
