@@ -37,7 +37,7 @@ class CelebAZipDataset(VisionDataset):
         mask = slice(None)
         attr = self._load_csv(os.path.join(self.root_path, "list_attr_celeba.txt"), header=1)
         # print(attr)
-        print(attr[0])
+        print(len(attr[0][:-1]))
         print(len(attr[1]))
         self.attr = attr.data[mask]
         print(self.attr.size())
