@@ -58,9 +58,9 @@ class CelebAZipDataset(VisionDataset):
         else:
             headers = []
         i = headers.index(attribute[0])
-        
+
         indices = [row[0] for row in data]
-        data = [row[1:] for row in data]
+        data = [row[1:][i] for row in data]
         data_int = [list(map(int, i)) for i in data]
 
         return CSV(headers, indices, torch.tensor(data_int))
