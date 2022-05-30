@@ -112,7 +112,10 @@ class CelebAZipDataModule(LightningDataModule, ABC):
         self.pin_memory = pin_memory
 
     def setup(self, stage: Optional[str] = None) -> None:
-
+        train_transforms = transforms.Compose([transforms.RandomHorizontalFlip(),
+                                               transforms.CenterCrop(148),
+                                               transforms.Resize(self.patch_size),
+                                               transforms.ToTensor(), ])
 
         val_transforms = transforms.Compose([transforms.RandomHorizontalFlip(),
                                              transforms.CenterCrop(148),
