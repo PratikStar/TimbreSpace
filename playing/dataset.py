@@ -81,7 +81,8 @@ train_transforms = transforms.Compose([transforms.RandomHorizontalFlip(),
                                                transforms.CenterCrop(148),
                                                transforms.Resize(64),
                                                transforms.ToTensor(), ])
-dataset = CelebAZipDataset('../../data/celeba')
+dataset = CelebAZipDataset('../../data/celeba',
+                           transforms=train_transforms)
 
 dataloader = DataLoader(
             dataset,
