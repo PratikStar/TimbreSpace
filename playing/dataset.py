@@ -43,8 +43,6 @@ class CelebAZipDataset(VisionDataset):
         print(self.attr.size())
         print(self.attr[0])
         self.attr = torch.div(self.attr + 1, 2, rounding_mode="floor")
-        print(self.attr.size())
-        print(self.attr)
 
     def _load_csv(
             self,
@@ -88,7 +86,7 @@ train_transforms = transforms.Compose([transforms.RandomHorizontalFlip(),
                                                transforms.CenterCrop(148),
                                                transforms.Resize(64),
                                                transforms.ToTensor(), ])
-dataset = CelebAZipDataset('../../data/celeba',
+dataset = CelebAZipDataset('../../data/celeba', 'Male',
                            transform=train_transforms)
 
 dataloader = DataLoader(
