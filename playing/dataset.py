@@ -52,7 +52,7 @@ class CelebAZipDataset(VisionDataset):
             data = list(csv.reader(csv_file, delimiter=" ", skipinitialspace=True))
 
         if header is not None:
-            headers = data[header]
+            headers = data[header][:-1]
             data = data[header + 1:]
         else:
             headers = []
