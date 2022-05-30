@@ -73,7 +73,7 @@ class CelebAZipDataset(VisionDataset):
         # if self.target_transform is not None:
         #     target = self.target_transform(target)
 
-        return pil_img, target, key
+        return pil_img, self.datadict[key], key
 
     def __len__(self):
         return len(self.datadict)
