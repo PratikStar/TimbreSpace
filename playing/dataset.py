@@ -35,7 +35,7 @@ class CelebAZipDataset(VisionDataset):
         self.name_list = list(filter(lambda x: x[-4:] == '.jpg', self.zip_file.namelist()))
 
         mask = slice(None)
-        attr_csv = self._load_csv(os.path.join(self.root_path, "list_attr_celeba.txt"), header=1)
+        attr = self._load_csv(os.path.join(self.root_path, "list_attr_celeba.txt"), header=1)
         # print(attr)
         print(len(attr[0][:-1]))
         print(len(attr[1]))
