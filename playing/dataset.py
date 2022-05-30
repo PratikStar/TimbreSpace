@@ -32,9 +32,7 @@ class CelebAZipDataset(VisionDataset):
         else:
             self.zip_file = zipfile.ZipFile(zip_file_path, 'r')
 
-        print(self.name_list[:10])
         self.datadict = self._load_csv(os.path.join(self.root_path, "list_attr_celeba.txt"), attribute, header=1)
-        self.name_list = ['' for x, y in self.datadict]
 
         print(self.datadict[:10])
         print(len(self.datadict))
@@ -65,7 +63,7 @@ class CelebAZipDataset(VisionDataset):
         return d
 
     def __getitem__(self, key):
-        buf = self.zip_file.read(name=self.datadict[key][0])
+        buf = self.zip_file.read(name=''self.datadict[key][0])
         arr = cv2.imdecode(np.frombuffer(buf, dtype=np.uint8), cv2.IMREAD_COLOR)
 
         pil_img = Image.fromarray(arr[:, :, ::-1])  # because the current mode is BGR
