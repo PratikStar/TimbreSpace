@@ -78,10 +78,13 @@ class CelebAZipDataset(VisionDataset):
         return len(self.name_list)
 
 dataset = CelebAZipDataset('../../data')
+
 dataloader = DataLoader(
-            self.train_dataset,
+            dataset,
             batch_size=64,
             num_workers=0,
             shuffle=True,
-            pin_memory=false,
+            pin_memory=False,
         )
+
+train_features, train_labels = next(iter(dataloader))
