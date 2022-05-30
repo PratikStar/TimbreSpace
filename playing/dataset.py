@@ -83,7 +83,7 @@ train_transforms = transforms.Compose([transforms.RandomHorizontalFlip(),
                                        transforms.CenterCrop(148),
                                        transforms.Resize(64),
                                        transforms.ToTensor(), ])
-ds = CelebAZipDataset('../../data/celeba', ('Male', -1),
+ds = CelebAZipDataset('../../data/celeba', ('Male', 1),
                            transform=train_transforms)
 
 dl = DataLoader(
@@ -93,8 +93,11 @@ dl = DataLoader(
     shuffle=False,
     pin_memory=False,
 )
-iterdl =iter(dl)
-x, y, k = next(iter(dl))
+
+iterdl = iter(dl)
+x, y, k = next(iterdl)
+
 while k is not None:
     print(k)
-    x, y, k = next(iter(dl))
+    x, y, k = next(iterdl)
+    break
