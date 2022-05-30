@@ -186,10 +186,7 @@ class CelebADataModule(LightningDataModule, ABC):
             self,
             data_path: str,
             train_batch_size: int = 8,
-            val_batch_size: int = 8,train_transforms = transforms.Compose([transforms.RandomHorizontalFlip(),
-                                               transforms.CenterCrop(148),
-                                               transforms.Resize(self.patch_size),
-                                               transforms.ToTensor(), ])
+            val_batch_size: int = 8,
             patch_size: Union[int, Sequence[int]] = (256, 256),
             num_workers: int = 0,
             pin_memory: bool = False,
