@@ -19,7 +19,7 @@ import csv
 # Reference: https://github.com/pytorch/vision/blob/main/torchvision/datasets/celeba.py
 # https://discuss.pytorch.org/t/dataloader-with-zipfile-failed/42795
 class CelebAZipDataset(VisionDataset):
-    def __init__(self, root_path, transform=None, cache_into_memory=True):
+    def __init__(self, root_path, attribute, transform=None, cache_into_memory=True, ):
         super().__init__(root_path, transform=transform)
 
         self.root_path = root_path
