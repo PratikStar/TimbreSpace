@@ -21,7 +21,7 @@ import csv
 class CelebAZipDataset(VisionDataset):
     def __init__(self, root_path, attribute, transform=None, cache_into_memory=True, ):
         super().__init__(root_path, transform=transform)
-
+        print(attribute)
         self.root_path = root_path
         zip_file_path = os.path.join(root_path, 'img_align_celeba.zip')
         if cache_into_memory:
@@ -86,7 +86,7 @@ train_transforms = transforms.Compose([transforms.RandomHorizontalFlip(),
                                                transforms.CenterCrop(148),
                                                transforms.Resize(64),
                                                transforms.ToTensor(), ])
-dataset = CelebAZipDataset('../../data/celeba', 'Male',
+dataset = CelebAZipDataset('../../data/celeba', {'Male': -1},
                            transform=train_transforms)
 
 dataloader = DataLoader(
