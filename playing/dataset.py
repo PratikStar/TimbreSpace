@@ -93,5 +93,8 @@ dl = DataLoader(
     shuffle=False,
     pin_memory=False,
 )
-
+iterdl =iter(dl)
 x, y, k = next(iter(dl))
+while k is not None:
+    print(k)
+    x, y, k = next(iter(dl))
