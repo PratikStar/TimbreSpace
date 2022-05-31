@@ -13,15 +13,12 @@ model = VAELightningModule.load_from_checkpoint(checkpoint_path=chk_path,
                                                 map_location=torch.device('cpu'),
                                                 vae_model= vae_models[config['model_params']['name']](**config['model_params']),
                                                 params=config['exp_params'])
-# Same thing using torch load
-# checkpoint = torch.load(chk_path, map_location=torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
-# print(checkpoint.keys())
 
 data = CelebAZipDataModule(**config["data_params"], pin_memory=len(config['trainer_params']['gpus']) != 0)
 data.setup()
-
 dl = data.train_dataloader()
 inputs, classes = next(iter(dl))
+
 f = model.forward(inputs)
 
 
