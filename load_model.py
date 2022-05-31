@@ -5,10 +5,6 @@ from experiment import VAELightningModule
 from models import *
 from utils import *
 import csv
-# For interactive use
-# exec(open("./load_model.py").read())
-
-# config = get_config(parse_args())
 
 config = get_config(os.path.join(os.getcwd(), 'configs/vae.yaml'))
 
