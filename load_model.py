@@ -19,28 +19,21 @@ data.setup()
 dl = data.train_dataloader()
 inputs, classes = next(iter(dl))
 
-f = model.forward(inputs)
-
-
 # For generating embeddings
-times = 50
-for step, (inputs, classes) in enumerate(dl):
-    if step == times:
-        break
-    f = model.forward(inputs)
-    batch_size = config['data_params']['train_batch_size']
+# times = 50
+# for step, (inputs, classes) in enumerate(dl):
+#     if step == times:
+#         break
+#     f = model.forward(inputs)
+#     batch_size = config['data_params']['train_batch_size']
+#
+#     with open("for_umap.csv", 'a') as f_output:
+#         tsv_output = csv.writer(f_output, delimiter=',')
+#         c = classes.cpu().detach().numpy()
+#         e = f[4].cpu().detach().numpy()
+#         r = np.concatenate((c, e), axis=1)
+#         tsv_output.writerows(r)
 
-    with open("for_umap.csv", 'a') as f_output:
-        tsv_output = csv.writer(f_output, delimiter=',')
-        c = classes.cpu().detach().numpy()
-        e = f[4].cpu().detach().numpy()
-        # c.extend(.tolist())
-        r = np.concatenate((c, e), axis=1)
-        # print((c.shape))
-        # print((e.shape))
-        # print((r.shape))
-        # print((c))
-        tsv_output.writerows(r)
 
 
 
