@@ -58,7 +58,7 @@ train_transforms = transforms.Compose([transforms.RandomHorizontalFlip(),
                                        transforms.CenterCrop(148),
                                        transforms.Resize(64),
                                        transforms.ToTensor(), ])
-ds = CelebAZipDatasetWithFilter('../../data/celeba', ('Male', 1),
+ds = CelebAZipDatasetWithFilter('../../data/celeba', ('Male', -1),
                                 transform=train_transforms)
 
 dl = DataLoader(
@@ -68,19 +68,19 @@ dl = DataLoader(
     shuffle=False,
     pin_memory=False,
 )
-times = 1319
+times = 2000
 for step, (x, y, k) in enumerate(dl):
     if step == times:
         break
     f = model.forward(x)
     batch_size = config['data_params']['train_batch_size']
 
-    with open("male.csv", 'a') as f_output:
+    with open("female.csv", 'a') as f_output:
         tsv_output = csv.writer(f_output, delimiter=',')
         e = f[4].cpu().detach().numpy()
         tsv_output.writerows(e)
     dec = model.model.decode(f[4])
-    vutils.save_image(x, f'samples/male-{step}-og.png', normalize=True)
-    vutils.save_image(dec, f'samples/male-{step}-recons.png', normalize=True)
+    vutils.save_image(x, f'samples/female-{step}-og.png', normalize=True)
+    vutils.save_image(dec, f'samples/female-{step}-recons.png', normalize=True)
 # iterdl = iter(dl)
 # x, y, k = next(iterdl)
