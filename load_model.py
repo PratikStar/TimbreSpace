@@ -60,7 +60,7 @@ times = 50
 for step, (x, y, k) in enumerate(dl):
     if step == times:
         break
-    f = model.forward(inputs)
+    f = model.forward(x)
     batch_size = config['data_params']['train_batch_size']
 
     with open("for_umap.csv", 'a') as f_output:
