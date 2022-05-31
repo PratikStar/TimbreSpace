@@ -46,7 +46,7 @@ train_transforms = transforms.Compose([transforms.RandomHorizontalFlip(),
                                        transforms.CenterCrop(148),
                                        transforms.Resize(64),
                                        transforms.ToTensor(), ])
-ds = CelebAZipDatasetWithFilter('../../data/celeba', ('Male', 1),
+ds = CelebAZipDatasetWithFilter('../../data/celeba', ('Male', -1),
                                 transform=train_transforms)
 
 dl = DataLoader(
@@ -63,7 +63,7 @@ for step, (x, y, k) in enumerate(dl):
     f = model.forward(x)
     batch_size = config['data_params']['train_batch_size']
 
-    with open("male.csv", 'a') as f_output:
+    with open("female.csv", 'a') as f_output:
         tsv_output = csv.writer(f_output, delimiter=',')
         e = f[4].cpu().detach().numpy()
         tsv_output.writerows(e)
