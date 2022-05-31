@@ -30,14 +30,6 @@ for step, (inputs, classes) in enumerate(dl):
     f = model.forward(inputs)
     batch_size = config['data_params']['train_batch_size']
 
-    # with open("embeddings.csv", 'a', newline='') as f_output:
-    #     tsv_output = csv.writer(f_output, delimiter=',')
-    #     tsv_output.writerows(f[4].tolist())
-    #
-    # with open("attrs.csv", 'a', newline='') as f_output:
-    #     tsv_output = csv.writer(f_output, delimiter=',')
-    #     tsv_output.writerows(classes.tolist())
-
     with open("for_umap.csv", 'a') as f_output:
         tsv_output = csv.writer(f_output, delimiter=',')
         c = classes.cpu().detach().numpy()
