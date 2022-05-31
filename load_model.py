@@ -56,7 +56,7 @@ dl = DataLoader(
     shuffle=False,
     pin_memory=False,
 )
-times = 50
+times = 2
 for step, (x, y, k) in enumerate(dl):
     if step == times:
         break
@@ -65,10 +65,8 @@ for step, (x, y, k) in enumerate(dl):
 
     with open("male.csv", 'a') as f_output:
         tsv_output = csv.writer(f_output, delimiter=',')
-        c = classes.cpu().detach().numpy()
         e = f[4].cpu().detach().numpy()
-        r = np.concatenate((c, e), axis=1)
-        tsv_output.writerows(r)
+        tsv_output.writerows(e)
 
-iterdl = iter(dl)
-x, y, k = next(iterdl)
+# iterdl = iter(dl)
+# x, y, k = next(iterdl)
