@@ -56,6 +56,19 @@ dl = DataLoader(
     shuffle=False,
     pin_memory=False,
 )
+times = 50
+for step, (x, y, k) in enumerate(dl):
+    if step == times:
+        break
+    f = model.forward(inputs)
+    batch_size = config['data_params']['train_batch_size']
+
+    with open("for_umap.csv", 'a') as f_output:
+        tsv_output = csv.writer(f_output, delimiter=',')
+        c = classes.cpu().detach().numpy()
+        e = f[4].cpu().detach().numpy()
+        r = np.concatenate((c, e), axis=1)
+        tsv_output.writerows(r)
 
 iterdl = iter(dl)
 x, y, k = next(iterdl)
