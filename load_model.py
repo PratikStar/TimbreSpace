@@ -7,6 +7,7 @@ from experiment import VAELightningModule
 from models import *
 from playing.dataset import CelebAZipDatasetWithFilter
 from utils import *
+import torchvision.utils as vutils
 import csv
 from torchvision import transforms
 
