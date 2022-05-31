@@ -40,7 +40,18 @@ model = VAELightningModule.load_from_checkpoint(checkpoint_path=chk_path,
 #         tsv_output.writerows(r)
 
 
-
+## For saving images
+# z = torch.randn(128)
+# s = model.model.decode(z)
+#
+# vutils.save_image(s, f'sliding/sample-OG.png', normalize=True)
+# for dim in range(0, 128):
+#     arr = []
+#     for i in np.arange(-10, 10, 1):
+#         z[dim] = i
+#         arr.append(model.model.decode(z))
+#     res = torch.cat(arr, dim=0)
+#     vutils.save_image(res, f'sliding/sample-{dim}.png', normalize=True, nrow=20)
 
 train_transforms = transforms.Compose([transforms.RandomHorizontalFlip(),
                                        transforms.CenterCrop(148),
