@@ -80,5 +80,6 @@ for step, (x, y, k) in enumerate(dl):
         e = f[4].cpu().detach().numpy()
         tsv_output.writerows(e)
 
+    vutils.save_image(dec, f'samples/sample-male-{step}.png', normalize=True)
 # iterdl = iter(dl)
 # x, y, k = next(iterdl)
