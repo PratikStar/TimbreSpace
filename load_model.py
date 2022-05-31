@@ -46,7 +46,7 @@ train_transforms = transforms.Compose([transforms.RandomHorizontalFlip(),
                                        transforms.CenterCrop(148),
                                        transforms.Resize(64),
                                        transforms.ToTensor(), ])
-ds = CelebAZipDatasetWithFilter('../../data/celeba', ('Male', -1),
+ds = CelebAZipDatasetWithFilter('../../data/celeba', ('Male', 1),
                                 transform=train_transforms)
 
 dl = DataLoader(
