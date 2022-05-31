@@ -16,9 +16,7 @@ import torch
 import csv
 
 
-# Reference: https://github.com/pytorch/vision/blob/main/torchvision/datasets/celeba.py
-# https://discuss.pytorch.org/t/dataloader-with-zipfile-failed/42795
-class CelebAZipDataset(VisionDataset):
+class CelebAZipDatasetWithFilter(VisionDataset):
     def __init__(self, root_path, attribute, transform=None, cache_into_memory=True, ):
         super().__init__(root_path, transform=transform)
 
@@ -33,9 +31,6 @@ class CelebAZipDataset(VisionDataset):
             self.zip_file = zipfile.ZipFile(zip_file_path, 'r')
 
         self.datadict = self._load_csv(os.path.join(self.root_path, "list_attr_celeba.txt"), attribute, header=1)
-
-        # print(self.datadict[:10])
-        print(len(self.datadict))
 
     def _load_csv(
             self,
@@ -66,12 +61,9 @@ class CelebAZipDataset(VisionDataset):
         arr = cv2.imdecode(np.frombuffer(buf, dtype=np.uint8), cv2.IMREAD_COLOR)
 
         pil_img = Image.fromarray(arr[:, :, ::-1])  # because the current mode is BGR
-        target = self.datadict[key][1]
 
         if self.transform is not None:
             pil_img = self.transform(pil_img)
-        # if self.target_transform is not None:
-        #     target = self.target_transform(target)
 
         return pil_img, self.datadict[key], key
 
@@ -83,8 +75,8 @@ train_transforms = transforms.Compose([transforms.RandomHorizontalFlip(),
                                        transforms.CenterCrop(148),
                                        transforms.Resize(64),
                                        transforms.ToTensor(), ])
-ds = CelebAZipDataset('../../data/celeba', ('Male', 1),
-                           transform=train_transforms)
+ds = CelebAZipDatasetWithFilter('../../data/celeba', ('Male', 1),
+                                transform=train_transforms)
 
 dl = DataLoader(
     ds,
@@ -96,9 +88,3 @@ dl = DataLoader(
 
 iterdl = iter(dl)
 x, y, k = next(iterdl)
-i=1315
-while k is not None:
-    i -=1
-    if i==0:
-        break
-    next(iterdl)
