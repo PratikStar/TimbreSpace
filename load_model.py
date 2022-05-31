@@ -68,14 +68,14 @@ dl = DataLoader(
     shuffle=False,
     pin_memory=False,
 )
-times = 2
+times = 1319
 for step, (x, y, k) in enumerate(dl):
     if step == times:
         break
     f = model.forward(x)
     batch_size = config['data_params']['train_batch_size']
 
-    with open("female.csv", 'a') as f_output:
+    with open("male.csv", 'a') as f_output:
         tsv_output = csv.writer(f_output, delimiter=',')
         e = f[4].cpu().detach().numpy()
         tsv_output.writerows(e)
