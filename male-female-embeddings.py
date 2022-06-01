@@ -3,9 +3,12 @@ import numpy as np
 # Read csv
 with open('male.csv', newline='') as csvfile:
     csvreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
-    a = np.array((128,))
+    a = []
+    wait = 10
     for row in csvreader:
+        wait -= 1
         em = [float(i) for i in row[0].split(',')]
-        np.insert(a, em)
+        a.append(em)
         print(', '.join(row))
-        break
+        if wait == 0:
+            break
