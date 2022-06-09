@@ -15,6 +15,8 @@ from torchvision import transforms
 config = get_config(os.path.join(os.getcwd(), 'configs/vae.yaml'))
 
 chk_path = os.path.join(os.getcwd(), f"logs/{config['model_params']['name']}/version_12/checkpoints/last.ckpt")
+chkpt = torch.load(chk_path, map_location=torch.device('cpu'))
+
 model = VAELightningModule.load_from_checkpoint(checkpoint_path=chk_path,
                                                 map_location=torch.device('cpu'),
                                                 vae_model= vae_models[config['model_params']['name']](**config['model_params']),
