@@ -2,22 +2,22 @@
 
 1. rsync repo first
 
-`cd /Users/pratik/repos/PyTorch-VAE
-rsync -av --exclude-from=".rsyncignore_upload" "/Users/pratik/repos/PyTorch-VAE" w:/work/gk77/k77021/repos`
+`cd /Users/pratik/repos/TimbreSpace
+rsync -av --exclude-from=".rsyncignore_upload" "/Users/pratik/repos/TimbreSpace" w:/work/gk77/k77021/repos`
 
 2. Rsync log files from wisteria
-`rsync -av w:/work/gk77/k77021/repos/PyTorch-VAE/logs "/Users/pratik/repos/PyTorch-VAE"`
+`rsync -av w:/work/gk77/k77021/repos/TimbreSpace/logs "/Users/pratik/repos/TimbreSpace"`
 
 ## Watch: Online editing
 
-Pytorch-VAE repo
+TimbreSpace repo
 `
-watch -d -n5 "rsync -av --exclude-from=\".rsyncignore_upload\" \"/Users/pratik/repos/PyTorch-VAE\" w:/work/gk77/k77021/repos"
+watch -d -n5 "rsync -av --exclude-from=\".rsyncignore_upload\" \"/Users/pratik/repos/TimbreSpace\" w:/work/gk77/k77021/repos"
 `
 
 log files from wisteria
 `
-watch -d -n5 "rsync -av w:/work/gk77/k77021/repos/PyTorch-VAE/logs \"/Users/pratik/repos/PyTorch-VAE\""
+watch -d -n5 "rsync -av w:/work/gk77/k77021/repos/TimbreSpace/logs \"/Users/pratik/repos/TimbreSpace\""
 `
 
 ## Watch git push
@@ -28,10 +28,10 @@ watch -d -n5 "rsync -av w:/work/gk77/k77021/repos/PyTorch-VAE/logs \"/Users/prat
 
 ```
 # for debug jobs 
-pjsub wisteria-debug.sh
+pjsub wisteria-scripts/wisteria-debug.sh
 
 # for interactive jobs
-pjsub --interact wisteria-interactive.sh
+pjsub --interact wisteria-scripts/wisteria-interactive.sh
 
 ```
 ## Install pyenv & python

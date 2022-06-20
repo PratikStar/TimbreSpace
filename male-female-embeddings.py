@@ -13,10 +13,6 @@ from utils import get_config
 import torch
 import torchvision.utils as vutils
 
-
-
-
-plt.show()
 with open('male.csv', newline='') as csvfile:
     csvreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
     a = []
