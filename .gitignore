@@ -4,3 +4,4 @@ logs-vqvae/
 __pycache__/
 .ipynb_checkpoints/
 sliding/
+.DS_Store

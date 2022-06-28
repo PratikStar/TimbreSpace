@@ -1,17 +1,12 @@
 import os
-import math
 from abc import ABC
 
-import torch
+import pytorch_lightning as pl
+import torchvision.utils as vutils
 from torch import optim
+
 from models import BaseVAE
 from models.types_ import *
-from utils import data_loader
-import pytorch_lightning as pl
-from torchvision import transforms
-import torchvision.utils as vutils
-from torchvision.datasets import CelebA
-from torch.utils.data import DataLoader
 
 
 class VAELightningModule(pl.LightningModule, ABC):

@@ -1,28 +1,34 @@
-## Rsync: Remote Development
+## Rsync
 
-1. rsync repo first
+### rsync repo. local --> wisteria
+```
+cd /Users/pratik/repos/TimbreSpace
+rsync -av --exclude-from=".rsyncignore_upload" "/Users/pratik/repos/TimbreSpace" w:/work/gk77/k77021/repos
+```
 
-`cd /Users/pratik/repos/TimbreSpace
-rsync -av --exclude-from=".rsyncignore_upload" "/Users/pratik/repos/TimbreSpace" w:/work/gk77/k77021/repos`
+### rsync log files. wisteria --> local
+```
+rsync -av w:/work/gk77/k77021/repos/TimbreSpace/logs "/Users/pratik/repos/TimbreSpace"
+```
 
-2. Rsync log files from wisteria
-`rsync -av w:/work/gk77/k77021/repos/TimbreSpace/logs "/Users/pratik/repos/TimbreSpace"`
 
-## Watch: Online editing
+## Watch rsync: Online editing
 
-TimbreSpace repo
-`
+### repo. local --> wisteria
+```
 watch -d -n5 "rsync -av --exclude-from=\".rsyncignore_upload\" \"/Users/pratik/repos/TimbreSpace\" w:/work/gk77/k77021/repos"
-`
+```
 
-log files from wisteria
-`
+### log files. wisteria --> local
+```
 watch -d -n5 "rsync -av w:/work/gk77/k77021/repos/TimbreSpace/logs \"/Users/pratik/repos/TimbreSpace\""
-`
+```
 
 ## Watch git push
 
-`watch-2 acp-live`
+```
+watch -n60 ./watch-acp.sh
+```
 
 ## Wisteria
 

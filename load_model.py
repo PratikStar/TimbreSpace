@@ -1,21 +1,19 @@
+import csv
 import os
-import yaml
-from torch.utils.data import DataLoader
 
-from dataset import CelebAZipDataModule
+import torchvision.utils as vutils
+from torch.utils.data import DataLoader
+from torchvision import transforms
+
+from dataset import CelebAZipDatasetWithFilter
 from experiment import VAELightningModule
 from models import *
-from playing.dataset import CelebAZipDatasetWithFilter
-from utils import *
-import torchvision.utils as vutils
-import csv
-from torchvision import transforms
-from torchsummary import summary
+from utils.utils import *
 
 config = get_config(os.path.join(os.getcwd(), 'configs/vae.yaml'))
 
 chk_path = os.path.join(os.getcwd(), f"logs/{config['model_params']['name']}/version_12/checkpoints/last.ckpt")
-chkpt = torch.load(chk_path, map_location=torch.device('cpu'))
+# chkpt = torch.load(chk_path, map_location=torch.device('cpu'))
 
 model = VAELightningModule.load_from_checkpoint(checkpoint_path=chk_path,
                                                 map_location=torch.device('cpu'),
