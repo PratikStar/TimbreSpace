@@ -5,7 +5,7 @@ import torchvision.utils as vutils
 from torch.utils.data import DataLoader
 from torchvision import transforms
 
-from dataset import CelebAZipDatasetWithFilter
+from datasets.celeba import CelebAZipDatasetWithFilter
 from experiment import VAELightningModule
 from models import *
 from utils.utils import *

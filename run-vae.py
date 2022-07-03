@@ -1,5 +1,4 @@
 import os
-import yaml
 from pathlib import Path
 from models import *
 from experiment import VAELightningModule
@@ -7,9 +6,8 @@ from pytorch_lightning import Trainer
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning.utilities.seed import seed_everything
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
-from dataset import CelebADataModule, CelebAZipDataModule
+from datasets import CelebAZipDataModule
 from pytorch_lightning.plugins import DDPPlugin
-
 from utils import *
 
 print(f"torch: {torch.__version__}")

@@ -1,16 +1,13 @@
-import csv
 import os
 import sys
-import torchvision.utils as vutils
 from torch.utils.data import DataLoader
 from torchvision import transforms
 
 sys.path.append('..')
-from dataset import CelebAZipDatasetWithFilter
+from datasets.celeba import CelebAZipDatasetWithFilter
 from experiment import VAELightningModule
 from models import *
 from utils.utils import *
-from torchsummary import summary
 
 # Load the model
 config = get_config(os.path.join(os.getcwd(), '../configs/vae.yaml'))
