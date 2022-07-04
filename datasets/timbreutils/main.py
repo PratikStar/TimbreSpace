@@ -278,7 +278,7 @@ class PreprocessingPipeline:
         self._num_expected_samples = int(loader.sample_rate * loader.load_duration)
 
     # Processes Single file
-    def process_file(self, clip_name, offset, visualize=False):
+    def process_file(self, clip_name, offset, visualize=True):
 
         file_name_di = self.dataset_path / 'DI.wav'
         file_name = self.dataset_path / 'clips' / clip_name
