@@ -81,6 +81,9 @@ dl = DataLoader(
     shuffle=False,
     pin_memory=False,
 )
+x, y, k = next(iter(dl))
+exit()
+
 times = 2000
 for step, (x, y, k) in enumerate(dl):
     if step == times:
@@ -95,5 +98,3 @@ for step, (x, y, k) in enumerate(dl):
     dec = model.model.decode(f[4])
     vutils.save_image(x, f'samples/female-{step}-og.png', normalize=True)
     vutils.save_image(dec, f'samples/female-{step}-recons.png', normalize=True)
-# iterdl = iter(dl)
-# x, y, k = next(iterdl)

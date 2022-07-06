@@ -18,7 +18,7 @@ import csv
 from pathlib import Path
 
 from datasets.timbreutils import *
-from utils import get_config
+from utils import get_config, dotdict
 import os
 import pickle
 import re
@@ -36,40 +36,43 @@ class TimbreDataset(Dataset):
     def __init__(
             self,
             dataset_path,
+            config,
             cache_into_memory=True,
     ):
         super().__init__()
 
         self.dataset_path = Path(dataset_path)
 
-        self.config_file = self.dataset_path / 'config.yaml'
-        if self.config_file.exists():
-            self.config = get_config(self.config_file)
+        self.dataset_config_file = self.dataset_path / 'config.yaml'
+        if self.dataset_config_file.exists():
+            self.dataset_config = get_config(self.dataset_config_file)
         else:
             raise Exception("Config not found. Dataset path might be incorrect or Dataset might be incorrectly "
                             "configured!")
-        print(f"Here is the loaded config: {self.config}")
 
-        if self.config.load.clip_duration is None: # TODO: this is NOT handled
-            y, sr = librosa.load(self.dataset_path / "DI.wav", sr=self.config.load.sample_rate, mono=self.config.load.mono)
-            self.config.load['clip_duration'] = librosa.get_duration(y=y, sr=sr)
-        print(f"Duration of the DI: {self.config.load.clip_duration}")
+        self.dataset_config = dotdict({**config, **self.dataset_config})
+        # print(f"Here is the loaded config: {self.dataset_config}")
 
-        self.batch_duration = self.config.data_params.batch_size * self.config.stft.segment_duration
-        print(f"Load duration: {self.batch_duration}")
+        if self.dataset_config.load.clip_duration is None: # TODO: this is NOT handled
+            y, sr = librosa.load(self.dataset_path / "DI.wav", sr=self.dataset_config.load.sample_rate, mono=self.dataset_config.load.mono)
+            self.dataset_config.load['clip_duration'] = librosa.get_duration(y=y, sr=sr)
+        # print(f"Duration of the DI: {self.dataset_config.load.clip_duration}")
 
-        if self.batch_duration >= self.config.load.clip_duration:
+        self.batch_duration = self.dataset_config.batch_size * self.dataset_config.stft.segment_duration
+        # print(f"Load duration: {self.batch_duration}")
+
+        if self.batch_duration >= self.dataset_config.load.clip_duration:
             raise Exception("Batch Duration > Clip Duration")
 
         self.clips = [name for name in os.listdir(self.dataset_path / 'clips') if name.endswith('.wav')]
 
-        loader = Loader(self.config.load.sample_rate, self.batch_duration, self.config.load.mono)
+        loader = Loader(self.dataset_config.load.sample_rate, self.batch_duration, self.dataset_config.load.mono)
         padder = Padder()
-        log_spectrogram_extractor = LogSpectrogramExtractor(self.config.stft.frame_size, self.config.stft.hop_length)
+        log_spectrogram_extractor = LogSpectrogramExtractor(self.dataset_config.stft.frame_size, self.dataset_config.stft.hop_length)
         # feature_extractor = FeatureExtractor()
         min_max_normaliser = MinMaxNormaliser(0, 1)
 
-        self.preprocessing_pipeline = PreprocessingPipeline(self.dataset_path, self.config)
+        self.preprocessing_pipeline = PreprocessingPipeline(self.dataset_path, self.dataset_config)
         self.preprocessing_pipeline.loader = loader
         self.preprocessing_pipeline.padder = padder
         self.preprocessing_pipeline.spectrogram_extractor = log_spectrogram_extractor
@@ -79,11 +82,11 @@ class TimbreDataset(Dataset):
         saver = Saver(self.dataset_path, self.dataset_path)
         self.preprocessing_pipeline.saver = saver
 
-        visualizer = Visualizer(Path(__file__).parents[1] / 'out', self.config.stft.frame_size, self.config.stft.hop_length)
+        visualizer = Visualizer(Path(__file__).parents[1] / 'out', self.dataset_config.stft.frame_size, self.dataset_config.stft.hop_length)
         self.preprocessing_pipeline.visualizer = visualizer
 
     def __getitem__(self, key):  # Get random segment
-        offset = np.random.uniform(0, self.config.load.clip_duration - self.batch_duration)
+        offset = np.random.uniform(0, self.dataset_config.load.clip_duration - self.batch_duration)
         print(f"Getting segment from clip: {key} -> {self.clips[key]}")
         print(f"Offset: {offset}")
 
@@ -109,20 +112,22 @@ class TimbreDataModule(LightningDataModule, ABC):
 
     def __init__(
             self,
-            dataset_path: str,
+            config: dict,
             num_workers: int = 0,
             pin_memory: bool = False,
             **kwargs,
     ):
         super().__init__()
 
-        self.dataset_path = Path(dataset_path)
+        self.dataset_path = Path(config.dataset_path)
         self.num_workers = num_workers
         self.pin_memory = pin_memory
+        self.config = config
 
     def setup(self) -> None:
         self.dataset = TimbreDataset(
             self.dataset_path,
+            self.config,
         )
 
     def get_dataloader(self) -> DataLoader:

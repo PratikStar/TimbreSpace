@@ -14,22 +14,22 @@ import librosa
 import librosa.display
 import numpy as np
 import matplotlib.pyplot as plt
-import inspect
 import soundfile as sf
 import math
 import sys
+import inspect
 
-SHOW_LOGS = True
+SHOW_LOGS = False
 LOG_LEVEL = 3  # {1-6} High Value = High verbosity
 
 
 def log(logline, log_level=1):
+    global SHOW_LOGS, LOG_LEVEL
     if SHOW_LOGS and log_level <= LOG_LEVEL:
         stack = inspect.stack()
         the_class = stack[1][0].f_locals["self"].__class__.__name__
         the_method = stack[1][0].f_code.co_name
         print("{}.{}: {}".format(the_class, the_method, logline))
-
 
 class Loader:
     """Loader is responsible for loading an audio file."""
@@ -255,6 +255,10 @@ class PreprocessingPipeline:
     """
 
     def __init__(self, dataset_path, config):
+        global SHOW_LOGS, LOG_LEVEL
+
+        SHOW_LOGS = config.show_logs
+        LOG_LEVEL = config.log_level
         self.dataset_path = dataset_path
         self.config = config
         self.padder = None
@@ -304,11 +308,11 @@ class PreprocessingPipeline:
         segment_features_di = []
 
         batch_spectrogram_width = math.ceil(
-            self.config.data_params.batch_size * self.config.load.sample_rate * self.config.stft.segment_duration / self.config.stft.hop_length)
-        assert batch_spectrogram_width % self.config.data_params.batch_size == 0, \
-            f"Width of the batch spectrogram ({batch_spectrogram_width}), is not divisible by batch size ({self.config.data_params.batch_size})"
+            self.config.batch_size * self.config.load.sample_rate * self.config.stft.segment_duration / self.config.stft.hop_length)
+        assert batch_spectrogram_width % self.config.batch_size == 0, \
+            f"Width of the batch spectrogram ({batch_spectrogram_width}), is not divisible by batch size ({self.config.batch_size})"
 
-        segment_spectrogram_width = batch_spectrogram_width // self.config.data_params.batch_size
+        segment_spectrogram_width = batch_spectrogram_width // self.config.batch_size
         for i in range(0, norm_feature.shape[1], segment_spectrogram_width):
             segment_features.append(norm_feature[:, i: i + segment_spectrogram_width])
             segment_features_di.append(norm_feature_di[:, i: i + segment_spectrogram_width])

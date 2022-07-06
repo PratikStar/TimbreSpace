@@ -8,5 +8,5 @@
 #PJM -m e
 
 # run commands
-#python3 run-vae.py -c configs/vae-gpu.yaml
+#python3 run-vanilla_vae.py -c configs/vae-gpu.yaml
 python3 run-vq-vae.py

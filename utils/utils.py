@@ -1,11 +1,11 @@
 import argparse
 
 import pytorch_lightning as pl
+import inspect
 
 ## Utils to handle newer PyTorch Lightning changes from version 0.6
 ## ==================================================================================================== ##
 import yaml
-
 
 def data_loader(fn):
     """
@@ -37,6 +37,7 @@ def get_config(f):
             config = dotdict(yaml.safe_load(file))
         except yaml.YAMLError as exc:
             print(exc)
+            return None
     return config
 
 

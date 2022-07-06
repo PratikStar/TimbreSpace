@@ -1,0 +1,40 @@
+show_logs: True
+log_level: 6
+
+
+data_params:
+  dataset_path: '../../data/timbre'
+  stft:
+    frame_size: 512
+    hop_length: 256 # frame_size // 2
+    segment_duration: 0.743 # seconds
+
+  batch_size: 8
+  save_dir: "out"
+  num_workers: 0
+
+
+model_params:
+  name: 'MusicTimbreVAE'
+  in_channels: 3
+  music_latent_dim: 128
+  timbre_latent_dim: 128
+
+
+exp_params:
+  LR: 0.005
+  weight_decay: 0.0
+  scheduler_gamma: 0.95
+  kld_weight: 0.00025
+  manual_seed: 1265
+
+
+trainer_params:
+  gpus: []
+  max_epochs: 1
+
+
+logging_params:
+  save_dir: "logs/"
+  name: "MusicTimbreVAE"
+  
