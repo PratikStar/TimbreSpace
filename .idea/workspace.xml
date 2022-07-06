@@ -2,56 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e62d320a-2b24-43cc-9e96-fcc166b46bb4" name="Changes" comment="dataset generator">
-      <change afterPath="$PROJECT_DIR$/run-timbre-vae.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/analysis/ganspace-add_activations.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/analysis/generate-embeddings.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/analysis/generate-images-sliding.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/bbvae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/betatc_vae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/bhvae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/cat_vae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/cvae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/dfc_vae.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/timbre_vae.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/dip_vae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/factorvae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/gammavae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/hvae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/infovae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/iwae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/joint_vae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/logcosh_vae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/lvae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/miwae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/mssim_vae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/swae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/vampvae.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/wae_mmd_imq.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/wae_mmd_rbf.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/timbre.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/timbre.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/timbreutils/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/timbreutils/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configs/timbre_vae.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/timbre_vae.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/load_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/load_model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/beta_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/betatc_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/cat_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/cvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/dfcvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/dip_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/fvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/gamma_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/hvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/info_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/iwae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/joint_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/logcosh_vae.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/timbre_vae.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/lvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/miwae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/mssim_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/swae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/twostage_vae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/vampvae.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/wae_mmd.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wisteria-scripts/wisteria.sh" beforeDir="false" afterPath="$PROJECT_DIR$/wisteria-scripts/wisteria.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/timbre_vae.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/timbre_vae.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/vanilla_vae.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/vanilla_vae.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,16 +41,16 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/models" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/analysis" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/analysis" />
       <recent name="$PROJECT_DIR$/models" />
       <recent name="$PROJECT_DIR$/configs" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/datasets" />
-      <recent name="$PROJECT_DIR$/ganspace" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/datasets" />

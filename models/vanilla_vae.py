@@ -115,6 +115,8 @@ class VanillaVAE(BaseVAE):
     def forward(self, input: Tensor, **kwargs) -> List[Tensor]:
         mu, log_var = self.encode(input)
         z = self.reparameterize(mu, log_var)
+        print("shape of embedding layer")
+        print(z.shape)
         return [self.decode(z), input, mu, log_var, z]
 
     def loss_function(self,

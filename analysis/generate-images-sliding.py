@@ -21,14 +21,15 @@ model = VAELightningModule.load_from_checkpoint(checkpoint_path=chk_path,
                                                     **config['model_params']),
                                                 params=config['exp_params'])
 
-## For generating embeddings
-data = CelebAZipDataModule(**config["data_params"], pin_memory=len(config['trainer_params']['gpus']) != 0)
-data.setup()
-dl = data.train_dataloader()
-inputs, classes = next(iter(dl))
+## For saving slided images
+z = torch.randn(128)
+s = model.model.decode(z)
 
-times = 1
-for step, (inputs, classes) in enumerate(dl):
-    if step == times:
-        break
-    f = model.forward(inputs)
+vutils.save_image(s, f'../sliding/sample-OG.png', normalize=True)
+for dim in range(0, 128):
+    arr = []
+    for i in np.arange(-10, 10, 1):
+        z[dim] = i
+        arr.append(model.model.decode(z))
+    res = torch.cat(arr, dim=0)
+    vutils.save_image(res, f'../sliding/sample-{dim}.png', normalize=True, nrow=20)

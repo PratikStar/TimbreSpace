@@ -16,10 +16,9 @@ data_params:
 
 model_params:
   name: 'MusicTimbreVAE'
-  in_channels: 3
   music_latent_dim: 128
   timbre_latent_dim: 128
-
+  timbre_latent_converge: 'first' # first, average, max, min
 
 exp_params:
   LR: 0.005
