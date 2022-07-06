@@ -3,3 +3,8 @@
 logs
 sliding
 .git
+assets
+out
+venv
+.idea
+samples

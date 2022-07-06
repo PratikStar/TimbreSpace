@@ -282,7 +282,7 @@ class PreprocessingPipeline:
         self._num_expected_samples = int(loader.sample_rate * loader.load_duration)
 
     # Processes Single file
-    def process_file(self, clip_name, offset, visualize=True):
+    def process_file(self, clip_name, offset, visualize=False):
 
         file_name_di = self.dataset_path / 'DI.wav'
         file_name = self.dataset_path / 'clips' / clip_name
@@ -314,8 +314,8 @@ class PreprocessingPipeline:
 
         segment_spectrogram_width = batch_spectrogram_width // self.config.batch_size
         for i in range(0, norm_feature.shape[1], segment_spectrogram_width):
-            segment_features.append(norm_feature[:, i: i + segment_spectrogram_width])
-            segment_features_di.append(norm_feature_di[:, i: i + segment_spectrogram_width])
+            segment_features.append([norm_feature[:, i: i + segment_spectrogram_width]]) # Adding in a list to specify the channel. we will just have one channel
+            segment_features_di.append([norm_feature_di[:, i: i + segment_spectrogram_width]]) # Adding in a list to specify the channel. we will just have one channel
 
         # save_path = self.saver.save_feature(norm_feature, phases, file_name)
         # self.saver.save_min_max_values(file_name, feature.min(), feature.max())
@@ -324,8 +324,8 @@ class PreprocessingPipeline:
             self.visualizer.visualize(norm_feature, clip_name, f"{offset:.2f}-batch")
             self.visualizer.visualize(norm_feature_di, 'DI.wav', f"{offset:.2f}-batch")
             for i in range(len(segment_features)):
-                self.visualizer.visualize(segment_features[i], clip_name, f"{offset:.2f}-{i}")
-                self.visualizer.visualize(segment_features_di[i], 'DI.wav', f"{offset:.2f}-{i}")
+                self.visualizer.visualize(segment_features[i][0], clip_name, f"{offset:.2f}-{i}")
+                self.visualizer.visualize(segment_features_di[i][0], 'DI.wav', f"{offset:.2f}-{i}")
 
         return np.array(segment_features), np.array(segment_features_di)
 

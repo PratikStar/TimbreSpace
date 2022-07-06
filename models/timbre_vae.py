@@ -1,5 +1,6 @@
 from abc import ABC
 
+import numpy as np
 import torch
 from models import BaseVAE
 from torch import nn
@@ -74,15 +75,15 @@ class MusicVAE(BaseVAE):
         self.decoder = nn.Sequential(*modules)
 
         self.final_layer = nn.Sequential(collections.OrderedDict([
-            (f"final_convTranspose2d", nn.ConvTranspose2d(hidden_dims[-1],
-                                                          hidden_dims[-1],
+            (f"final_convTranspose2d", nn.ConvTranspose2d(hidden_dims[0],
+                                                          hidden_dims[0],
                                                           kernel_size=3,
                                                           stride=2,
                                                           padding=1,
                                                           output_padding=1)),  # output shape is: (32, 256, 64)
-            (f"final_batchNorm2d", nn.BatchNorm2d(hidden_dims[-1])),
+            (f"final_batchNorm2d", nn.BatchNorm2d(hidden_dims[0])),
             (f"final_leakyReLU", nn.LeakyReLU()),
-            (f"final_Conv2d", nn.Conv2d(hidden_dims[-1], out_channels=1,
+            (f"final_Conv2d", nn.Conv2d(hidden_dims[0], out_channels=1,
                                         kernel_size=3, padding=1)),  # output shape is: (1, 256, 64)
             (f"final_tanH", nn.Tanh())]))
 
@@ -110,8 +111,9 @@ class MusicVAE(BaseVAE):
         :param z: (Tensor) [B x D]
         :return: (Tensor) [B x C x H x W]
         """
+
         result = self.decoder_input(z)
-        result = result.view(-1, 512, 2, 2)
+        result = result.view(-1, 512, 8, 2)
         result = self.decoder(result)
         result = self.final_layer(result)
         return result
@@ -157,15 +159,18 @@ class MusicVAE(BaseVAE):
         return {'loss': loss, 'Reconstruction_Loss': recons_loss.detach(), 'KLD': -kld_loss.detach()}
 
 
-class TimbreVAE(BaseVAE):
+class TimbreVAE(nn.Module):
 
     def __init__(self,
                  latent_dim: int,
+                 music_latent_dim: int,
                  hidden_dims: List[int],
+                 timbre_latent_converge: str,
                  in_channels: int = 1,
                  **kwargs) -> None:
         super(TimbreVAE, self).__init__()
 
+        self.latent_converge = timbre_latent_converge
         # Build Timbre Encoder
         modules = []
         for i in range(len(hidden_dims)):
@@ -196,8 +201,8 @@ class TimbreVAE(BaseVAE):
 
         # Build Timbre Decoder
         modules = []
-        self.decoder_input = nn.Linear(latent_dim, conv_layers_output_dim)
-        # Shape is (C, H, W): (512, 8, 2)
+        self.decoder_input = nn.Linear(latent_dim + music_latent_dim, conv_layers_output_dim)
+        # Shape is (C, H, W): product of (512, 8, 2)
 
         for i in range(len(hidden_dims) - 1, 0, -1):
             modules.append(
@@ -222,16 +227,16 @@ class TimbreVAE(BaseVAE):
         self.decoder = nn.Sequential(*modules)
 
         self.final_layer = nn.Sequential(collections.OrderedDict([
-            (f"final_convTranspose2d", nn.ConvTranspose2d(hidden_dims[-1],
-                                                                 hidden_dims[-1],
-                                                                 kernel_size=3,
-                                                                 stride=2,
-                                                                 padding=1,
-                                                                 output_padding=1)),  # output shape is: (32, 256, 64)
-            (f"final_batchNorm2d", nn.BatchNorm2d(hidden_dims[-1])),
+            (f"final_convTranspose2d", nn.ConvTranspose2d(hidden_dims[0],
+                                                          hidden_dims[0],
+                                                          kernel_size=3,
+                                                          stride=2,
+                                                          padding=1,
+                                                          output_padding=1)),  # output shape is: (32, 256, 64)
+            (f"final_batchNorm2d", nn.BatchNorm2d(hidden_dims[0])),
             (f"final_leakyReLU", nn.LeakyReLU()),
-            (f"final_Conv2d", nn.Conv2d(hidden_dims[-1], out_channels=1,
-                                               kernel_size=3, padding=1)),  # output shape is: (1, 256, 64)
+            (f"final_Conv2d", nn.Conv2d(hidden_dims[0], out_channels=1,
+                                        kernel_size=3, padding=1)),  # output shape is: (1, 256, 64)
             (f"final_tanH", nn.Tanh())]))
 
     def encode(self, input: Tensor) -> List[Tensor]:
@@ -251,15 +256,32 @@ class TimbreVAE(BaseVAE):
 
         return [mu, log_var]
 
-    def decode(self, z: Tensor) -> Tensor:
+    def decode(self, z: Tensor, z_music: np.ndarray) -> Tensor:
         """
         Maps the given latent codes
         onto the image space.
         :param z: (Tensor) [B x D]
         :return: (Tensor) [B x C x H x W]
+
+        Args:
+            z_music:
+            z_music:
         """
-        result = self.decoder_input(z)
-        result = result.view(-1, 512, 2, 2)
+        # z_music.requires_grad = False
+        # print(f"In timbrevae.decode, shape of z: {z.shape} ")
+        # print(z)
+        # print(z.shape)
+        # print(z_music)
+        # print(z_music.shape)
+        if self.latent_converge == "first":
+            z = z[0].repeat(8, 1)
+        elif self.latent_converge == "mean":
+            z = z.mean(dim=0)
+        elif self.latent_converge == "max":
+            z = z.max(dim=0).values
+
+        result = self.decoder_input(torch.cat((z, torch.tensor(z_music, device=self.device)), dim=1))
+        result = result.view(-1, 512, 8, 2)
         result = self.decoder(result)
         result = self.final_layer(result)
         return result
@@ -304,12 +326,16 @@ class TimbreVAE(BaseVAE):
         loss = recons_loss + kld_weight * kld_loss
         return {'loss': loss, 'Reconstruction_Loss': recons_loss.detach(), 'KLD': -kld_loss.detach()}
 
+    def set_device(self, device):
+        self.device = device
+
 
 class MusicTimbreVAE(BaseVAE):
 
     def __init__(self,
                  music_latent_dim: int,
                  timbre_latent_dim: int,
+                 # device: str,
                  **kwargs) -> None:
         super(MusicTimbreVAE, self).__init__()
 
@@ -318,58 +344,22 @@ class MusicTimbreVAE(BaseVAE):
 
         hidden_dims = [32, 64, 128, 256, 512]
         self.music_vae = MusicVAE(latent_dim=music_latent_dim, hidden_dims=hidden_dims)
-        self.timbre_vae = TimbreVAE(latent_dim=music_latent_dim, hidden_dims=hidden_dims)
+        self.timbre_vae = TimbreVAE(latent_dim=timbre_latent_dim, music_latent_dim=music_latent_dim,
+                                    hidden_dims=hidden_dims, **kwargs)
 
-    def encode(self, input: Tensor) -> List[Tensor]:
-        """
-        Encodes the input by passing through the encoder network
-        and returns the latent codes.
-        :param input: (Tensor) Input tensor to encoder [N x C x H x W]
-        :return: (Tensor) List of latent codes
-        """
-        result = self.music_vae.encoder(input)
-        result = torch.flatten(result, start_dim=1)
+    def forward_music(self, input: Tensor, **kwargs) -> List[Tensor]:
+        music_mu, music_log_var = self.music_vae.encode(input)
+        music_z = self.music_vae.reparameterize(music_mu, music_log_var)
+        return [self.music_vae.decode(music_z), input, music_mu, music_log_var, music_z]
 
-        # Split the result into mu and var components
-        # of the latent Gaussian distribution
-        mu = self.music_vae.fc_mu(result)
-        log_var = self.music_vae.fc_var(result)
+    def forward_timbre(self, input: Tensor, music_z: np.ndarray, **kwargs) -> List[Tensor]:
+        timbre_mu, timbre_log_var = self.timbre_vae.encode(input)
+        timbre_z = self.timbre_vae.reparameterize(timbre_mu, timbre_log_var)
+        return [self.timbre_vae.decode(timbre_z, music_z), input, timbre_mu, timbre_log_var, timbre_z]
 
-        return [mu, log_var]
-
-    def decode(self, z: Tensor) -> Tensor:
-        """
-        Maps the given latent codes
-        onto the image space.
-        :param z: (Tensor) [B x D]
-        :return: (Tensor) [B x C x H x W]
-        """
-        result = self.music_vae.decoder_input(z)
-        result = result.view(-1, 512, 2, 2)
-        result = self.music_vae.decoder(result)
-        result = self.music_vae.final_layer(result)
-        return result
-
-    def reparameterize(self, mu: Tensor, logvar: Tensor) -> Tensor:
-        """
-        Reparameterization trick to sample from N(mu, var) from
-        N(0,1).
-        :param mu: (Tensor) Mean of the latent Gaussian [B x D]
-        :param logvar: (Tensor) Standard deviation of the latent Gaussian [B x D]
-        :return: (Tensor) [B x D]
-        """
-        std = torch.exp(0.5 * logvar)
-        eps = torch.randn_like(std)
-        return eps * std + mu
-
-    def forward(self, input: Tensor, **kwargs) -> List[Tensor]:
-        mu, log_var = self.music_vae.encode(input)
-        z = self.music_vae.reparameterize(mu, log_var)
-        return [self.music_vae.decode(z), input, mu, log_var, z]
-
-    def loss_function(self,
-                      *args,
-                      **kwargs) -> dict:
+    def loss_function_music(self,
+                            *args,
+                            **kwargs) -> dict:
         """
         Computes the VAE loss function.
         KL(N(\mu, \sigma), N(0, 1)) = \log \frac{1}{\sigma} + \frac{\sigma^2 + \mu^2}{2} - \frac{1}{2}
@@ -390,31 +380,28 @@ class MusicTimbreVAE(BaseVAE):
         loss = recons_loss + kld_weight * kld_loss
         return {'loss': loss, 'Reconstruction_Loss': recons_loss.detach(), 'KLD': -kld_loss.detach()}
 
-    # For inference
-    def sample(self,
-               num_samples: int,
-               current_device: int, **kwargs) -> Tensor:
+    def loss_function_timbre(self,
+                             *args,
+                             **kwargs) -> dict:
         """
-        Samples from the latent space and return the corresponding
-        image space map.
-        :param num_samples: (Int) Number of samples
-        :param current_device: (Int) Device to run the model
-        :return: (Tensor)
+        Computes the VAE loss function.
+        KL(N(\mu, \sigma), N(0, 1)) = \log \frac{1}{\sigma} + \frac{\sigma^2 + \mu^2}{2} - \frac{1}{2}
+        :param args:
+        :param kwargs:
+        :return:
         """
-        z = torch.randn(num_samples,
-                        self.latent_dim)
+        recons = args[0]
+        input = args[1]
+        mu = args[2]
+        log_var = args[3]
 
-        z = z.to(current_device)
+        kld_weight = kwargs['M_N']  # Account for the minibatch samples from the dataset
+        recons_loss = F.mse_loss(recons, input)
 
-        samples = self.decode(z)
-        return samples
+        kld_loss = torch.mean(-0.5 * torch.sum(1 + log_var - mu ** 2 - log_var.exp(), dim=1), dim=0)
 
-    # For inference
-    def generate(self, x: Tensor, **kwargs) -> Tensor:
-        """
-        Given an input image x, returns the reconstructed image
-        :param x: (Tensor) [B x C x H x W]
-        :return: (Tensor) [B x C x H x W]
-        """
+        loss = recons_loss + kld_weight * kld_loss
+        return {'loss': loss, 'Reconstruction_Loss': recons_loss.detach(), 'KLD': -kld_loss.detach()}
 
-        return self.forward(x)[0]
+    def set_device(self, device):
+        self.timbre_vae.set_device(device)

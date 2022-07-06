@@ -35,8 +35,8 @@ exp_params:
 
 
 trainer_params:
-  gpus: []
-  max_epochs: 2
+  gpus: [0, 1,2,3]
+  max_epochs: 150
 
 
 logging_params:

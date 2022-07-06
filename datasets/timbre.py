@@ -8,7 +8,6 @@ from pytorch_lightning import LightningDataModule
 from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
 from torchvision.datasets import VisionDataset
-from torchvision.datasets.celeba import CSV, CelebA
 from torch.utils.data import Dataset
 import zipfile
 import cv2

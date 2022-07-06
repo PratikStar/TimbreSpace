@@ -26,7 +26,7 @@ vae = VAELightningModule(model,
                          config['exp_params'])
 
 data = CelebAZipDataModule(**config["data_params"], pin_memory=len(config['trainer_params']['gpus']) != 0)
-data.setup()
+# data.setup()
 
 trainer = Trainer(logger=tb_logger,
                   callbacks=[
@@ -37,7 +37,7 @@ trainer = Trainer(logger=tb_logger,
                                       monitor="val_loss",
                                       save_last=True),
                   ],
-                  strategy=DDPPlugin(find_unused_parameters=False),
+                  # strategy=DDPPlugin(find_unused_parameters=False),
                   **config['trainer_params'])
 
 Path(f"{tb_logger.log_dir}/Samples").mkdir(exist_ok=True, parents=True)

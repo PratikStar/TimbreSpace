@@ -8,7 +8,7 @@ from pytorch_lightning import LightningDataModule
 from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
 from torchvision.datasets import VisionDataset
-from torchvision.datasets.celeba import CSV, CelebA
+from torchvision.datasets.celeba import CelebA
 import zipfile
 import cv2
 import numpy as np
@@ -158,7 +158,7 @@ class CelebAZipDataModule(LightningDataModule, ABC):
             **kwargs,
     ):
         super().__init__()
-        self.data_dir = os.path.join(os.getcwd(), data_path, 'celeba')
+        self.data_dir = os.path.join(os.getcwd(), data_path)
         self.train_batch_size = train_batch_size
         self.val_batch_size = val_batch_size
         self.patch_size = patch_size

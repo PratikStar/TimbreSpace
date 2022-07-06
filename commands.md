@@ -6,6 +6,12 @@ cd /Users/pratik/repos/TimbreSpace
 rsync -av --exclude-from=".rsyncignore_upload" "/Users/pratik/repos/TimbreSpace" w:/work/gk77/k77021/repos
 ```
 
+### rsync data. local --> wisteria
+```
+cd /Users/pratik/data/timbre
+rsync -av "/Users/pratik/data/timbre" w:/work/gk77/k77021/data
+```
+
 ### rsync log files. wisteria --> local
 ```
 rsync -av w:/work/gk77/k77021/repos/TimbreSpace/logs "/Users/pratik/repos/TimbreSpace"
@@ -40,6 +46,9 @@ pjsub wisteria-scripts/wisteria-debug.sh
 pjsub --interact wisteria-scripts/wisteria-interactive.sh
 
 ```
+
+## Tensorboard
+
 ## Install pyenv & python
 
 ```
