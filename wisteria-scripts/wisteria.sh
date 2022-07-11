@@ -1,7 +1,7 @@
 #!/bin/bash
 #PJM -g gk77
 #PJM -L rscgrp=share
-#PJM -L gpu=4
+#PJM -L gpu=1
 #PJM -N MusicTimbreVAE
 #PJM -j
 #PJM -m b

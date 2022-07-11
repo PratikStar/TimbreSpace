@@ -2,26 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e62d320a-2b24-43cc-9e96-fcc166b46bb4" name="Changes" comment="dataset generator">
-      <change afterPath="$PROJECT_DIR$/configs/timbre_vae-gpu.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/environment.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/experiment_timbre.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/TimbreSpace.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/TimbreSpace.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.rsyncignore_upload" beforeDir="false" afterPath="$PROJECT_DIR$/.rsyncignore_upload" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/commands.md" beforeDir="false" afterPath="$PROJECT_DIR$/commands.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/timbre_vae.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/timbre_vae.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/vae.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/vae.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/celeba.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/celeba.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/timbre.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/timbre.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/datasets/timbreutils/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/timbreutils/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/timbre_vae.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/timbre_vae.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/vanilla_vae.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/vanilla_vae.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configs/timbre_vae-gpu.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/timbre_vae-gpu.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment_timbre.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment_timbre.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run-timbre-vae.py" beforeDir="false" afterPath="$PROJECT_DIR$/run-timbre-vae.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run-vae.py" beforeDir="false" afterPath="$PROJECT_DIR$/run-vae.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wisteria-scripts/wisteria-interactive.sh" beforeDir="false" afterPath="$PROJECT_DIR$/wisteria-scripts/wisteria-interactive.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wisteria-scripts/wisteria.sh" beforeDir="false" afterPath="$PROJECT_DIR$/wisteria-scripts/wisteria.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

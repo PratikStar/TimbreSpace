@@ -34,7 +34,7 @@ class TimbreVAELightningModule(pl.LightningModule, ABC):
         print(f'\n=== Training step. batchidx: {batch_idx}, optimizeridx: {optimizer_idx} ===')
         batch, batch_di, key, offset = batch_item
         batch = torch.squeeze(batch, 0)
-        print(f"batch: {batch.shape}, batch_di: {batch_di.shape}, key: {key}, offset: {offset}")
+        # print(f"batch: {batch.shape}, batch_di: {batch_di.shape}, key: {key}, offset: {offset}")
         self.curr_device = batch.device
         self.model.set_device(self.curr_device)
 
@@ -47,7 +47,7 @@ class TimbreVAELightningModule(pl.LightningModule, ABC):
                                                   optimizer_idx=optimizer_idx,
                                                   batch_idx=batch_idx)
             self.log_dict({key: val.item() for key, val in music_train_loss.items()}, sync_dist=True)
-
+            print(music_train_loss)
             return music_train_loss['loss']
 
         if optimizer_idx == 1:
@@ -58,20 +58,35 @@ class TimbreVAELightningModule(pl.LightningModule, ABC):
                                                   batch_idx=batch_idx)
 
             self.log_dict({key: val.item() for key, val in timbre_train_loss.items()}, sync_dist=True)
-
+            print(timbre_train_loss)
             return timbre_train_loss['loss']
 
-    # def validation_step(self, batch, batch_idx, optimizer_idx=0):
-    #     real_img, labels = batch
-    #     self.curr_device = real_img.device
-    #
-    #     results = self.forward(real_img, labels=labels)
-    #     val_loss = self.model.loss_function(*results,
-    #                                         M_N=1.0,  # real_img.shape[0]/ self.num_val_imgs,
-    #                                         optimizer_idx=optimizer_idx,
-    #                                         batch_idx=batch_idx)
-    #
-    #     self.log_dict({f"val_{key}": val.item() for key, val in val_loss.items()}, sync_dist=True)
+    def validation_step(self, batch_item, batch_idx, optimizer_idx):
+        print(f'\n=== Validation step. batchidx: {batch_idx}, optimizeridx: {optimizer_idx} ===')
+        batch, batch_di, key, offset = batch_item
+        batch = torch.squeeze(batch, 0)
+        self.curr_device = batch.device
+        self.model.set_device(self.curr_device)
+
+        if optimizer_idx == 0:
+            music_results = self.model.forward_music(batch)
+            self.z_music = music_results[4].cpu().detach().numpy()
+            # print(f"z_music: {self.z_music.shape}")
+            music_val_loss = self.model.loss_function_music(*music_results,
+                                                  M_N=self.config['kld_weight'],  # al_img.shape[0]/ self.num_train_imgs,
+                                                  optimizer_idx=optimizer_idx,
+                                                  batch_idx=batch_idx)
+            self.log_dict({f"val_{key}": val.item() for key, val in music_val_loss.items()}, sync_dist=True)
+
+        if optimizer_idx == 1:
+            timbre_results = self.model.forward_timbre(batch, self.z_music)
+            timbre_val_loss = self.model.loss_function_timbre(*timbre_results,
+                                                  M_N=self.config['kld_weight'],  # al_img.shape[0]/ self.num_train_imgs,
+                                                  optimizer_idx=optimizer_idx,
+                                                  batch_idx=batch_idx)
+
+            self.log_dict({f"val_{key}": val.item() for key, val in timbre_val_loss.items()}, sync_dist=True)
+
 
     def configure_optimizers(self):
 

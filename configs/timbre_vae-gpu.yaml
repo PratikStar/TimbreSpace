@@ -1,5 +1,5 @@
 show_logs: True
-log_level: 6
+log_level: 3
 
 #data_params_test:
 #  data_path: "../../data/celeba"
@@ -17,7 +17,7 @@ data_params:
 
   batch_size: 8
   save_dir: "out"
-  num_workers: 0
+  num_workers: 36
 
 
 model_params:
@@ -35,11 +35,11 @@ exp_params:
 
 
 trainer_params:
-  gpus: [0, 1,2,3]
+  gpus: [0]
   max_epochs: 150
 
 
 logging_params:
-  save_dir: "logs/"
+  save_dir: "logs-w/"
   name: "MusicTimbreVAE"
   

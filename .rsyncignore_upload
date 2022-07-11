@@ -1,6 +1,7 @@
 *.log
 *.ckpt
 logs
+logw
 sliding
 .git
 assets

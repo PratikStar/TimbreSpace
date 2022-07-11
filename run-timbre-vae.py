@@ -49,7 +49,7 @@ trainer = Trainer(logger=tb_logger,
                                       monitor="val_loss",
                                       save_last=True),
                   ],
-                  # strategy=DDPPlugin(find_unused_parameters=False),
+                  strategy=DDPPlugin(find_unused_parameters=True),
                   **config['trainer_params'])
 
 print(f"======= Training {config['model_params']['name']} =======")
