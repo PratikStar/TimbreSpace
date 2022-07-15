@@ -1,3 +1,22 @@
+# Development
+```
+# 1. Rsync repo
+cd /Users/pratik/repos/TimbreSpace
+watch -d -n5 "rsync -av --exclude-from=\".rsyncignore_upload\" \"/Users/pratik/repos/TimbreSpace\" w:/work/gk77/k77021/repos"
+
+# 2. Rsync data
+cd /Users/pratik/data/timbre
+rsync -av "/Users/pratik/data/timbre" w:/work/gk77/k77021/data
+
+# 3. Logs from wisteria
+watch -d -n5 "rsync -av w:/work/gk77/k77021/repos/TimbreSpace/logs \"/Users/pratik/repos/TimbreSpace/logw\""
+
+```
+# Notes
+
+1. Restart tensorboard if it stops showing logs
+
+# Helpful commands
 ## Rsync
 
 ### rsync repo. local --> wisteria
@@ -6,7 +25,7 @@ cd /Users/pratik/repos/TimbreSpace
 rsync -av --exclude-from=".rsyncignore_upload" "/Users/pratik/repos/TimbreSpace" w:/work/gk77/k77021/repos
 ```
 
-### rsync data. local --> wisteria
+### rsync data/timbre. local --> wisteria
 ```
 cd /Users/pratik/data/timbre
 rsync -av "/Users/pratik/data/timbre" w:/work/gk77/k77021/data
@@ -48,7 +67,10 @@ pjsub --interact wisteria-scripts/wisteria-interactive.sh
 ```
 
 ## Tensorboard
-
+```
+cd ~/repos/TimbreSpace
+tensorboard --logdir logs
+```
 ## Install pyenv & python
 
 ```

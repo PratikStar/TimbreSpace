@@ -10,12 +10,12 @@ from models import BaseVAE, MusicTimbreVAE
 from models.types_ import *
 
 
-class TimbreVAELightningModule(pl.LightningModule, ABC):
+class MusicTimbreVAELightningModule(pl.LightningModule, ABC):
 
     def __init__(self,
-                 vae_model: MusicTimbreVAE, # contains music vae and timbre vae
+                 vae_model: MusicTimbreVAE, # contains MusicTimbre vae
                  config: dict) -> None:
-        super(TimbreVAELightningModule, self).__init__()
+        super(MusicTimbreVAELightningModule, self).__init__()
         self.save_hyperparameters()  # Added by me, to test
 
         self.model = vae_model

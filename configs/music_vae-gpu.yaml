@@ -1,0 +1,50 @@
+show_logs: True
+log_level: 3
+
+data_params:
+  dataset_path: '../../data/timbre'
+  stft:
+    frame_size: 512
+    hop_length: 256 # frame_size // 2
+    segment_duration: 0.18575 # seconds
+
+  saver: # saves spectrogram as npy and min/max values. TODO: Untested
+    enabled: False
+    save_dir: "../out" # relative to dataset_path
+  visualizer:
+    enabled: False # Please enable for spectrogram inference
+    save_dir: "../out" # relative to dataset_path
+  csv: # Log generated datapoints in a csv
+    enabled: True
+    path: "../log" # relative to dataset_path
+
+  batch_size: 16
+  num_workers: 1 # Error "libgomp: Thread creation failed: Resource temporarily unavailable" when setting a high value on this on wisteria share-short
+
+
+model_params:
+  name: 'MusicVAE'
+  hidden_dims: [128, 64, 32, 16] # These are conv2d channels. Encoder: (1, 256, 64) -> (32, 128, 32) -> (64, 64, 16) -> (128, 32, 8) -> (256, 16, 4) -> (512, 8, 2)
+  latent_dim: 32
+  loss:
+    function: "L2"
+#  load_path: "logs/MusicVAE/version_24/checkpoints/last.ckpt" # Relative to repo
+
+
+exp_params:
+  LR: 0.0001
+  weight_decay: 0.0
+  scheduler_gamma: 0.95
+  kld_weight: 0.000001 # in tensorflow code, this was set to 0.000001
+  manual_seed: 1265
+
+
+trainer_params:
+  gpus: [0, 1, 2, 3]
+  max_epochs: 30
+
+
+logging_params:
+  save_dir: "logs/"
+  name: "MusicVAE"
+  

@@ -7,6 +7,7 @@ import inspect
 ## ==================================================================================================== ##
 import yaml
 
+
 def data_loader(fn):
     """
     Decorator to handle the deprecation of data_loader from 0.7
@@ -23,13 +24,23 @@ def data_loader(fn):
 
     return func_wrapper
 
+
 class dotdict(dict):
     """dot.notation access to dictionary attributes"""
+
     def __getattr__(*args):
+        # print(f"getattr {args[1]}")
+        if args[1] in ("__getstate__", "__setstate__"):
+            # print(f"type {type(args[0])}")
+            return args[0]
+
         val = dict.get(*args)
         return dotdict(val) if type(val) is dict else val
+
     __setattr__ = dict.__setitem__
     __delattr__ = dict.__delitem__
+    __call__ = dict.__call__
+
 
 def get_config(f):
     with open(f, 'r') as file:

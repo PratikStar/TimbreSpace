@@ -78,18 +78,23 @@ class TimbreDataset(Dataset):
         # self.preprocessing_pipeline.feature_extractor = feature_extractor
         self.preprocessing_pipeline.normaliser = min_max_normaliser
 
-        saver = Saver(self.dataset_path, self.dataset_path)
-        self.preprocessing_pipeline.saver = saver
+        if self.dataset_config.saver.enabled: # TODO: untested
+            print(f"saver enabled")
+            saver = Saver(self.dataset_path, self.dataset_path) # Saves spectrograms (.npy) and min/max values
+            self.preprocessing_pipeline.saver = saver
 
-        visualizer = Visualizer(Path(__file__).parents[1] / 'out', self.dataset_config.stft.frame_size, self.dataset_config.stft.hop_length)
+        visualize_path = self.dataset_path / self.dataset_config.visualizer.save_dir / 'spectrogram_img'
+        if not visualize_path.exists():
+            os.makedirs(visualize_path)
+        visualizer = Visualizer(visualize_path, self.dataset_config.stft.frame_size, self.dataset_config.stft.hop_length)
         self.preprocessing_pipeline.visualizer = visualizer
 
     def __getitem__(self, key):  # Get random segment
         offset = np.random.uniform(0, self.dataset_config.load.clip_duration - self.batch_duration)
-        print(f"Getting segment from clip: {key} -> {self.clips[key]}")
-        print(f"Offset: {offset}")
+        # print(f"Getting segment from clip: {key} -> {self.clips[key]}")
+        # print(f"Offset: {offset}")
 
-        batch, batch_di = self.preprocessing_pipeline.process_file(self.clips[key], offset)
+        batch, batch_di = self.preprocessing_pipeline.process_file(self.clips[key], offset, self.dataset_config.visualizer.enabled)
         return batch, batch_di, key, offset
 
     def __len__(self):
@@ -112,14 +117,13 @@ class TimbreDataModule(LightningDataModule, ABC):
     def __init__(
             self,
             config: dict,
-            num_workers: int = 0,
             pin_memory: bool = False,
             **kwargs,
     ):
         super().__init__()
 
         self.dataset_path = Path(config.dataset_path)
-        self.num_workers = num_workers
+        self.num_workers = config.num_workers
         self.pin_memory = pin_memory
         self.config = config
 

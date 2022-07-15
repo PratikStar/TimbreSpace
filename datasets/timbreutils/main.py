@@ -20,7 +20,7 @@ import sys
 import inspect
 
 SHOW_LOGS = False
-LOG_LEVEL = 3  # {1-6} High Value = High verbosity
+LOG_LEVEL = 6  # {1-6} High Value = High verbosity
 
 
 def log(logline, log_level=1):
@@ -30,6 +30,7 @@ def log(logline, log_level=1):
         the_class = stack[1][0].f_locals["self"].__class__.__name__
         the_method = stack[1][0].f_code.co_name
         print("{}.{}: {}".format(the_class, the_method, logline))
+
 
 class Loader:
     """Loader is responsible for loading an audio file."""
@@ -173,7 +174,7 @@ class Saver:  # Not used!!
         return save_path
 
 
-class Visualizer:  # Not used!!
+class Visualizer:
     def __init__(self, file_dir, frame_size, hop_length):
         self.file_dir = file_dir
         self.frame_size = frame_size
@@ -194,7 +195,31 @@ class Visualizer:  # Not used!!
         ax.set_title(
             "Frame Size: {}, Hop length: {}, \n{}".format(self.frame_size, self.hop_length,
                                                           file_name.name))
-        fig.colorbar(img, ax=ax, format="%+2.0f dB")
+        fig.colorbar(img, ax=ax, format="%+2.2f dB")
+        name = file_name.with_suffix('.png').name
+        if suffix is not None:
+            name = file_name.name[:file_name.name.index('.wav')] + " - " + suffix + '.png'
+        fig.savefig(file_name.parents[0] / name)
+        plt.close(fig)
+
+    def visualize_multiple(self, spectrogram: list, title:list, file_name, suffix=None, file_dir=None):
+        if file_dir is not None and not file_dir.exists():
+            os.makedirs(file_dir)
+        file_name = (file_dir if file_dir is not None else self.file_dir) / file_name
+        plt.ioff()
+        fig, ax = plt.subplots(dpi=120, nrows=len(spectrogram), figsize=(7, len(spectrogram)*5))
+
+        for i in range(len(spectrogram)):
+            try:
+                img = librosa.display.specshow(spectrogram[i],
+                                               n_fft=self.frame_size,
+                                               hop_length=self.hop_length,
+                                               y_axis='log', x_axis='s', ax=ax[i])
+            except IndexError as e:
+                log("Null spectrogram for file: " + file_name.name, 1)
+                return
+            ax[i].set_title(title[i])
+            fig.colorbar(img, ax=ax[i], format="%+2.2f dB")
         name = file_name.with_suffix('.png').name
         if suffix is not None:
             name = file_name.name[:file_name.name.index('.wav')] + " - " + suffix + '.png'
@@ -255,10 +280,6 @@ class PreprocessingPipeline:
     """
 
     def __init__(self, dataset_path, config):
-        global SHOW_LOGS, LOG_LEVEL
-
-        SHOW_LOGS = config.show_logs
-        LOG_LEVEL = config.log_level
         self.dataset_path = dataset_path
         self.config = config
         self.padder = None
@@ -314,8 +335,8 @@ class PreprocessingPipeline:
 
         segment_spectrogram_width = batch_spectrogram_width // self.config.batch_size
         for i in range(0, norm_feature.shape[1], segment_spectrogram_width):
-            segment_features.append([norm_feature[:, i: i + segment_spectrogram_width]]) # Adding in a list to specify the channel. we will just have one channel
-            segment_features_di.append([norm_feature_di[:, i: i + segment_spectrogram_width]]) # Adding in a list to specify the channel. we will just have one channel
+            segment_features.append([norm_feature[:, i: i + segment_spectrogram_width]])  # Adding in a list to specify the channel. we will just have one channel
+            segment_features_di.append([norm_feature_di[:, i: i + segment_spectrogram_width]])  # Adding in a list to specify the channel. we will just have one channel
 
         # save_path = self.saver.save_feature(norm_feature, phases, file_name)
         # self.saver.save_min_max_values(file_name, feature.min(), feature.max())
