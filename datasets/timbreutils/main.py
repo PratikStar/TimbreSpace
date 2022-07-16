@@ -226,6 +226,42 @@ class Visualizer:
         fig.savefig(file_name.parents[0] / name)
         plt.close(fig)
 
+    def visualize_multiple(self, batch_di, di_recons, suffix=None, file_dir=None, max_rows = 10):
+        if file_dir is not None and not file_dir.exists():
+            os.makedirs(file_dir)
+        file_name = 'reconstruction.png'
+        file_name = (file_dir if file_dir is not None else self.file_dir) / file_name
+        plt.ioff()
+        shape = batch_di.shape
+        nrows = min(max_rows, shape[0])
+        fig, ax = plt.subplots(dpi=120, nrows=nrows, ncols=2, figsize=(8, nrows * 2))
+
+        for i in range(nrows):
+            try:
+                img_og = librosa.display.specshow(batch_di[i,:,:],
+                                               n_fft=self.frame_size,
+                                               hop_length=self.hop_length,
+                                               y_axis='log', x_axis='s', ax=ax[i][0])
+                img_recons = librosa.display.specshow(di_recons[i,:,:],
+                                               n_fft=self.frame_size,
+                                               hop_length=self.hop_length,
+                                               y_axis='log', x_axis='s', ax=ax[i][1])
+            except IndexError as e:
+                log("Null spectrogram for file: " + file_name.name, 1)
+                return
+            ax[0][0].set_title("Original")
+            ax[0][1].set_title("Reconstruction")
+
+            fig.colorbar(img_og, ax=ax[i][0], format="%+2.2f dB")
+            fig.colorbar(img_recons, ax=ax[i][1], format="%+2.2f dB")
+
+        plt.subplots_adjust(wspace=1, hspace=0.4)
+        name = file_name.name
+        if suffix is not None:
+            name = file_name.name[:file_name.name.index('.wav')] + " - " + suffix + '.png'
+        fig.savefig(file_name.parents[0] / name)
+        plt.close(fig)
+
 
 class Utils:
     def __init__(self):

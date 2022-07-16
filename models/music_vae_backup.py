@@ -25,7 +25,7 @@ class MusicVAE(BaseVAE, ABC):
         self.loss_func = loss['function']
         # Build Music Encoder
         modules = []
-        for i in range(len(self.hidden_dims) ):
+        for i in range(len(self.hidden_dims) - 1):
             modules.append(
                 nn.Sequential(
                     collections.OrderedDict(
@@ -53,28 +53,6 @@ class MusicVAE(BaseVAE, ABC):
         self.fc_mu = nn.Linear(conv_layers_output_dim, self.latent_dim)
         self.fc_var = nn.Linear(conv_layers_output_dim, self.latent_dim)
 
-        # self.fc_mu = nn.Sequential(
-        #     collections.OrderedDict(
-        #         [
-        #             (f"conv2d_fc_mu", nn.Conv2d(in_channels, out_channels=self.hidden_dims[-1],
-        #                                         kernel_size=3, stride=2, padding=1)),
-        #             # with this, height and width halves in each iteration
-        #             (f"batchNorm2d_fc_mu", nn.BatchNorm2d(self.hidden_dims[-1])),
-        #             (f"leakyReLU_fc_mu", nn.LeakyReLU())
-        #         ]
-        #     )
-        # )
-        # self.fc_var = nn.Sequential(
-        #     collections.OrderedDict(
-        #         [
-        #             (f"conv2d_fc_var", nn.Conv2d(in_channels, out_channels=self.hidden_dims[-1],
-        #                                          kernel_size=3, stride=2, padding=1)),
-        #             # with this, height and width halves in each iteration
-        #             (f"batchNorm2d_fc_var", nn.BatchNorm2d(self.hidden_dims[-1])),
-        #             (f"leakyReLU_fc_var", nn.LeakyReLU())
-        #         ]
-        #     )
-        # )
         # Build Music Decoder
         modules = []
         self.decoder_input = nn.Linear(self.latent_dim, conv_layers_output_dim)
@@ -128,7 +106,7 @@ class MusicVAE(BaseVAE, ABC):
         :return: (Tensor) List of latent codes
         """
         result = self.encoder(input)
-        result = torch.flatten(result, start_dim=1)
+        # result = torch.flatten(result, start_dim=1)
 
         # Split the result into mu and var components
         # of the latent Gaussian distribution

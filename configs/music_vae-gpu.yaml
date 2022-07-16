@@ -28,7 +28,7 @@ model_params:
   latent_dim: 32
   loss:
     function: "L2"
-#  load_path: "logs/MusicVAE/version_24/checkpoints/last.ckpt" # Relative to repo
+#  load_path: "logs/MusicVAE/version_30/checkpoints/last.ckpt" # Relative to repo
 
 
 exp_params:
@@ -40,8 +40,8 @@ exp_params:
 
 
 trainer_params:
-  gpus: [0, 1, 2, 3]
-  max_epochs: 30
+  gpus: [0]
+  max_epochs: 2
 
 
 logging_params:
