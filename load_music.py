@@ -1,5 +1,6 @@
 import csv
 import os
+from pathlib import Path
 
 import torch
 import torchvision.utils as vutils
@@ -17,12 +18,12 @@ import numpy as np
 ## Load model
 config = get_config(os.path.join(os.getcwd(), 'configs/music_vae.yaml'))
 # chk_path = os.path.join(os.getcwd(), f"logs/{config['model_params']['name']}/version_6/checkpoints/last.ckpt")
-chk_path = os.path.join(os.getcwd(), f"logw/logs/{config['model_params']['name']}/version_31/checkpoints/last.ckpt")
+chk_path = os.path.join(os.getcwd(), f"logw/logs/{config['model_params']['name']}/version_43/checkpoints/last.ckpt")
 
 # chkpt = torch.load(chk_path, map_location=torch.device('cpu'))
 model = MusicVAELightningModule.load_from_checkpoint(checkpoint_path=chk_path,
                                                      map_location=torch.device('cpu'),
-                                                     vae_model=vae_models[config['model_params']['name']](
+                                                     vae_model=MusicVAEFlat(
                                                          **config['model_params']),
                                                      params=config)
 ## For generating embeddings
@@ -42,11 +43,14 @@ for step, (batch, batch_di, key, offset) in enumerate(dl):
     if step == times:
         break
 
-    print(f"for file: {data.dataset.clips[key]}, Offset: {offset}")
-    for i in range(di_recons.shape[0]):
-        data.dataset.preprocessing_pipeline.visualizer.visualize_multiple([batch_di[i, 0, :, :], di_recons[i, 0, :, :]],
-                                                                          ['original', 'recons'],
-                                                                          "DI.wav", f"offset - {float(offset):0.2f} - {i}")
+    # print(f"for file: {data.dataset.clips[key]}, Offset: {offset}")
+    # for i in range(di_recons.shape[0]):
+    #     data.dataset.preprocessing_pipeline.visualizer.visualize_multiple([batch_di[i, 0, :, :], di_recons[i, 0, :, :]],
+    #                                                                       ['original', 'recons'],
+    #                                                                       "DI.wav", f"offset - {float(offset):0.2f} - {i}")
+    data.dataset.preprocessing_pipeline.visualizer.visualize_multiple(
+        batch_di[:,0,:,:], di_recons[:,0,:,:],
+        file_dir=Path(chk_path).parents[1] / 'recons')
 
 # a = torch.tensor(batch_di[0, 0, :, :])
 # b = torch.tensor(di_recons[0, 0, :, :])

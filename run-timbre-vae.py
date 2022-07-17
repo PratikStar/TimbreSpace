@@ -45,7 +45,7 @@ if 'load_path' in config['model_params']:
                                                              **config['model_params']),
                                                          params=config['exp_params'])
 else:
-    model = MusicVAE(**config['model_params'])
+    model = vae_models[config['model_params']['name']](**config['model_params'])
     vae = MusicVAELightningModule(model,
                                   config=config)
 

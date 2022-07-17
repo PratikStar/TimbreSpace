@@ -202,33 +202,13 @@ class Visualizer:
         fig.savefig(file_name.parents[0] / name)
         plt.close(fig)
 
-    def visualize_multiple(self, spectrogram: list, title:list, file_name, suffix=None, file_dir=None):
-        if file_dir is not None and not file_dir.exists():
-            os.makedirs(file_dir)
-        file_name = (file_dir if file_dir is not None else self.file_dir) / file_name
-        plt.ioff()
-        fig, ax = plt.subplots(dpi=120, nrows=len(spectrogram), figsize=(7, len(spectrogram)*5))
-
-        for i in range(len(spectrogram)):
-            try:
-                img = librosa.display.specshow(spectrogram[i],
-                                               n_fft=self.frame_size,
-                                               hop_length=self.hop_length,
-                                               y_axis='log', x_axis='s', ax=ax[i])
-            except IndexError as e:
-                log("Null spectrogram for file: " + file_name.name, 1)
-                return
-            ax[i].set_title(title[i])
-            fig.colorbar(img, ax=ax[i], format="%+2.2f dB")
-        name = file_name.with_suffix('.png').name
-        if suffix is not None:
-            name = file_name.name[:file_name.name.index('.wav')] + " - " + suffix + '.png'
-        fig.savefig(file_name.parents[0] / name)
-        plt.close(fig)
 
     def visualize_multiple(self, batch_di, di_recons, suffix=None, file_dir=None, max_rows = 10):
+        print("in visualize mul")
         if file_dir is not None and not file_dir.exists():
             os.makedirs(file_dir)
+        # print(batch_di.shape)
+        # print(di_recons.shape)
         file_name = 'reconstruction.png'
         file_name = (file_dir if file_dir is not None else self.file_dir) / file_name
         plt.ioff()
@@ -237,6 +217,8 @@ class Visualizer:
         fig, ax = plt.subplots(dpi=120, nrows=nrows, ncols=2, figsize=(8, nrows * 2))
 
         for i in range(nrows):
+            # print(i)
+            # print(batch_di[i,:,:].shape)
             try:
                 img_og = librosa.display.specshow(batch_di[i,:,:],
                                                n_fft=self.frame_size,

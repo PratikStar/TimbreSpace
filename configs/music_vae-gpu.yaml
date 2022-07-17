@@ -23,9 +23,14 @@ data_params:
 
 
 model_params:
-  name: 'MusicVAE'
-  hidden_dims: [128, 64, 32, 16] # These are conv2d channels. Encoder: (1, 256, 64) -> (32, 128, 32) -> (64, 64, 16) -> (128, 32, 8) -> (256, 16, 4) -> (512, 8, 2)
+  name: 'MusicVAEFlat'
+  spectrogram_dims: [1, 256, 16] # (C, H, W). dependant on data_params.stft.segment_duration
+  conv2d_channels: [128, 64, 32, 16] # These are conv2d channels. Encoder: (1, 256, 64) -> (32, 128, 32) -> (64, 64, 16) -> (128, 32, 8) -> (256, 16, 4) -> (512, 8, 2)
   latent_dim: 32
+  stride: [2, 1]
+  kernel_size: [3, 3]
+  padding: [1, 1]
+  output_padding: [1, 0]
   loss:
     function: "L2"
 #  load_path: "logs/MusicVAE/version_30/checkpoints/last.ckpt" # Relative to repo
@@ -40,11 +45,11 @@ exp_params:
 
 
 trainer_params:
-  gpus: [0]
-  max_epochs: 2
+  gpus: [0, 1, 2, 3]
+  max_epochs: 100
 
 
 logging_params:
   save_dir: "logs/"
-  name: "MusicVAE"
+  name: "MusicVAEFlat"
   

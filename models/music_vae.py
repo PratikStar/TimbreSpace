@@ -14,86 +14,65 @@ class MusicVAE(BaseVAE, ABC):
 
     def __init__(self,
                  latent_dim: int,
-                 hidden_dims: List[int],
+                 conv2d_channels: List[int],
                  in_channels: int = 1,
                  loss=None,
                  **kwargs) -> None:
         super(MusicVAE, self).__init__()
         self.spectrogram_dims = (256, 16)  # Constant declaration
         self.latent_dim = latent_dim
-        self.hidden_dims = hidden_dims
+        self.channels = conv2d_channels
         self.loss_func = loss['function']
         # Build Music Encoder
         modules = []
-        for i in range(len(self.hidden_dims) ):
+        for i in range(len(self.channels)):
             modules.append(
                 nn.Sequential(
                     collections.OrderedDict(
                         [
-                            (f"conv2d_{i}", nn.Conv2d(in_channels, out_channels=self.hidden_dims[i],
+                            (f"conv2d_{i}", nn.Conv2d(in_channels, out_channels=self.channels[i],
                                                       kernel_size=3, stride=2, padding=1)),
                             # with this, height and width halves in each iteration
-                            (f"batchNorm2d_{i}", nn.BatchNorm2d(self.hidden_dims[i])),
+                            (f"batchNorm2d_{i}", nn.BatchNorm2d(self.channels[i])),
                             (f"leakyReLU_{i}", nn.LeakyReLU())
                         ]
                     )
                 )
             )
             # Non-batched: (1, 256, 64) -> (32, 128, 32) -> (64, 64, 16) -> (128, 32, 8) -> (256, 16, 4) -> (512, 8, 2)
-            in_channels = self.hidden_dims[i]
+            in_channels = self.channels[i]
 
         # Note: manually update the input spectrogram shape here. Now input spectrogram is, 256 x 64
         # the input H and W has be halved len(self.hidden_dims) times and the number of channels is self.hidden_dims[-1]
         # So conv_layers_output_dim = 512 x 8 x 2
         conv_layers_output_dim = int(
-            (self.spectrogram_dims[0] / math.pow(2, len(self.hidden_dims))) * (
-                        self.spectrogram_dims[1] / math.pow(2, len(self.hidden_dims))) * self.hidden_dims[-1])
+            (self.spectrogram_dims[0] / math.pow(2, len(self.channels))) * (
+                        self.spectrogram_dims[1] / math.pow(2, len(self.channels))) * self.channels[-1])
 
         self.encoder = nn.Sequential(*modules)
         self.fc_mu = nn.Linear(conv_layers_output_dim, self.latent_dim)
         self.fc_var = nn.Linear(conv_layers_output_dim, self.latent_dim)
 
-        # self.fc_mu = nn.Sequential(
-        #     collections.OrderedDict(
-        #         [
-        #             (f"conv2d_fc_mu", nn.Conv2d(in_channels, out_channels=self.hidden_dims[-1],
-        #                                         kernel_size=3, stride=2, padding=1)),
-        #             # with this, height and width halves in each iteration
-        #             (f"batchNorm2d_fc_mu", nn.BatchNorm2d(self.hidden_dims[-1])),
-        #             (f"leakyReLU_fc_mu", nn.LeakyReLU())
-        #         ]
-        #     )
-        # )
-        # self.fc_var = nn.Sequential(
-        #     collections.OrderedDict(
-        #         [
-        #             (f"conv2d_fc_var", nn.Conv2d(in_channels, out_channels=self.hidden_dims[-1],
-        #                                          kernel_size=3, stride=2, padding=1)),
-        #             # with this, height and width halves in each iteration
-        #             (f"batchNorm2d_fc_var", nn.BatchNorm2d(self.hidden_dims[-1])),
-        #             (f"leakyReLU_fc_var", nn.LeakyReLU())
-        #         ]
-        #     )
-        # )
+
         # Build Music Decoder
         modules = []
         self.decoder_input = nn.Linear(self.latent_dim, conv_layers_output_dim)
         # Shape is (C, H, W): (512, 8, 2)
 
-        for i in range(len(self.hidden_dims) - 1, 0, -1):
+        for i in range(len(self.channels) - 1, 0, -1):
             modules.append(
                 nn.Sequential(
                     collections.OrderedDict(
                         [
-                            (f"convTranspose2d_{len(self.hidden_dims) - i}", nn.ConvTranspose2d(self.hidden_dims[i],
-                                                                                                self.hidden_dims[i - 1],
-                                                                                                kernel_size=3,
-                                                                                                stride=2,
-                                                                                                padding=1,
-                                                                                                output_padding=1)),
+                            (f"convTranspose2d_{len(self.channels) - i}", nn.ConvTranspose2d(self.channels[i],
+                                                                                             self.channels[i - 1],
+                                                                                             kernel_size=3,
+                                                                                             stride=2,
+                                                                                             padding=1,
+                                                                                             output_padding=1)),
                             # H & W essentially doubles
-                            (f"batchnorm2d_{len(self.hidden_dims) - i}", nn.BatchNorm2d(self.hidden_dims[i - 1])),
-                            (f"leakyReLU_{len(self.hidden_dims) - i}", nn.LeakyReLU()),
+                            (f"batchnorm2d_{len(self.channels) - i}", nn.BatchNorm2d(self.channels[i - 1])),
+                            (f"leakyReLU_{len(self.channels) - i}", nn.LeakyReLU()),
                         ]
                     )
                 )
@@ -103,15 +82,15 @@ class MusicVAE(BaseVAE, ABC):
         self.decoder = nn.Sequential(*modules)
 
         self.final_layer = nn.Sequential(collections.OrderedDict([
-            (f"final_convTranspose2d", nn.ConvTranspose2d(self.hidden_dims[0],
-                                                          self.hidden_dims[0],
+            (f"final_convTranspose2d", nn.ConvTranspose2d(self.channels[0],
+                                                          self.channels[0],
                                                           kernel_size=3,
                                                           stride=2,
                                                           padding=1,
                                                           output_padding=1)),  # output shape is: (32, 256, 64)
-            (f"final_batchNorm2d", nn.BatchNorm2d(self.hidden_dims[0])),
+            (f"final_batchNorm2d", nn.BatchNorm2d(self.channels[0])),
             (f"final_leakyReLU", nn.LeakyReLU()),
-            (f"final_Conv2d", nn.Conv2d(self.hidden_dims[0], out_channels=1, stride=1,
+            (f"final_Conv2d", nn.Conv2d(self.channels[0], out_channels=1, stride=1,
                                         kernel_size=3, padding=1)),  # output shape is: (1, 256, 64)
             (f"final_tanH", nn.Sigmoid())]))
 
@@ -158,9 +137,9 @@ class MusicVAE(BaseVAE, ABC):
         """
 
         result = self.decoder_input(z)
-        result = result.view(-1, self.hidden_dims[-1],
-                             int(self.spectrogram_dims[0] / math.pow(2, len(self.hidden_dims))),
-                             int(self.spectrogram_dims[1] / math.pow(2, len(self.hidden_dims))))
+        result = result.view(-1, self.channels[-1],
+                             int(self.spectrogram_dims[0] / math.pow(2, len(self.channels))),
+                             int(self.spectrogram_dims[1] / math.pow(2, len(self.channels))))
         result = self.decoder(result)
         result = self.final_layer(result)
         return result
@@ -180,14 +159,21 @@ class MusicVAE(BaseVAE, ABC):
         mu = args[2]
         log_var = args[3]
         di = args[5]
+        print(f"recons: {recons.shape}")
+        print(f"di: {di.shape}")
 
         kld_weight = kwargs['M_N']  # Account for the minibatch samples from the dataset
         if self.loss_func == "L1":
             recons_loss = F.l1_loss(recons, di)
         else:
             recons_loss = F.mse_loss(recons, di)
+        print(f"recons_loss: {recons_loss.shape}, {recons_loss}")
 
+        print(f"mu: {mu.shape}")
+        print(f"log_var: {log_var.shape}")
         kld_loss = torch.mean(-0.5 * torch.sum(1 + log_var - mu ** 2 - log_var.exp(), dim=1), dim=0)
+        print(f"kld_loss: {kld_loss.shape}, {kld_loss}")
 
         loss = recons_loss + kld_weight * kld_loss
+        print(f"Shape of loss: {loss.shape}, {loss}")
         return {'loss': loss, 'Reconstruction_Loss': recons_loss.detach(), 'KLD': -kld_loss.detach()}
