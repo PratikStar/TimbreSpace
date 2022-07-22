@@ -17,6 +17,7 @@ import csv
 from pathlib import Path
 
 from datasets.timbreutils import *
+from experiment_music import MusicVAELightningModule
 from utils import get_config, dotdict
 import os
 import pickle
@@ -31,7 +32,7 @@ import math
 import sys
 
 
-class TimbreDataset(Dataset):
+class AudioSTFT(Dataset):
     def __init__(
             self,
             dataset_path,
@@ -78,6 +79,12 @@ class TimbreDataset(Dataset):
         # self.preprocessing_pipeline.feature_extractor = feature_extractor
         self.preprocessing_pipeline.normaliser = min_max_normaliser
 
+        chk_path = self.dataset_config.music_vae.checkpoint_path # os.path.join("/Users/pratik/repos/TimbreSpace",  f"logw/logs/MusicVAEFlat/version_11/checkpoints/last.ckpt")
+
+        # chkpt = torch.load(chk_path, map_location=torch.device('cpu'))
+        self.model = MusicVAELightningModule.load_from_checkpoint(checkpoint_path=chk_path,
+                                                             map_location=torch.device('cpu'),
+                                                             )
         if self.dataset_config.saver.enabled: # TODO: untested
             print(f"saver enabled")
             saver = Saver(self.dataset_path, self.dataset_path) # Saves spectrograms (.npy) and min/max values
@@ -90,18 +97,27 @@ class TimbreDataset(Dataset):
         self.preprocessing_pipeline.visualizer = visualizer
 
     def __getitem__(self, key):  # Get random segment
-        offset = 84.4577468515507 # np.random.uniform(0, self.dataset_config.load.clip_duration - self.batch_duration)
+        offset = np.random.uniform(0, self.dataset_config.load.clip_duration - self.batch_duration) # 84.4577468515507 this offset was used to generating reconstruction spectrograms
         # print(f"Getting segment from clip: {key} -> {self.clips[key]}")
-        print(f"Offset: {offset}")
+        # print(f"Offset: {offset}")
 
         batch, batch_di = self.preprocessing_pipeline.process_file(self.clips[key], offset, self.dataset_config.visualizer.enabled)
-        return batch, batch_di, key, offset
+        # print(batch.shape)
+        file_name = self.dataset_path / 'clips' / self.clips[key]
+        signal = self.preprocessing_pipeline.loader.load(file_name, offset)
+        s = []
+        signal_segment_width = signal.shape[0] // self.dataset_config.batch_size
+        for i in range(0, self.dataset_config.batch_size):
+            s.append(signal[i*signal_segment_width: (i+1) *signal_segment_width])
+        di_recons, _, _, _, z = self.model.forward(torch.tensor(batch))
+
+        return di_recons, np.array(s), batch, batch_di, self.clips[key], key, offset
 
     def __len__(self):
         return len(self.clips)
 
 
-class TimbreDataModule(LightningDataModule, ABC):
+class AudioSTFTDataModule(LightningDataModule, ABC):
     """
     PyTorch Lightning data module 
 
@@ -128,7 +144,7 @@ class TimbreDataModule(LightningDataModule, ABC):
         self.config = config
 
     def setup(self) -> None:
-        self.dataset = TimbreDataset(
+        self.dataset = AudioSTFT(
             self.dataset_path,
             self.config,
         )

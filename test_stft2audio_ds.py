@@ -10,28 +10,29 @@ from torch.nn import functional as F
 import auraloss
 
 from datasets import TimbreDataModule
+from datasets.audio_stft import AudioSTFT, AudioSTFTDataModule
 from experiment_music import MusicVAELightningModule
 from models import *
 from utils.utils import *
 import numpy as np
 
 ## Load model
-config = get_config(os.path.join(os.getcwd(), 'configs/music_vae.yaml'))
-chk_path = os.path.join(os.getcwd(), f"logw/logs/{config['model_params']['name']}/version_11/checkpoints/last.ckpt")
+config = get_config(os.path.join(os.getcwd(), 'configs/vocoder.yaml'))
+chk_path = os.path.join(os.getcwd(), f"logw/logs/MusicVAEFlat/version_11/checkpoints/last.ckpt")
 
 # chkpt = torch.load(chk_path, map_location=torch.device('cpu'))
 model = MusicVAELightningModule.load_from_checkpoint(checkpoint_path=chk_path,
                                                      map_location=torch.device('cpu'),
                                                      )
 # exit()
-## For generating embeddings
-data = TimbreDataModule(config.data_params, pin_memory=len(config['trainer_params']['gpus']) != 0)
+print(config.data_params)
+data = AudioSTFTDataModule(config.data_params, pin_memory=False)
 data.setup()
 dl = data.train_dataloader()
-batch, batch_di, key, offset = next(iter(dl))
-# exit()
+di_recons, signal, batch, batch_di, key, offset = next(iter(dl))
+exit()
 times = 1
-for step, (batch, batch_di, key, offset) in enumerate(dl):
+for step, (batch, _,  batch_di, key, offset) in enumerate(dl):
     batch = torch.squeeze(batch, 0)
     di_recons, _, _, _, z = model.forward(batch)
 

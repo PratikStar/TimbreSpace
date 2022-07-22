@@ -159,21 +159,15 @@ class MusicVAE(BaseVAE, ABC):
         mu = args[2]
         log_var = args[3]
         di = args[5]
-        print(f"recons: {recons.shape}")
-        print(f"di: {di.shape}")
 
         kld_weight = kwargs['M_N']  # Account for the minibatch samples from the dataset
         if self.loss_func == "L1":
             recons_loss = F.l1_loss(recons, di)
         else:
             recons_loss = F.mse_loss(recons, di)
-        print(f"recons_loss: {recons_loss.shape}, {recons_loss}")
 
-        print(f"mu: {mu.shape}")
-        print(f"log_var: {log_var.shape}")
+
         kld_loss = torch.mean(-0.5 * torch.sum(1 + log_var - mu ** 2 - log_var.exp(), dim=1), dim=0)
-        print(f"kld_loss: {kld_loss.shape}, {kld_loss}")
 
         loss = recons_loss + kld_weight * kld_loss
-        print(f"Shape of loss: {loss.shape}, {loss}")
         return {'loss': loss, 'Reconstruction_Loss': recons_loss.detach(), 'KLD': -kld_loss.detach()}

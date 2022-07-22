@@ -81,18 +81,19 @@ class MusicVAELightningModule(pl.LightningModule, ABC):
 
         return music_optimizer
 
-    # def on_validation_end(self) -> None:
-    #     # Get sample reconstruction image
-    #     print("on_validation_end")
-    #     batch, batch_di, key, offset = next(iter(self.trainer.datamodule.val_dataloader()))
-    #     batch = torch.squeeze(batch, 0).to(self.curr_device)
-    #
-    #     print(f"Min in input: {batch.min()}")
-    #     di_recons, _, _, _, z = self.model.forward(batch)
-    #
-    #     di_recons = di_recons.detach().cpu().numpy()
-    #     batch_di = torch.squeeze(batch_di, 0).cpu().numpy()
-    #
-    #     self.trainer.datamodule.dataset.preprocessing_pipeline.visualizer.visualize_multiple(
-    #         batch_di[:,0,:,:], di_recons[:,0,:,:],
-    #         file_dir=Path(self.trainer.logger.log_dir) / 'recons')
+    def on_validation_end(self) -> None:
+        # Get sample reconstruction image
+        print("on_validation_end")
+        print(self.trainer.current_epoch)
+        batch, batch_di, key, offset = next(iter(self.trainer.datamodule.val_dataloader()))
+        batch = torch.squeeze(batch, 0).to(self.curr_device)
+
+        print(f"Min in input: {batch.min()}")
+        di_recons, _, _, _, z = self.model.forward(batch)
+
+        di_recons = di_recons.detach().cpu().numpy()
+        batch_di = torch.squeeze(batch_di, 0).cpu().numpy()
+
+        self.trainer.datamodule.dataset.preprocessing_pipeline.visualizer.visualize_multiple(
+            batch_di[:,0,:,:], di_recons[:,0,:,:],
+            file_dir=Path(self.trainer.logger.log_dir) / 'recons', suffix=f"{self.trainer.current_epoch}")

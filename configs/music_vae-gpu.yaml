@@ -6,7 +6,7 @@ data_params:
   stft:
     frame_size: 512
     hop_length: 256 # frame_size // 2
-    segment_duration: 0.18575 # seconds
+    segment_duration: 0.18575 # seconds. Update the spectrogram_dims on model_params
 
   saver: # saves spectrogram as npy and min/max values. TODO: Untested
     enabled: False
@@ -32,7 +32,7 @@ model_params:
   padding: [1, 1]
   output_padding: [1, 0]
   loss:
-    function: "L2"
+    function: "L1"
 #  load_path: "logs/MusicVAE/version_30/checkpoints/last.ckpt" # Relative to repo
 
 
@@ -45,7 +45,7 @@ exp_params:
 
 
 trainer_params:
-  gpus: [0, 1, 2, 3]
+  gpus: [0]
   max_epochs: 100
 
 
