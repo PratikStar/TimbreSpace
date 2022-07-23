@@ -29,7 +29,7 @@ data = TimbreDataModule(config.data_params, pin_memory=len(config['trainer_param
 data.setup()
 dl = data.train_dataloader()
 batch, batch_di, key, offset = next(iter(dl))
-# exit()
+exit()
 times = 1
 for step, (batch, batch_di, key, offset) in enumerate(dl):
     batch = torch.squeeze(batch, 0)

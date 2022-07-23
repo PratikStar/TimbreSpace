@@ -2,7 +2,7 @@ import argparse
 
 import pytorch_lightning as pl
 import inspect
-
+from prodict import Prodict
 ## Utils to handle newer PyTorch Lightning changes from version 0.6
 ## ==================================================================================================== ##
 import yaml
@@ -45,7 +45,7 @@ class dotdict(dict):
 def get_config(f):
     with open(f, 'r') as file:
         try:
-            config = dotdict(yaml.safe_load(file))
+            config = Prodict.from_dict(yaml.safe_load(file))
         except yaml.YAMLError as exc:
             print(exc)
             return None

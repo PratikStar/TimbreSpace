@@ -36,7 +36,6 @@ class TimbreDataset(Dataset):
             self,
             dataset_path,
             config,
-            cache_into_memory=True,
     ):
         super().__init__()
 
@@ -49,12 +48,13 @@ class TimbreDataset(Dataset):
             raise Exception("Config not found. Dataset path might be incorrect or Dataset might be incorrectly "
                             "configured!")
 
-        self.dataset_config = dotdict({**config, **self.dataset_config})
+        self.dataset_config = dotdict({**config, **self.dataset_config}) # Config file of the dataset has a higher priority
         # print(f"Here is the loaded config: {self.dataset_config}")
 
-        if self.dataset_config.load.clip_duration is None: # TODO: this is NOT handled
+        if 'clip_duration' not in self.dataset_config.load: # TODO: this is NOT handled
+            print('Loading DI for getting duration')
             y, sr = librosa.load(self.dataset_path / "DI.wav", sr=self.dataset_config.load.sample_rate, mono=self.dataset_config.load.mono)
-            self.dataset_config.load['clip_duration'] = librosa.get_duration(y=y, sr=sr)
+            self.dataset_config.load.clip_duration = librosa.get_duration(y=y, sr=sr)
         # print(f"Duration of the DI: {self.dataset_config.load.clip_duration}")
 
         self.batch_duration = self.dataset_config.batch_size * self.dataset_config.stft.segment_duration
@@ -90,7 +90,8 @@ class TimbreDataset(Dataset):
         self.preprocessing_pipeline.visualizer = visualizer
 
     def __getitem__(self, key):  # Get random segment
-        offset = 84.4577468515507 # np.random.uniform(0, self.dataset_config.load.clip_duration - self.batch_duration)
+        # offset = np.random.uniform(0, self.dataset_config.load.clip_duration - self.batch_duration)
+        offset = 84.4577468515507
         # print(f"Getting segment from clip: {key} -> {self.clips[key]}")
         print(f"Offset: {offset}")
 
