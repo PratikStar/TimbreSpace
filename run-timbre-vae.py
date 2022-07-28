@@ -17,6 +17,9 @@ from torchsummary import summary
 print(f"torch: {torch.__version__}")
 print(f"CUDA #devices: {torch.cuda.device_count()}")
 
+device = 'cuda' if torch.cuda.device_count() > 0 else 'cpu'
+print(f"Device: {device}")
+
 config = get_config(parse_args().filename)
 print(config)
 tb_logger = TensorBoardLogger(save_dir=config['logging_params']['save_dir'],
@@ -24,12 +27,12 @@ tb_logger = TensorBoardLogger(save_dir=config['logging_params']['save_dir'],
 # For reproducibility
 seed_everything(config['exp_params']['manual_seed'], True)
 
-## data stuff
+## data stuffx
 
 data = TimbreDataModule(config.data_params, pin_memory=len(config['trainer_params']['gpus']) != 0)
 data.setup()
 dl = data.train_dataloader()
-# fb = next(iter(dl))
+fb = next(iter(dl))
 
 # model stuff
 # model = MusicTimbreVAE(**config['model_params'], )
@@ -40,10 +43,7 @@ if 'load_path' in config['model_params']:
     print(f"Loading model from {config['model_params']['load_path']}")
     chk_path = os.path.join(os.getcwd(), config['model_params']['load_path'])
     vae = MusicVAELightningModule.load_from_checkpoint(checkpoint_path=chk_path,
-                                                         map_location=torch.device('cpu'),
-                                                         vae_model=vae_models[config['model_params']['name']](
-                                                             **config['model_params']),
-                                                         params=config['exp_params'])
+                                                         map_location=torch.device(device))
 else:
     model = vae_models[config['model_params']['name']](**config['model_params'])
     vae = MusicVAELightningModule(model,

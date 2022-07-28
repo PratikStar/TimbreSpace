@@ -6,10 +6,10 @@ watch -d -n5 "rsync -av --exclude-from=\".rsyncignore_upload\" \"/Users/pratik/r
 
 # 2. Rsync data
 cd /Users/pratik/data/timbre
-rsync -av "/Users/pratik/data/timbre" w:/work/gk77/k77021/data
+rsync -avz "/Users/pratik/data/timbre" w:/work/gk77/k77021/data
 
 # 3. Logs from wisteria
-watch -d -n5 "rsync -av w:/work/gk77/k77021/repos/TimbreSpace/logs \"/Users/pratik/repos/TimbreSpace/logw\""
+watch -d -n5 "rsync -avz w:/work/gk77/k77021/repos/TimbreSpace/logs \"/Users/pratik/repos/TimbreSpace/logw\""
 
 ```
 # Notes

@@ -2,26 +2,26 @@ show_logs: True
 log_level: 6
 
 data_params:
-  dataset_path: '../../data/timbre'
-  stft:
-    frame_size: 512
-    hop_length: 256 # frame_size // 2
-    segment_duration: 0.18575 # 0.743 # 0.3715 # 0.18575 # seconds
+  timbre:
+    dataset_path: '../../data/timbre'
+    batch_size: 16
+    num_workers: 0
+    spectrogram:
+      spectrogram_dims: [ 80, 63 ]
+    saver: # saves spectrogram as npy and min/max values. TODO: Untested
+      enabled: False
+      save_dir: "../out" # relative to dataset_path
+    visualizer:
+      enabled: True # Please enable for spectrogram inference
+      save_dir: "../out" # relative to dataset_path
+    csv: # Log generated datapoints in a csv
+      enabled: True
+      path: "../log" # relative to dataset_path
 
-  saver: # saves spectrogram as npy and min/max values. TODO: Untested
-    enabled: False
-    save_dir: "../out" # relative to dataset_path
-  visualizer:
-    enabled: False # Please enable for spectrogram inference
-    save_dir: "../out" # relative to dataset_path
-  csv: # Log generated datapoints in a csv
-    enabled: True
-    path: "../log" # relative to dataset_path
+  audio: "original" # "original" or "reconstructed"
 
-  batch_size: 16
-  num_workers: 0
   music_vae:
-    checkpoint_path: "/Users/pratik/repos/TimbreSpace/logw/logs/MusicVAEFlat/version_11/checkpoints/last.ckpt"
+    checkpoint_path: "/Users/pratik/repos/TimbreSpace/logw/logs/MusicVAEFlat/version_13/checkpoints/last.ckpt"
 
 #
 #model_params:

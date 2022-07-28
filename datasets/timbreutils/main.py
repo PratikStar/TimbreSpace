@@ -35,7 +35,7 @@ def log(logline, log_level=1):
 class Loader:
     """Loader is responsible for loading an audio file."""
 
-    def __init__(self, sample_rate, load_duration, mono):
+    def __init__(self, sample_rate, mono, load_duration):
         self.sample_rate = sample_rate
         self.load_duration = load_duration
         self.mono = mono
@@ -86,19 +86,28 @@ class LogSpectrogramExtractor:
     time-series signal.
     """
 
-    def __init__(self, frame_size, hop_length):
+    def __init__(self, frame_size, hop_length, config):
+        self.spectrogram_config = config
         self.frame_size = frame_size
         self.hop_length = hop_length
 
     def extract(self, signal):
-        stft = librosa.stft(signal,
-                            n_fft=self.frame_size,
-                            hop_length=self.hop_length)[:-1]
-        log("Shape of stft: " + str(stft.shape), 2)
-        spectrogram = np.abs(stft)  # https://librosa.org/doc/main/generated/librosa.stft.html abs gives the magnitude
-        phases = np.angle(stft)
-        log_spectrogram = librosa.amplitude_to_db(spectrogram)
-        return log_spectrogram, phases
+        if self.spectrogram_config.type == "stft":
+            stft = librosa.stft(signal,
+                                n_fft=self.frame_size,
+                                hop_length=self.hop_length)[:-1]
+            log("Shape of stft: " + str(stft.shape), 2)
+            spectrogram = np.abs(stft)  # https://librosa.org/doc/main/generated/librosa.stft.html abs gives the magnitude
+            phases = np.angle(stft)
+            log_spectrogram = librosa.amplitude_to_db(spectrogram)
+            return log_spectrogram, phases
+        elif self.spectrogram_config.type == "mel":
+            mel = librosa.feature.melspectrogram(y=signal,
+                                                 n_fft=self.frame_size,
+                                                 hop_length=self.hop_length,
+                                                 n_mels=self.spectrogram_config.mel.spectrogram_dims[0])
+            return mel, None
+
 
 
 class FeatureExtractor:  # Not used!!
@@ -206,7 +215,7 @@ class Visualizer:
         plt.close(fig)
 
     def visualize_multiple(self, spectrograms, suffix=None, file_dir=None, max_rows=5, col_titles=[], title="", filename=None):
-        print("in visualize mul")
+        # print("in visualize mul")
         if file_dir is not None and not file_dir.exists():
             os.makedirs(file_dir)
 
@@ -360,65 +369,27 @@ class PreprocessingPipeline:
 
         segment_features = []
         segment_features_di = []
+        segment_signal = []
+        segment_signal_di = []
 
-        batch_spectrogram_width = math.ceil(
-            self.config.batch_size * self.config.load.sample_rate * self.config.stft.segment_duration / self.config.stft.hop_length)
-        assert batch_spectrogram_width % self.config.batch_size == 0, \
-            f"Width of the batch spectrogram ({batch_spectrogram_width}), is not divisible by batch size ({self.config.batch_size})"
-
-        segment_spectrogram_width = batch_spectrogram_width // self.config.batch_size
-        for i in range(0, norm_feature.shape[1], segment_spectrogram_width):
-            segment_features.append([norm_feature[:,
-                                     i: i + segment_spectrogram_width]])  # Adding in a list to specify the channel. we will just have one channel
-            segment_features_di.append([norm_feature_di[:,
-                                        i: i + segment_spectrogram_width]])  # Adding in a list to specify the channel. we will just have one channel
-
-        # save_path = self.saver.save_feature(norm_feature, phases, file_name)
-        # self.saver.save_min_max_values(file_name, feature.min(), feature.max())
-
-        if visualize:
-            self.visualizer.visualize(norm_feature, clip_name, f"{offset:.2f}-batch")
-            self.visualizer.visualize(norm_feature_di, 'DI.wav', f"{offset:.2f}-batch")
-            for i in range(len(segment_features)):
-                self.visualizer.visualize(segment_features[i][0], clip_name, f"{offset:.2f}-{i}")
-                self.visualizer.visualize(segment_features_di[i][0], 'DI.wav', f"{offset:.2f}-{i}")
-
-        return np.array(segment_features), np.array(segment_features_di)
-
-    # Processes Single file
-    def process_segment_wise(self, clip_name, offset, visualize=False):
-
-        file_name = self.dataset_path / 'clips' / clip_name
-        log(f"Processing Segment: {file_name}")
-
-        signal = self.loader.load(file_name, offset, )
-        print(signal.shape)
-
-        if self._is_padding_necessary(signal):
-            signal = self._apply_padding(signal)
-        feature, phases = self.spectrogram_extractor.extract(signal)
-        print(feature.shape)
-        feature_di, phases_di = self.spectrogram_extractor.extract(signal_di)
-
-        norm_feature = self.normaliser.normalise(feature)
-        log(f"Shape of complete spectrogram: {norm_feature.shape}")
-
-        norm_feature_di = self.normaliser.normalise(feature_di)
-
-        segment_features = []
-        segment_features_di = []
-
-        batch_spectrogram_width = math.ceil(
-            self.config.batch_size * self.config.load.sample_rate * self.config.stft.segment_duration / self.config.stft.hop_length)
-        assert batch_spectrogram_width % self.config.batch_size == 0, \
-            f"Width of the batch spectrogram ({batch_spectrogram_width}), is not divisible by batch size ({self.config.batch_size})"
-
-        segment_spectrogram_width = batch_spectrogram_width // self.config.batch_size
-        for i in range(0, norm_feature.shape[1], segment_spectrogram_width):
-            segment_features.append([norm_feature[:,
-                                     i: i + segment_spectrogram_width]])  # Adding in a list to specify the channel. we will just have one channel
-            segment_features_di.append([norm_feature_di[:,
-                                        i: i + segment_spectrogram_width]])  # Adding in a list to specify the channel. we will just have one channel
+        segment_spectrogram_width = self.config.spectrogram.get(self.config.spectrogram.type).spectrogram_dims[1]
+        segment_signal_width = signal.shape[0] // self.config.batch_size
+        desired_segment_signal_width = self.config.spectrogram.mel.segment_signal_length if self.config.spectrogram.type == "mel" else segment_signal_width
+        for i in range(0, self.config.batch_size):
+            segment_features.append([
+                norm_feature[
+                    :,
+                    i * segment_spectrogram_width: (i+1) * segment_spectrogram_width
+                ]
+            ])  # Adding in a list to specify the channel. we will just have one channel
+            segment_features_di.append([
+                norm_feature_di[
+                    :,
+                    i * segment_spectrogram_width: (i+1) * segment_spectrogram_width
+                ]
+            ])  # Adding in a list to specify the channel. we will just have one channel
+            segment_signal.append(signal[i * segment_signal_width: i * segment_signal_width + desired_segment_signal_width])
+            segment_signal_di.append(signal_di[i * segment_signal_width: i * segment_signal_width + desired_segment_signal_width])
 
         # save_path = self.saver.save_feature(norm_feature, phases, file_name)
         # self.saver.save_min_max_values(file_name, feature.min(), feature.max())
@@ -430,7 +401,8 @@ class PreprocessingPipeline:
                 self.visualizer.visualize(segment_features[i][0], clip_name, f"{offset:.2f}-{i}")
                 self.visualizer.visualize(segment_features_di[i][0], 'DI.wav', f"{offset:.2f}-{i}")
 
-        return np.array(segment_features), np.array(segment_features_di)
+        return np.array(segment_features), np.array(segment_features_di), np.array(segment_signal), np.array(segment_signal_di)
+
 
     def _is_padding_necessary(self, signal):
         if len(signal) < self._num_expected_samples:

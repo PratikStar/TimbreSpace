@@ -3,11 +3,18 @@ log_level: 3
 
 data_params:
   dataset_path: '../../data/timbre'
-  stft:
-    frame_size: 512
-    hop_length: 256 # frame_size // 2
-    segment_duration: 0.18575 # seconds. Update the spectrogram_dims on model_params
+  batch_size: 16
+  num_workers: 1 # Error "libgomp: Thread creation failed: Resource temporarily unavailable" when setting a high value on this on wisteria share-short
+  get_signal: True
 
+  spectrogram:
+    type: "mel" # "stft" or "mel"
+    stft:
+      spectrogram_dims: [80, 63]
+    mel:
+      frame_size: 1024
+      hop_length: 256
+      spectrogram_dims: [80, 63] # (mel_channels, n_frames)
   saver: # saves spectrogram as npy and min/max values. TODO: Untested
     enabled: False
     save_dir: "../out" # relative to dataset_path
@@ -18,13 +25,11 @@ data_params:
     enabled: True
     path: "../log" # relative to dataset_path
 
-  batch_size: 16
-  num_workers: 1 # Error "libgomp: Thread creation failed: Resource temporarily unavailable" when setting a high value on this on wisteria share-short
 
 
 model_params:
   name: 'MusicVAEFlat'
-  spectrogram_dims: [1, 256, 16] # (C, H, W). dependant on data_params.stft.segment_duration
+  spectrogram_dims: [1, 80, 63] # (C, H, W). dependant on data_params.stft.segment_duration
   conv2d_channels: [128, 64, 32, 16] # These are conv2d channels. Encoder: (1, 256, 64) -> (32, 128, 32) -> (64, 64, 16) -> (128, 32, 8) -> (256, 16, 4) -> (512, 8, 2)
   latent_dim: 32
   stride: [2, 1]
@@ -33,7 +38,7 @@ model_params:
   output_padding: [1, 0]
   loss:
     function: "L1"
-#  load_path: "logs/MusicVAE/version_30/checkpoints/last.ckpt" # Relative to repo
+#  load_path: "logs/MusicVAEFlat/version_12/checkpoints/last.ckpt" # Relative to repo
 
 
 exp_params:
@@ -45,8 +50,8 @@ exp_params:
 
 
 trainer_params:
-  gpus: [0]
-  max_epochs: 100
+  gpus: [0, 1, 2, 3]
+  max_epochs: 500
 
 
 logging_params:

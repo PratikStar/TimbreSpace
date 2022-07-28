@@ -18,19 +18,21 @@ import numpy as np
 
 ## Load model
 config = get_config(os.path.join(os.getcwd(), 'configs/vocoder.yaml'))
-chk_path = os.path.join(os.getcwd(), f"logw/logs/MusicVAEFlat/version_11/checkpoints/last.ckpt")
+chk_path = os.path.join(os.getcwd(), f"logw/logs/MusicVAEFlat/version_12/checkpoints/last.ckpt")
+print(config.data_params)
 
-# chkpt = torch.load(chk_path, map_location=torch.device('cpu'))
+data = AudioSTFTDataModule(config.data_params, pin_memory=False)
+
+data.setup()
+dl = data.train_dataloader()
+di_recons, signal, batch, batch_di, key, offset = next(iter(dl))
+# exit()
+
 model = MusicVAELightningModule.load_from_checkpoint(checkpoint_path=chk_path,
                                                      map_location=torch.device('cpu'),
                                                      )
 # exit()
-print(config.data_params)
-data = AudioSTFTDataModule(config.data_params, pin_memory=False)
-data.setup()
-dl = data.train_dataloader()
-di_recons, signal, batch, batch_di, key, offset = next(iter(dl))
-exit()
+
 times = 1
 for step, (batch, _,  batch_di, key, offset) in enumerate(dl):
     batch = torch.squeeze(batch, 0)

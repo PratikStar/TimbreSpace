@@ -4,6 +4,7 @@ from abc import ABC
 from typing import List, Optional, Sequence, Union, Any
 
 from PIL import Image
+from prodict import Prodict
 from pytorch_lightning import LightningDataModule
 from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
@@ -48,7 +49,7 @@ class TimbreDataset(Dataset):
             raise Exception("Config not found. Dataset path might be incorrect or Dataset might be incorrectly "
                             "configured!")
 
-        self.dataset_config = dotdict({**config, **self.dataset_config}) # Config file of the dataset has a higher priority
+        self.dataset_config = Prodict.from_dict({**config, **self.dataset_config}) # Config file of the dataset has a higher priority
         # print(f"Here is the loaded config: {self.dataset_config}")
 
         if 'clip_duration' not in self.dataset_config.load: # TODO: this is NOT handled
@@ -57,18 +58,31 @@ class TimbreDataset(Dataset):
             self.dataset_config.load.clip_duration = librosa.get_duration(y=y, sr=sr)
         # print(f"Duration of the DI: {self.dataset_config.load.clip_duration}")
 
-        self.batch_duration = self.dataset_config.batch_size * self.dataset_config.stft.segment_duration
-        # print(f"Load duration: {self.batch_duration}")
+        if self.dataset_config.spectrogram.type == "stft":
+            self.dataset_config.spectrogram.frame_size = self.dataset_config.spectrogram.stft.spectrogram_dims[0] * 2
+            self.dataset_config.spectrogram.hop_length = self.dataset_config.spectrogram.frame_size // 2
+            self.batch_duration = self.dataset_config.spectrogram.hop_length * self.dataset_config.batch_size * \
+                                  self.dataset_config.spectrogram.stft.spectrogram_dims[1] / self.dataset_config.load.sample_rate
+        elif self.dataset_config.spectrogram.type == "mel":
+            self.dataset_config.spectrogram.frame_size = self.dataset_config.spectrogram.mel.frame_size
+            self.dataset_config.spectrogram.hop_length = self.dataset_config.spectrogram.mel.hop_length
+            self.batch_duration = self.dataset_config.spectrogram.hop_length * self.dataset_config.batch_size * \
+                                  self.dataset_config.spectrogram.stft.spectrogram_dims[1] / self.dataset_config.load.sample_rate
+        else:
+            raise Exception(" Please set a valid spectrogram operation")
+
+        print(f"Batch Load duration: {self.batch_duration}")
+        print(f"Segment Load duration: {self.batch_duration/self.dataset_config.batch_size}")
 
         if self.batch_duration >= self.dataset_config.load.clip_duration:
             raise Exception("Batch Duration > Clip Duration")
 
         self.clips = [name for name in os.listdir(self.dataset_path / 'clips') if name.endswith('.wav')]
 
-        loader = Loader(self.dataset_config.load.sample_rate, self.batch_duration, self.dataset_config.load.mono)
+        loader = Loader(sample_rate=self.dataset_config.load.sample_rate, mono=self.dataset_config.load.mono, load_duration=self.batch_duration)
+
         padder = Padder()
-        log_spectrogram_extractor = LogSpectrogramExtractor(self.dataset_config.stft.frame_size, self.dataset_config.stft.hop_length)
-        # feature_extractor = FeatureExtractor()
+        log_spectrogram_extractor = LogSpectrogramExtractor(self.dataset_config.spectrogram.frame_size, self.dataset_config.spectrogram.hop_length, self.dataset_config.spectrogram)
         min_max_normaliser = MinMaxNormaliser(0, 1)
 
         self.preprocessing_pipeline = PreprocessingPipeline(self.dataset_path, self.dataset_config)
@@ -86,17 +100,17 @@ class TimbreDataset(Dataset):
         visualize_path = self.dataset_path / self.dataset_config.visualizer.save_dir / 'spectrogram_img'
         if not visualize_path.exists():
             os.makedirs(visualize_path)
-        visualizer = Visualizer(visualize_path, self.dataset_config.stft.frame_size, self.dataset_config.stft.hop_length)
+        visualizer = Visualizer(visualize_path, self.dataset_config.spectrogram.frame_size, self.dataset_config.spectrogram.hop_length)
         self.preprocessing_pipeline.visualizer = visualizer
 
     def __getitem__(self, key):  # Get random segment
-        # offset = np.random.uniform(0, self.dataset_config.load.clip_duration - self.batch_duration)
-        offset = 84.4577468515507
+        offset = np.random.uniform(0, self.dataset_config.load.clip_duration - self.batch_duration)
+        # offset = 84.4577468515507
         # print(f"Getting segment from clip: {key} -> {self.clips[key]}")
-        print(f"Offset: {offset}")
+        # print(f"Offset: {offset}")
 
-        batch, batch_di = self.preprocessing_pipeline.process_file(self.clips[key], offset, self.dataset_config.visualizer.enabled)
-        return batch, batch_di, key, offset
+        features, features_di, signal, signal_di = self.preprocessing_pipeline.process_file(self.clips[key], offset, self.dataset_config.visualizer.enabled)
+        return features, features_di, signal, signal_di, key, offset
 
     def __len__(self):
         return len(self.clips)

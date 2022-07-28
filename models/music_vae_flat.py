@@ -133,7 +133,7 @@ class MusicVAEFlat(BaseVAE, ABC):
         # Final conv layer
         h = math.floor((h + 2 * self.padding[0] - 1 * (self.kernel_size[0] - 1) - 1) / 1 + 1)
         w = math.floor((w + 2 * self.padding[1] - 1 * (self.kernel_size[1] - 1) - 1) / 1 + 1)
-        print(f"final ConvTranspose layer dims: (1, {h}, {w})")
+        print(f"final Conv layer dims: (1, {h}, {w})")
 
         assert h == self.spectrogram_dims[1] and w == self.spectrogram_dims[2], f"The input {self.spectrogram_dims[1:]} and output {[h, w]} dims of the VAE don't match"
 

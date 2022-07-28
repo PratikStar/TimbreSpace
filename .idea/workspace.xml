@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e62d320a-2b24-43cc-9e96-fcc166b46bb4" name="Changes" comment="">
+    <list default="true" id="e62d320a-2b24-43cc-9e96-fcc166b46bb4" name="Changes" comment="vocoder initial training">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/csv-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-plugin.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commands.md" beforeDir="false" afterPath="$PROJECT_DIR$/commands.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configs/music_vae-gpu.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/music_vae-gpu.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configs/music_vae.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/music_vae.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configs/vocoder.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/vocoder.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/audio_stft.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/audio_stft.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datasets/timbre.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/timbre.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/load_music.py" beforeDir="false" afterPath="$PROJECT_DIR$/load_music.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/timbreutils/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/timbreutils/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment_music.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment_music.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/music_vae_flat.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/music_vae_flat.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run-timbre-vae.py" beforeDir="false" afterPath="$PROJECT_DIR$/run-timbre-vae.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_stft2audio_ds.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_stft2audio_ds.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisteria-scripts/wisteria-interactive.sh" beforeDir="false" afterPath="$PROJECT_DIR$/wisteria-scripts/wisteria-interactive.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisteria-scripts/wisteria.sh" beforeDir="false" afterPath="$PROJECT_DIR$/wisteria-scripts/wisteria.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,17 +49,17 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/configs" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/logw/logs/MusicVAEFlat/version_13" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/logw/logs/MusicVAEFlat/version_13" />
       <recent name="$PROJECT_DIR$/configs" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/datasets" />
       <recent name="$PROJECT_DIR$/logw/logs/MusicVAE/version_30" />
-      <recent name="$PROJECT_DIR$/models" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/datasets" />
@@ -57,7 +69,7 @@
       <recent name="$PROJECT_DIR$/playing" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.run-timbre-vae">
     <configuration name="Load Music" type="PythonConfigurationType" factoryName="Python">
       <module name="TimbreSpace" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -79,6 +91,53 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="run-timbre-vae" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="TimbreSpace" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/opt/anaconda3/bin/python3" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run-timbre-vae.py" />
+      <option name="PARAMETERS" value="-c configs/music_vae.yaml" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="stft ds test" type="PythonConfigurationType" factoryName="Python">
+      <module name="TimbreSpace" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/opt/anaconda3/bin/python3" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test_stft2audio_ds.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.Load Music" />
+      <item itemvalue="Python.run-timbre-vae" />
+      <item itemvalue="Python.stft ds test" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -181,13 +240,93 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/datasets/audio_stft.py</url>
-          <line>111</line>
+          <line>84</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/load_music.py</url>
+          <line>30</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/models/music_vae_flat.py</url>
+          <line>60</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/models/music_vae_flat.py</url>
+          <line>113</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/experiment_music.py</url>
+          <line>87</line>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test_stft2audio_ds.py</url>
+          <line>27</line>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test_stft2audio_ds.py</url>
+          <line>23</line>
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/datasets/audio_stft.py</url>
+          <line>51</line>
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/datasets/audio_stft.py</url>
+          <line>67</line>
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/datasets/timbreutils/main.py</url>
+          <line>352</line>
+          <option name="timeStamp" value="37" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/datasets/audio_stft.py</url>
+          <line>70</line>
+          <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/datasets/timbre.py</url>
-          <line>56</line>
-          <option name="timeStamp" value="17" />
+          <line>44</line>
+          <option name="timeStamp" value="39" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/run-timbre-vae.py</url>
+          <line>33</line>
+          <option name="timeStamp" value="40" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/datasets/timbreutils/main.py</url>
+          <line>374</line>
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/datasets/timbreutils/main.py</url>
+          <line>396</line>
+          <option name="timeStamp" value="42" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/datasets/timbre.py</url>
+          <line>111</line>
+          <option name="timeStamp" value="43" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/datasets/timbre.py</url>
+          <line>112</line>
+          <option name="timeStamp" value="44" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/models/music_vae_flat.py</url>
+          <line>141</line>
+          <option name="timeStamp" value="45" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

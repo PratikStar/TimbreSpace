@@ -39,7 +39,7 @@ class MusicVAELightningModule(pl.LightningModule, ABC):
 
     def training_step(self, batch_item, batch_idx, optimizer_idx=0):
         # print(f'\n=== Training step. batchidx: {batch_idx}, optimizeridx: {optimizer_idx} ===')
-        batch, batch_di, key, offset = batch_item
+        batch, batch_di, _, _, key, offset = batch_item
         batch = torch.squeeze(batch, 0)
         batch_di = torch.squeeze(batch_di, 0)
         # print(f"batch: {batch.shape}, batch_di: {batch_di.shape}, key: {key}, offset: {offset}")
@@ -57,7 +57,7 @@ class MusicVAELightningModule(pl.LightningModule, ABC):
 
     def validation_step(self, batch_item, batch_idx, ):
         # print(f'\n=== Validation step. batchidx: {batch_idx} ===')
-        batch, batch_di, key, offset = batch_item
+        batch, batch_di, _, _, key, offset = batch_item
 
         batch = torch.squeeze(batch, 0)
         batch_di = torch.squeeze(batch_di, 0)
@@ -83,17 +83,26 @@ class MusicVAELightningModule(pl.LightningModule, ABC):
 
     def on_validation_end(self) -> None:
         # Get sample reconstruction image
-        print("on_validation_end")
-        print(self.trainer.current_epoch)
-        batch, batch_di, key, offset = next(iter(self.trainer.datamodule.val_dataloader()))
+        # print("on_validation_end")
+        batch, batch_di, _, _, key, offset = next(iter(self.trainer.datamodule.val_dataloader()))
         batch = torch.squeeze(batch, 0).to(self.curr_device)
 
-        print(f"Min in input: {batch.min()}")
         di_recons, _, _, _, z = self.model.forward(batch)
 
         di_recons = di_recons.detach().cpu().numpy()
         batch_di = torch.squeeze(batch_di, 0).cpu().numpy()
+        #
+        # self.trainer.datamodule.dataset.preprocessing_pipeline.visualizer.visualize_multiple(
+        #     batch_di[:,0,:,:], di_recons[:,0,:,:],
+        #     file_dir=Path(self.trainer.logger.log_dir) / 'recons', suffix=f"{self.trainer.current_epoch}")
+
+        batch_vis = batch.cpu().numpy()
+
+        spectrograms = [batch_vis[:, 0, :, :], batch_di[:, 0, :, :], di_recons[:, 0, :, :]]
 
         self.trainer.datamodule.dataset.preprocessing_pipeline.visualizer.visualize_multiple(
-            batch_di[:,0,:,:], di_recons[:,0,:,:],
-            file_dir=Path(self.trainer.logger.log_dir) / 'recons', suffix=f"{self.trainer.current_epoch}")
+            spectrograms,
+            file_dir=Path(self.trainer.logger.log_dir) / 'recons',
+            col_titles=["Reamped", "Expected DI", "Recons DI"],
+            filename=f"reconstruction-e_{self.trainer.current_epoch}.png",
+            title=f"reconstruction-e_{self.trainer.current_epoch}")

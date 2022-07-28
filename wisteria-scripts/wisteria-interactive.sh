@@ -1,7 +1,7 @@
 #!/bin/bash
 #PJM -g gk77
 #PJM -L rscgrp=share-interactive
-#PJM -N MusicVAE
+#PJM -N MusicVAEFlat
 #PJM -j
 
 # run commands
