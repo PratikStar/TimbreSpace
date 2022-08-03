@@ -1,0 +1,203 @@
+2022-08-02 00:28:29 INFO Running runs: []
+2022-08-02 00:28:29 INFO Agent received command: run
+2022-08-02 00:28:29 INFO Agent starting run with config:
+	learning_rate: 0.002822662964155123
+	optimizer: adam
+2022-08-02 00:28:29 INFO About to run command: /usr/bin/env python "run-timbre-vae.py -c config/music-vae.yaml" --learning_rate=0.002822662964155123 --optimizer=adam
+2022-08-02 00:28:34 INFO Running runs: ['bzxb25gh']
+2022-08-02 00:28:34 INFO Cleaning up finished run: bzxb25gh
+2022-08-02 00:28:35 INFO Agent received command: run
+2022-08-02 00:28:35 INFO Agent starting run with config:
+	learning_rate: 0.002526848228543126
+	optimizer: sgd
+2022-08-02 00:28:35 INFO About to run command: /usr/bin/env python "run-timbre-vae.py -c config/music-vae.yaml" --learning_rate=0.002526848228543126 --optimizer=sgd
+2022-08-02 00:28:40 INFO Running runs: ['pvnforlu']
+2022-08-02 00:28:40 INFO Cleaning up finished run: pvnforlu
+2022-08-02 00:28:41 INFO Agent received command: run
+2022-08-02 00:28:41 INFO Agent starting run with config:
+	learning_rate: 0.004883238759734099
+	optimizer: sgd
+2022-08-02 00:28:41 INFO About to run command: /usr/bin/env python "run-timbre-vae.py -c config/music-vae.yaml" --learning_rate=0.004883238759734099 --optimizer=sgd
+2022-08-02 00:28:46 INFO Running runs: ['70r7lxp0']
+2022-08-02 00:28:46 ERROR Detected 3 failed runs in the first 60 seconds, shutting down.
+2022-08-02 00:28:46 INFO To disable this check set WANDB_AGENT_DISABLE_FLAPPING=true
+2022-08-02 00:34:22 INFO Running runs: []
+2022-08-02 00:34:23 INFO Agent received command: run
+2022-08-02 00:34:23 INFO Agent starting run with config:
+	learning_rate: 0.0036024730912377714
+	optimizer: sgd
+2022-08-02 00:34:23 INFO About to run command: python3 run-timbre-vae.py -c config/music-vae.yaml
+2022-08-02 00:34:28 INFO Running runs: ['wg5b1u2b']
+2022-08-02 00:34:28 INFO Cleaning up finished run: wg5b1u2b
+2022-08-02 00:34:29 INFO Agent received command: run
+2022-08-02 00:34:29 INFO Agent starting run with config:
+	learning_rate: 0.0017880380527206352
+	optimizer: adam
+2022-08-02 00:34:29 INFO About to run command: python3 run-timbre-vae.py -c config/music-vae.yaml
+2022-08-02 00:34:34 INFO Running runs: ['n4r8rg1n']
+2022-08-02 00:34:34 INFO Cleaning up finished run: n4r8rg1n
+2022-08-02 00:34:35 INFO Agent received command: run
+2022-08-02 00:34:35 INFO Agent starting run with config:
+	learning_rate: 0.004832059301072469
+	optimizer: sgd
+2022-08-02 00:34:35 INFO About to run command: python3 run-timbre-vae.py -c config/music-vae.yaml
+2022-08-02 00:34:40 INFO Running runs: ['ta22wa7b']
+2022-08-02 00:34:40 ERROR Detected 3 failed runs in the first 60 seconds, shutting down.
+2022-08-02 00:34:40 INFO To disable this check set WANDB_AGENT_DISABLE_FLAPPING=true
+2022-08-02 00:35:55 INFO Running runs: []
+2022-08-02 00:35:56 INFO Agent received command: run
+2022-08-02 00:35:56 INFO Agent starting run with config:
+	learning_rate: 0.004842564032341931
+	optimizer: sgd
+2022-08-02 00:35:56 INFO About to run command: python3 run-timbre-vae.py -c configs/music-vae.yaml
+2022-08-02 00:36:01 INFO Running runs: ['svwqbsw0']
+2022-08-02 00:36:01 INFO Cleaning up finished run: svwqbsw0
+2022-08-02 00:36:01 INFO Agent received command: run
+2022-08-02 00:36:01 INFO Agent starting run with config:
+	learning_rate: 0.008691252958503443
+	optimizer: sgd
+2022-08-02 00:36:01 INFO About to run command: python3 run-timbre-vae.py -c configs/music-vae.yaml
+2022-08-02 00:36:06 INFO Running runs: ['52myt5xc']
+2022-08-02 00:36:06 INFO Cleaning up finished run: 52myt5xc
+2022-08-02 00:36:07 INFO Agent received command: run
+2022-08-02 00:36:07 INFO Agent starting run with config:
+	learning_rate: 0.0016695678619531864
+	optimizer: adam
+2022-08-02 00:36:07 INFO About to run command: python3 run-timbre-vae.py -c configs/music-vae.yaml
+2022-08-02 00:36:12 INFO Running runs: ['26vsns2r']
+2022-08-02 00:36:12 ERROR Detected 3 failed runs in the first 60 seconds, shutting down.
+2022-08-02 00:36:12 INFO To disable this check set WANDB_AGENT_DISABLE_FLAPPING=true
+2022-08-02 00:36:45 INFO Running runs: []
+2022-08-02 00:36:46 INFO Agent received command: run
+2022-08-02 00:36:46 INFO Agent starting run with config:
+	learning_rate: 0.0051325395003923545
+	optimizer: adam
+2022-08-02 00:36:46 INFO About to run command: python3 run-timbre-vae.py -c configs/music_vae.yaml
+2022-08-02 00:36:51 INFO Running runs: ['1hniz6f2']
+2022-08-02 00:38:59 INFO Running runs: []
+2022-08-02 00:38:59 INFO Agent received command: run
+2022-08-02 00:38:59 INFO Agent starting run with config:
+	learning_rate: 0.001680921869070071
+	optimizer: sgd
+2022-08-02 00:38:59 INFO About to run command: python3 run-timbre-vae.py -c configs/music_vae.yaml
+2022-08-02 00:39:04 INFO Running runs: ['wv2uut7z']
+2022-08-02 01:02:22 ERROR 400 response executing GraphQL.
+2022-08-02 01:02:22 ERROR {"errors":[{"message":"Invalid sweep config: invalid hyperparameter configuration: exp_params","path":["upsertSweep"]}],"data":{"upsertSweep":null}}
+2022-08-02 01:02:22 ERROR Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.8/site-packages/wandb/sdk/lib/retry.py", line 108, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.8/site-packages/wandb/sdk/internal/internal_api.py", line 158, in execute
+    return self.client.execute(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.8/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "/opt/anaconda3/lib/python3.8/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "/opt/anaconda3/lib/python3.8/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/transport/requests.py", line 39, in execute
+    request.raise_for_status()
+  File "/opt/anaconda3/lib/python3.8/site-packages/requests/models.py", line 1022, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://api.wandb.ai/graphql
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.8/site-packages/wandb/apis/normalize.py", line 25, in wrapper
+    return func(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.8/site-packages/wandb/sdk/internal/internal_api.py", line 1982, in upsert_sweep
+    raise (e)
+  File "/opt/anaconda3/lib/python3.8/site-packages/wandb/sdk/internal/internal_api.py", line 1967, in upsert_sweep
+    response = self.gql(
+  File "/opt/anaconda3/lib/python3.8/site-packages/wandb/sdk/lib/retry.py", line 124, in __call__
+    if not check_retry_fn(e):
+  File "/opt/anaconda3/lib/python3.8/site-packages/wandb/sdk/internal/internal_api.py", line 1958, in no_retry_4xx
+    raise UsageError(body["errors"][0]["message"])
+wandb.errors.UsageError: Invalid sweep config: invalid hyperparameter configuration: exp_params
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/opt/anaconda3/lib/python3.8/site-packages/wandb/cli/cli.py", line 97, in wrapper
+    return func(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.8/site-packages/wandb/cli/cli.py", line 916, in sweep
+    sweep_id, warnings = api.upsert_sweep(
+  File "/opt/anaconda3/lib/python3.8/site-packages/wandb/apis/internal.py", line 102, in upsert_sweep
+    return self.api.upsert_sweep(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.8/site-packages/wandb/apis/normalize.py", line 61, in wrapper
+    raise CommError(message, err).with_traceback(sys.exc_info()[2])
+  File "/opt/anaconda3/lib/python3.8/site-packages/wandb/apis/normalize.py", line 25, in wrapper
+    return func(*args, **kwargs)
+  File "/opt/anaconda3/lib/python3.8/site-packages/wandb/sdk/internal/internal_api.py", line 1982, in upsert_sweep
+    raise (e)
+  File "/opt/anaconda3/lib/python3.8/site-packages/wandb/sdk/internal/internal_api.py", line 1967, in upsert_sweep
+    response = self.gql(
+  File "/opt/anaconda3/lib/python3.8/site-packages/wandb/sdk/lib/retry.py", line 124, in __call__
+    if not check_retry_fn(e):
+  File "/opt/anaconda3/lib/python3.8/site-packages/wandb/sdk/internal/internal_api.py", line 1958, in no_retry_4xx
+    raise UsageError(body["errors"][0]["message"])
+wandb.errors.CommError: Invalid sweep config: invalid hyperparameter configuration: exp_params
+
+2022-08-02 01:02:57 INFO Running runs: []
+2022-08-02 01:02:58 INFO Agent received command: run
+2022-08-02 01:02:58 INFO Agent starting run with config:
+	exp_params.LR: 0.008640266095918645
+	optimizer: adam
+2022-08-02 01:02:58 INFO About to run command: python3 run-timbre-vae.py -c configs/music_vae.yaml
+2022-08-02 01:03:03 INFO Running runs: ['mbm5tlgq']
+2022-08-02 01:03:45 INFO Cleaning up finished run: mbm5tlgq
+2022-08-02 01:03:45 INFO Agent received command: run
+2022-08-02 01:03:45 INFO Agent starting run with config:
+	exp_params.LR: 0.009582132859803569
+	optimizer: adam
+2022-08-02 01:03:45 INFO About to run command: python3 run-timbre-vae.py -c configs/music_vae.yaml
+2022-08-02 01:03:51 INFO Running runs: ['r5sj69qq']
+2022-08-02 01:04:06 INFO Cleaning up finished run: r5sj69qq
+2022-08-02 01:04:07 INFO Agent received command: run
+2022-08-02 01:04:07 INFO Agent starting run with config:
+	exp_params.LR: 0.0009164425024008712
+	optimizer: sgd
+2022-08-02 01:04:07 INFO About to run command: python3 run-timbre-vae.py -c configs/music_vae.yaml
+2022-08-02 01:04:12 INFO Running runs: ['s3ghn80w']
+2022-08-02 01:04:28 INFO Cleaning up finished run: s3ghn80w
+2022-08-02 01:04:28 INFO Agent received command: run
+2022-08-02 01:04:28 INFO Agent starting run with config:
+	exp_params.LR: 0.0003336582650041917
+	optimizer: sgd
+2022-08-02 01:04:28 INFO About to run command: python3 run-timbre-vae.py -c configs/music_vae.yaml
+2022-08-02 01:04:33 INFO Running runs: ['whbie217']
+2022-08-02 01:04:49 INFO Cleaning up finished run: whbie217
+2022-08-02 01:04:50 INFO Agent received command: run
+2022-08-02 01:04:50 INFO Agent starting run with config:
+	exp_params.LR: 0.007456619470855096
+	optimizer: sgd
+2022-08-02 01:04:50 INFO About to run command: python3 run-timbre-vae.py -c configs/music_vae.yaml
+2022-08-02 01:04:55 INFO Running runs: ['dakk6tns']
+2022-08-02 01:05:11 ERROR Detected 5 failed runs in a row, shutting down.
+2022-08-02 01:05:11 INFO To change this value set WANDB_AGENT_MAX_INITIAL_FAILURES=val
+2022-08-02 12:44:02 INFO Running runs: []
+2022-08-02 12:44:02 INFO Agent received command: run
+2022-08-02 12:44:02 INFO Agent starting run with config:
+	exp_params.LR: 0.001054178255946858
+	optimizer: adam
+2022-08-02 12:44:02 INFO About to run command: python3 run-timbre-vae.py -c configs/music_vae.yaml
+2022-08-02 12:44:07 INFO Running runs: ['lbqfni9g']
+2022-08-02 13:18:40 INFO Running runs: []
+2022-08-02 13:18:40 INFO Agent received command: run
+2022-08-02 13:18:40 INFO Agent starting run with config:
+	exp_params.LR: 0.003468856379358294
+	optimizer: adam
+2022-08-02 13:18:40 INFO About to run command: python3 run-timbre-vae.py -c configs/music_vae.yaml
+2022-08-02 13:18:46 INFO Running runs: ['4fysqpt4']
+2022-08-02 13:22:26 INFO Running runs: []
+2022-08-02 13:22:26 INFO Agent received command: run
+2022-08-02 13:22:26 INFO Agent starting run with config:
+	exp_params.LR: 0.00984144142940037
+	optimizer: sgd
+2022-08-02 13:22:26 INFO About to run command: python3 run-timbre-vae.py -c configs/music_vae.yaml
+2022-08-02 13:22:31 INFO Running runs: ['fs86tm89']
+2022-08-02 13:52:16 INFO Running runs: []
+2022-08-02 13:52:17 INFO Agent received command: run
+2022-08-02 13:52:17 INFO Agent starting run with config:
+	exp_params.LR: 0.0011391439687285032
+	optimizer: adam
+2022-08-02 13:52:17 INFO About to run command: python3 run-timbre-vae.py -c configs/music_vae.yaml
+2022-08-02 13:52:22 INFO Running runs: ['2y40kkyp']

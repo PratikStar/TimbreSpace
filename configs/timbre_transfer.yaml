@@ -1,0 +1,74 @@
+show_logs: True
+log_level: 6
+
+wandb:
+  entity: "auditory-grounding"
+  project: "timbre-transfer"
+
+data_params:
+  dataset_path: '../../data/timbre'
+  batch_size: 16
+  num_workers: 0
+
+  spectrogram:
+    type: "stft" # "stft" or "mel"
+    stft:
+      spectrogram_dims: [256, 64]
+    mel:
+      frame_size: 1024
+      hop_length: 256
+      spectrogram_dims: [80, 63] # (mel_channels, n_frames)
+      segment_signal_length: 16000
+  saver: # saves spectrogram as npy and min/max values. TODO: Untested
+    enabled: False
+    save_dir: "../out" # relative to dataset_path
+  visualizer:
+    enabled: False # Please enable for spectrogram inference
+    save_dir: "../out" # relative to dataset_path
+  csv: # Log generated datapoints in a csv
+    enabled: True
+    path: "../log" # relative to dataset_path
+
+
+
+model_params:
+  name: 'TimbreTransfer'
+  timbre_encoder:
+    spectrogram_dims: [1, 256, 16] # (C, H, W). dependant on data_params.spectrogram....
+    conv2d_channels: [128, 64, 32, 16]
+    stride: [2, 2]
+    kernel_size: [5, 5]
+    padding: [2, 2]
+    latent_dim: 256
+    loss:
+      function: "L1"
+  decoder:
+    di_spectrogram_dims: [1, 256, 16] # (C, H, W). dependant on data_params.spectrogram....
+    conv2d_channels: [128, 64, 32, 16] # These are conv2d channels. Encoder: (1, 256, 64) -> (32, 128, 32) -> (64, 64, 16) -> (128, 32, 8) -> (256, 16, 4) -> (512, 8, 2)
+    latent_dim: 256
+    stride: [2, 2]
+    kernel_size: [5, 5]
+    padding: [2, 2]
+    output_padding: [1, 0]
+    loss:
+      function: "L1"
+  concatenation: "sandwich"
+
+#  load_path: "logw/logs/MusicVAE/version_9/checkpoints/last.ckpt"
+
+
+exp_params:
+  LR: 0.0001
+  weight_decay: 0.0
+  scheduler_gamma: 0.95
+  kld_weight: 0.000001
+  manual_seed: 1265
+
+
+trainer_params:
+  gpus: []
+  max_epochs: 100
+
+
+logging_params:
+  save_dir: "logs/"

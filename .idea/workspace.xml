@@ -2,10 +2,183 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e62d320a-2b24-43cc-9e96-fcc166b46bb4" name="Changes" comment="vocoder initial training">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/csv-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/csv-plugin.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/timbre_transfer.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiment_timbre_transfer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/timbre_transfer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sweep.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utils/conv2d_output_calculator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/debug-cli.pratik.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/debug-internal.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/debug.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/latest-run" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_231540-p88w5fyc/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_231540-p88w5fyc/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_231540-p88w5fyc/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_231540-p88w5fyc/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_231540-p88w5fyc/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_231540-p88w5fyc/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_231540-p88w5fyc/run-p88w5fyc.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_231714-diezescb/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_231714-diezescb/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_231714-diezescb/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_231714-diezescb/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_231714-diezescb/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_231714-diezescb/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_231714-diezescb/run-diezescb.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_232631-1q6z0ujv/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_232631-1q6z0ujv/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_232631-1q6z0ujv/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_232631-1q6z0ujv/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_232631-1q6z0ujv/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_232631-1q6z0ujv/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_232631-1q6z0ujv/run-1q6z0ujv.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_232913-tsnwfed2/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_232913-tsnwfed2/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_232913-tsnwfed2/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_232913-tsnwfed2/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_232913-tsnwfed2/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_232913-tsnwfed2/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_232913-tsnwfed2/run-tsnwfed2.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_233431-2d4aggbk/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_233431-2d4aggbk/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_233431-2d4aggbk/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_233431-2d4aggbk/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_233431-2d4aggbk/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_233431-2d4aggbk/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220801_233431-2d4aggbk/run-2d4aggbk.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_003651-1hniz6f2/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_003651-1hniz6f2/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_003651-1hniz6f2/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_003651-1hniz6f2/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_003651-1hniz6f2/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_003651-1hniz6f2/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_003651-1hniz6f2/run-1hniz6f2.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_003904-wv2uut7z/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_003904-wv2uut7z/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_003904-wv2uut7z/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_003904-wv2uut7z/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_003904-wv2uut7z/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_003904-wv2uut7z/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_003904-wv2uut7z/run-wv2uut7z.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010327-mbm5tlgq/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010327-mbm5tlgq/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010327-mbm5tlgq/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010327-mbm5tlgq/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010327-mbm5tlgq/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010327-mbm5tlgq/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010327-mbm5tlgq/run-mbm5tlgq.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010349-r5sj69qq/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010349-r5sj69qq/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010349-r5sj69qq/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010349-r5sj69qq/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010349-r5sj69qq/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010349-r5sj69qq/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010349-r5sj69qq/run-r5sj69qq.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010411-s3ghn80w/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010411-s3ghn80w/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010411-s3ghn80w/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010411-s3ghn80w/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010411-s3ghn80w/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010411-s3ghn80w/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010411-s3ghn80w/run-s3ghn80w.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010433-whbie217/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010433-whbie217/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010433-whbie217/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010433-whbie217/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010433-whbie217/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010433-whbie217/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010433-whbie217/run-whbie217.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010454-dakk6tns/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010454-dakk6tns/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010454-dakk6tns/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010454-dakk6tns/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010454-dakk6tns/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010454-dakk6tns/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_010454-dakk6tns/run-dakk6tns.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123300-1f5xzrbe/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123300-1f5xzrbe/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123300-1f5xzrbe/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123300-1f5xzrbe/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123300-1f5xzrbe/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123300-1f5xzrbe/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123300-1f5xzrbe/run-1f5xzrbe.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123502-3s9ak5o5/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123502-3s9ak5o5/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123502-3s9ak5o5/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123502-3s9ak5o5/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123502-3s9ak5o5/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123502-3s9ak5o5/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123502-3s9ak5o5/run-3s9ak5o5.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123903-2dn6ht0r/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123903-2dn6ht0r/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123903-2dn6ht0r/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123903-2dn6ht0r/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123903-2dn6ht0r/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123903-2dn6ht0r/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_123903-2dn6ht0r/run-2dn6ht0r.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_124406-lbqfni9g/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_124406-lbqfni9g/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_124406-lbqfni9g/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_124406-lbqfni9g/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_124406-lbqfni9g/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_124406-lbqfni9g/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_124406-lbqfni9g/run-lbqfni9g.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_130353-8o0c1out/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_130353-8o0c1out/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_130353-8o0c1out/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_130353-8o0c1out/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_130353-8o0c1out/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_130353-8o0c1out/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_130353-8o0c1out/run-8o0c1out.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_131334-3r8fwfr3/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_131334-3r8fwfr3/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_131334-3r8fwfr3/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_131334-3r8fwfr3/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_131334-3r8fwfr3/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_131334-3r8fwfr3/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_131334-3r8fwfr3/run-3r8fwfr3.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_131845-4fysqpt4/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_131845-4fysqpt4/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_131845-4fysqpt4/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_131845-4fysqpt4/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_131845-4fysqpt4/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_131845-4fysqpt4/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_131845-4fysqpt4/run-4fysqpt4.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_132231-fs86tm89/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_132231-fs86tm89/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_132231-fs86tm89/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_132231-fs86tm89/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_132231-fs86tm89/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_132231-fs86tm89/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_132231-fs86tm89/run-fs86tm89.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_135222-2y40kkyp/files/conda-environment.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_135222-2y40kkyp/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_135222-2y40kkyp/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_135222-2y40kkyp/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_135222-2y40kkyp/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_135222-2y40kkyp/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20220802_135222-2y40kkyp/run-2y40kkyp.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-0gkdxm13/config-dakk6tns.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-0gkdxm13/config-mbm5tlgq.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-0gkdxm13/config-r5sj69qq.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-0gkdxm13/config-s3ghn80w.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-0gkdxm13/config-whbie217.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-129iff4r/config-2y40kkyp.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-129iff4r/config-4fysqpt4.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-129iff4r/config-fs86tm89.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-1i12hw4e/config-lbqfni9g.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-eprs0vx3/config-n4r8rg1n.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-eprs0vx3/config-ta22wa7b.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-eprs0vx3/config-wg5b1u2b.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-t0rv56ez/config-1hniz6f2.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-t0rv56ez/config-wv2uut7z.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-wtl0k4of/config-70r7lxp0.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-wtl0k4of/config-bzxb25gh.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-wtl0k4of/config-pvnforlu.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-ybeu3yfg/config-26vsns2r.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-ybeu3yfg/config-52myt5xc.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/sweep-ybeu3yfg/config-svwqbsw0.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/commands.md" beforeDir="false" afterPath="$PROJECT_DIR$/commands.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/configs/music_vae-gpu.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/music_vae-gpu.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/configs/music_vae.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/music_vae.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/configs/vocoder.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/vocoder.yaml" afterDir="false" />
@@ -13,10 +186,11 @@
       <change beforePath="$PROJECT_DIR$/datasets/timbre.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/timbre.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/datasets/timbreutils/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/timbreutils/main.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/experiment_music.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment_music.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/music_vae_flat.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/music_vae_flat.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run-timbre-vae.py" beforeDir="false" afterPath="$PROJECT_DIR$/run-timbre-vae.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/load_music.py" beforeDir="false" afterPath="$PROJECT_DIR$/load_music.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run-timbre-vae.py" beforeDir="false" afterPath="$PROJECT_DIR$/run-generic.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test_stft2audio_ds.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_stft2audio_ds.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wisteria-scripts/wisteria-interactive.sh" beforeDir="false" afterPath="$PROJECT_DIR$/wisteria-scripts/wisteria-interactive.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wisteria-scripts/wisteria.sh" beforeDir="false" afterPath="$PROJECT_DIR$/wisteria-scripts/wisteria.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -49,17 +223,17 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/logw/logs/MusicVAEFlat/version_13" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/logw/logs/MusicVAEFlat/version_13" />
-      <recent name="$PROJECT_DIR$/configs" />
       <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/configs" />
+      <recent name="$PROJECT_DIR$/models" />
+      <recent name="$PROJECT_DIR$/logw/logs/MusicVAEFlat/version_13" />
       <recent name="$PROJECT_DIR$/datasets" />
-      <recent name="$PROJECT_DIR$/logw/logs/MusicVAE/version_30" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/datasets" />
@@ -69,7 +243,7 @@
       <recent name="$PROJECT_DIR$/playing" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.run-timbre-vae">
+  <component name="RunManager" selected="Python.run-generic">
     <configuration name="Load Music" type="PythonConfigurationType" factoryName="Python">
       <module name="TimbreSpace" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -91,7 +265,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="run-timbre-vae" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+    <configuration name="run-generic" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="TimbreSpace" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -103,8 +277,8 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run-timbre-vae.py" />
-      <option name="PARAMETERS" value="-c configs/music_vae.yaml" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run-generic.py" />
+      <option name="PARAMETERS" value="-c configs/timbre_transfer.yaml" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -135,8 +309,8 @@
     </configuration>
     <list>
       <item itemvalue="Python.Load Music" />
-      <item itemvalue="Python.run-timbre-vae" />
       <item itemvalue="Python.stft ds test" />
+      <item itemvalue="Python.run-generic" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -238,95 +412,75 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/datasets/audio_stft.py</url>
-          <line>84</line>
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/load_music.py</url>
           <line>30</line>
           <option name="timeStamp" value="27" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/models/music_vae_flat.py</url>
-          <line>60</line>
-          <option name="timeStamp" value="30" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/models/music_vae_flat.py</url>
           <line>113</line>
           <option name="timeStamp" value="31" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/experiment_music.py</url>
-          <line>87</line>
-          <option name="timeStamp" value="32" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/test_stft2audio_ds.py</url>
-          <line>27</line>
-          <option name="timeStamp" value="33" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test_stft2audio_ds.py</url>
-          <line>23</line>
+          <line>22</line>
           <option name="timeStamp" value="34" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/datasets/audio_stft.py</url>
-          <line>51</line>
-          <option name="timeStamp" value="35" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/datasets/audio_stft.py</url>
-          <line>67</line>
-          <option name="timeStamp" value="36" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/datasets/timbreutils/main.py</url>
-          <line>352</line>
-          <option name="timeStamp" value="37" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/datasets/audio_stft.py</url>
-          <line>70</line>
-          <option name="timeStamp" value="38" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+        <line-breakpoint suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/datasets/timbre.py</url>
           <line>44</line>
           <option name="timeStamp" value="39" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/run-timbre-vae.py</url>
-          <line>33</line>
-          <option name="timeStamp" value="40" />
+          <url>file://$PROJECT_DIR$/test_stft2audio_ds.py</url>
+          <line>27</line>
+          <option name="timeStamp" value="52" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/datasets/timbreutils/main.py</url>
-          <line>374</line>
-          <option name="timeStamp" value="41" />
+          <url>file://$PROJECT_DIR$/datasets/audio_stft.py</url>
+          <line>72</line>
+          <option name="timeStamp" value="54" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/datasets/timbreutils/main.py</url>
-          <line>396</line>
-          <option name="timeStamp" value="42" />
+          <url>file://$PROJECT_DIR$/load_music.py</url>
+          <line>35</line>
+          <option name="timeStamp" value="55" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/datasets/timbre.py</url>
-          <line>111</line>
-          <option name="timeStamp" value="43" />
+          <url>file://$PROJECT_DIR$/experiment_music.py</url>
+          <line>24</line>
+          <option name="timeStamp" value="56" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/datasets/timbre.py</url>
-          <line>112</line>
-          <option name="timeStamp" value="44" />
+          <url>file://$PROJECT_DIR$/utils/utils.py</url>
+          <line>12</line>
+          <option name="timeStamp" value="57" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/experiment_music.py</url>
+          <line>45</line>
+          <option name="timeStamp" value="58" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/models/music_vae_flat.py</url>
-          <line>141</line>
-          <option name="timeStamp" value="45" />
+          <line>135</line>
+          <option name="timeStamp" value="60" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/models/timbre_transfer.py</url>
+          <line>52</line>
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/models/timbre_transfer.py</url>
+          <line>59</line>
+          <option name="timeStamp" value="63" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/run-generic.py</url>
+          <line>34</line>
+          <option name="timeStamp" value="64" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

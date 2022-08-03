@@ -1,0 +1,125 @@
+[34m[1mwandb[39m[22m: [33mWARNING[39m Config item 'optimizer' was locked by 'sweep' (ignored update).
+GPU available: False, used: False
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+Global seed set to 1265
+initializing distributed: GLOBAL_RANK: 0, MEMBER: 1/1
+----------------------------------------------------------------------------------------------------
+distributed_backend=gloo
+All distributed processes registered. Starting with 1 processes
+----------------------------------------------------------------------------------------------------
+/opt/anaconda3/lib/python3.8/site-packages/pytorch_lightning/core/datamodule.py:469: LightningDeprecationWarning: DataModule.setup has already been called, so it will not be called again. In v1.6 this behavior will change to always call DataModule.setup.
+  rank_zero_deprecation(
+MusicVAEFlat(
+  (encoder): Sequential(
+    (0): Sequential(
+      (conv2d_0): Conv2d(1, 128, kernel_size=(3, 3), stride=(2, 1), padding=(1, 1))
+      (batchNorm2d_0): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (leakyReLU_0): LeakyReLU(negative_slope=0.01)
+    )
+    (1): Sequential(
+      (conv2d_1): Conv2d(128, 64, kernel_size=(3, 3), stride=(2, 1), padding=(1, 1))
+      (batchNorm2d_1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (leakyReLU_1): LeakyReLU(negative_slope=0.01)
+    )
+    (2): Sequential(
+      (conv2d_2): Conv2d(64, 32, kernel_size=(3, 3), stride=(2, 1), padding=(1, 1))
+      (batchNorm2d_2): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (leakyReLU_2): LeakyReLU(negative_slope=0.01)
+    )
+  )
+  (fc_mu): Sequential(
+    (conv2d_fc_mu): Conv2d(32, 16, kernel_size=(3, 3), stride=(2, 1), padding=(1, 1))
+    (batchNorm2d_fc_mu): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (leakyReLU_fc_mu): LeakyReLU(negative_slope=0.01)
+  )
+  (fc_var): Sequential(
+    (conv2d_fc_var): Conv2d(32, 16, kernel_size=(3, 3), stride=(2, 1), padding=(1, 1))
+    (batchNorm2d_fc_var): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (leakyReLU_fc_var): LeakyReLU(negative_slope=0.01)
+  )
+  (decoder): Sequential(
+    (0): Sequential(
+      (convTranspose2d_1): ConvTranspose2d(16, 32, kernel_size=(3, 3), stride=(2, 1), padding=(1, 1), output_padding=(1, 0))
+      (batchnorm2d_1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (leakyReLU_1): LeakyReLU(negative_slope=0.01)
+    )
+    (1): Sequential(
+      (convTranspose2d_2): ConvTranspose2d(32, 64, kernel_size=(3, 3), stride=(2, 1), padding=(1, 1), output_padding=(1, 0))
+      (batchnorm2d_2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (leakyReLU_2): LeakyReLU(negative_slope=0.01)
+    )
+    (2): Sequential(
+      (convTranspose2d_3): ConvTranspose2d(64, 128, kernel_size=(3, 3), stride=(2, 1), padding=(1, 1), output_padding=(1, 0))
+      (batchnorm2d_3): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (leakyReLU_3): LeakyReLU(negative_slope=0.01)
+    )
+  )
+  (final_layer): Sequential(
+    (final_convTranspose2d): ConvTranspose2d(128, 128, kernel_size=(3, 3), stride=(2, 1), padding=(1, 1), output_padding=(1, 0))
+    (final_batchNorm2d): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (final_leakyReLU): LeakyReLU(negative_slope=0.01)
+    (final_Conv2d): Conv2d(128, 1, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (final_tanH): Sigmoid()
+  )
+)
+======= Training MusicVAEFlat =======
+  | Name  | Type         | Params
+---------------------------------------
+0 | model | MusicVAEFlat | 349 K
+---------------------------------------
+349 K     Trainable params
+0         Non-trainable params
+349 K     Total params
+1.399     Total estimated model params size (MB)
+/opt/anaconda3/lib/python3.8/site-packages/pytorch_lightning/trainer/data_loading.py:116: UserWarning: The dataloader, val_dataloader 0, does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` (try 8 which is the number of cpus on this machine) in the `DataLoader` init to improve performance.
+  rank_zero_warn(
+Validation sanity check:   0%|                                                                                                                                                        | 0/2 [00:00<?, ?it/s]
+=== Validation step. batchidx: 0 ===
+{'exp_params.LR': 0.0011391439687285032, 'optimizer': 'adam', 'show_logs': True, 'log_level': 6, 'data_params': {'dataset_path': '../../data/timbre', 'batch_size': 16, 'num_workers': 0, 'spectrogram': {'type': 'mel', 'stft': {'spectrogram_dims': [80, 63]}, 'mel': {'frame_size': 1024, 'hop_length': 256, 'spectrogram_dims': [80, 63], 'segment_signal_length': 16000}}, 'saver': {'enabled': False, 'save_dir': '../out'}, 'visualizer': {'enabled': False, 'save_dir': '../out'}, 'csv': {'enabled': True, 'path': '../log'}}, 'model_params': {'name': 'MusicVAEFlat', 'spectrogram_dims': [1, 80, 63], 'conv2d_channels': [128, 64, 32, 16], 'latent_dim': 32, 'stride': [2, 1], 'kernel_size': [3, 3], 'padding': [1, 1], 'output_padding': [1, 0], 'loss': {'function': 'L1'}}, 'exp_params': {'LR': 0.0011391439687285032, 'weight_decay': 0.0, 'scheduler_gamma': 0.95, 'kld_weight': 1e-06, 'manual_seed': 1265}, 'trainer_params': {'gpus': [], 'max_epochs': 100}, 'logging_params': {'save_dir': 'logs/', 'name': 'MusicVAEFlat'}}
+/opt/anaconda3/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/logger_connector/result.py:220: UserWarning: You called `self.log('_timestamp', ...)` in your `validation_step` but the value needs to be floating point. Converting it to torch.float32.
+  warning_cache.warn(
+/opt/anaconda3/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/logger_connector/result.py:220: UserWarning: You called `self.log('_runtime', ...)` in your `validation_step` but the value needs to be floating point. Converting it to torch.float32.
+  warning_cache.warn(
+Validation sanity check:  50%|████████████████████████████████████████████████████████████████████████                                                                        | 1/2 [00:02<00:02,  2.69s/it]
+=== Validation step. batchidx: 1 ===
+{'exp_params.LR': 0.0011391439687285032, 'optimizer': 'adam', 'show_logs': True, 'log_level': 6, 'data_params': {'dataset_path': '../../data/timbre', 'batch_size': 16, 'num_workers': 0, 'spectrogram': {'type': 'mel', 'stft': {'spectrogram_dims': [80, 63]}, 'mel': {'frame_size': 1024, 'hop_length': 256, 'spectrogram_dims': [80, 63], 'segment_signal_length': 16000}}, 'saver': {'enabled': False, 'save_dir': '../out'}, 'visualizer': {'enabled': False, 'save_dir': '../out'}, 'csv': {'enabled': True, 'path': '../log'}}, 'model_params': {'name': 'MusicVAEFlat', 'spectrogram_dims': [1, 80, 63], 'conv2d_channels': [128, 64, 32, 16], 'latent_dim': 32, 'stride': [2, 1], 'kernel_size': [3, 3], 'padding': [1, 1], 'output_padding': [1, 0], 'loss': {'function': 'L1'}}, 'exp_params': {'LR': 0.0011391439687285032, 'weight_decay': 0.0, 'scheduler_gamma': 0.95, 'kld_weight': 1e-06, 'manual_seed': 1265}, 'trainer_params': {'gpus': [], 'max_epochs': 100}, 'logging_params': {'save_dir': 'logs/', 'name': 'MusicVAEFlat'}}
+Epoch 0:   0%|                                                                                                                                                                      | 0/160 [00:00<?, ?it/s]
+Global seed set to 1265
+/opt/anaconda3/lib/python3.8/site-packages/pytorch_lightning/trainer/data_loading.py:116: UserWarning: The dataloader, train_dataloader, does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` (try 8 which is the number of cpus on this machine) in the `DataLoader` init to improve performance.
+  rank_zero_warn(
+=== Training step. batchidx: 0, optimizeridx: 0 ===
+{'exp_params.LR': 0.0011391439687285032, 'optimizer': 'adam', 'show_logs': True, 'log_level': 6, 'data_params': {'dataset_path': '../../data/timbre', 'batch_size': 16, 'num_workers': 0, 'spectrogram': {'type': 'mel', 'stft': {'spectrogram_dims': [80, 63]}, 'mel': {'frame_size': 1024, 'hop_length': 256, 'spectrogram_dims': [80, 63], 'segment_signal_length': 16000}}, 'saver': {'enabled': False, 'save_dir': '../out'}, 'visualizer': {'enabled': False, 'save_dir': '../out'}, 'csv': {'enabled': True, 'path': '../log'}}, 'model_params': {'name': 'MusicVAEFlat', 'spectrogram_dims': [1, 80, 63], 'conv2d_channels': [128, 64, 32, 16], 'latent_dim': 32, 'stride': [2, 1], 'kernel_size': [3, 3], 'padding': [1, 1], 'output_padding': [1, 0], 'loss': {'function': 'L1'}}, 'exp_params': {'LR': 0.0011391439687285032, 'weight_decay': 0.0, 'scheduler_gamma': 0.95, 'kld_weight': 1e-06, 'manual_seed': 1265}, 'trainer_params': {'gpus': [], 'max_epochs': 100}, 'logging_params': {'save_dir': 'logs/', 'name': 'MusicVAEFlat'}}
+/opt/anaconda3/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/logger_connector/result.py:220: UserWarning: You called `self.log('_timestamp', ...)` in your `training_step` but the value needs to be floating point. Converting it to torch.float32.
+  warning_cache.warn(
+/opt/anaconda3/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/logger_connector/result.py:220: UserWarning: You called `self.log('_runtime', ...)` in your `training_step` but the value needs to be floating point. Converting it to torch.float32.
+  warning_cache.warn(
+Epoch 0:   1%|▊                                                                                                                                       | 1/160 [00:04<10:57,  4.14s/it, loss=0.502, v_num=18]
+=== Training step. batchidx: 1, optimizeridx: 0 ===
+{'exp_params.LR': 0.0011391439687285032, 'optimizer': 'adam', 'show_logs': True, 'log_level': 6, 'data_params': {'dataset_path': '../../data/timbre', 'batch_size': 16, 'num_workers': 0, 'spectrogram': {'type': 'mel', 'stft': {'spectrogram_dims': [80, 63]}, 'mel': {'frame_size': 1024, 'hop_length': 256, 'spectrogram_dims': [80, 63], 'segment_signal_length': 16000}}, 'saver': {'enabled': False, 'save_dir': '../out'}, 'visualizer': {'enabled': False, 'save_dir': '../out'}, 'csv': {'enabled': True, 'path': '../log'}}, 'model_params': {'name': 'MusicVAEFlat', 'spectrogram_dims': [1, 80, 63], 'conv2d_channels': [128, 64, 32, 16], 'latent_dim': 32, 'stride': [2, 1], 'kernel_size': [3, 3], 'padding': [1, 1], 'output_padding': [1, 0], 'loss': {'function': 'L1'}}, 'exp_params': {'LR': 0.0011391439687285032, 'weight_decay': 0.0, 'scheduler_gamma': 0.95, 'kld_weight': 1e-06, 'manual_seed': 1265}, 'trainer_params': {'gpus': [], 'max_epochs': 100}, 'logging_params': {'save_dir': 'logs/', 'name': 'MusicVAEFlat'}}
+Epoch 0:   1%|█▋                                                                                                                                      | 2/160 [00:07<09:32,  3.63s/it, loss=0.427, v_num=18]
+=== Training step. batchidx: 2, optimizeridx: 0 ===
+{'exp_params.LR': 0.0011391439687285032, 'optimizer': 'adam', 'show_logs': True, 'log_level': 6, 'data_params': {'dataset_path': '../../data/timbre', 'batch_size': 16, 'num_workers': 0, 'spectrogram': {'type': 'mel', 'stft': {'spectrogram_dims': [80, 63]}, 'mel': {'frame_size': 1024, 'hop_length': 256, 'spectrogram_dims': [80, 63], 'segment_signal_length': 16000}}, 'saver': {'enabled': False, 'save_dir': '../out'}, 'visualizer': {'enabled': False, 'save_dir': '../out'}, 'csv': {'enabled': True, 'path': '../log'}}, 'model_params': {'name': 'MusicVAEFlat', 'spectrogram_dims': [1, 80, 63], 'conv2d_channels': [128, 64, 32, 16], 'latent_dim': 32, 'stride': [2, 1], 'kernel_size': [3, 3], 'padding': [1, 1], 'output_padding': [1, 0], 'loss': {'function': 'L1'}}, 'exp_params': {'LR': 0.0011391439687285032, 'weight_decay': 0.0, 'scheduler_gamma': 0.95, 'kld_weight': 1e-06, 'manual_seed': 1265}, 'trainer_params': {'gpus': [], 'max_epochs': 100}, 'logging_params': {'save_dir': 'logs/', 'name': 'MusicVAEFlat'}}
+Epoch 0:   2%|██▌                                                                                                                                     | 3/160 [00:10<09:02,  3.46s/it, loss=0.436, v_num=18]
+=== Training step. batchidx: 3, optimizeridx: 0 ===
+{'exp_params.LR': 0.0011391439687285032, 'optimizer': 'adam', 'show_logs': True, 'log_level': 6, 'data_params': {'dataset_path': '../../data/timbre', 'batch_size': 16, 'num_workers': 0, 'spectrogram': {'type': 'mel', 'stft': {'spectrogram_dims': [80, 63]}, 'mel': {'frame_size': 1024, 'hop_length': 256, 'spectrogram_dims': [80, 63], 'segment_signal_length': 16000}}, 'saver': {'enabled': False, 'save_dir': '../out'}, 'visualizer': {'enabled': False, 'save_dir': '../out'}, 'csv': {'enabled': True, 'path': '../log'}}, 'model_params': {'name': 'MusicVAEFlat', 'spectrogram_dims': [1, 80, 63], 'conv2d_channels': [128, 64, 32, 16], 'latent_dim': 32, 'stride': [2, 1], 'kernel_size': [3, 3], 'padding': [1, 1], 'output_padding': [1, 0], 'loss': {'function': 'L1'}}, 'exp_params': {'LR': 0.0011391439687285032, 'weight_decay': 0.0, 'scheduler_gamma': 0.95, 'kld_weight': 1e-06, 'manual_seed': 1265}, 'trainer_params': {'gpus': [], 'max_epochs': 100}, 'logging_params': {'save_dir': 'logs/', 'name': 'MusicVAEFlat'}}
+Epoch 0:   2%|███▍                                                                                                                                    | 4/160 [00:13<08:44,  3.36s/it, loss=0.362, v_num=18]
+=== Training step. batchidx: 4, optimizeridx: 0 ===
+{'exp_params.LR': 0.0011391439687285032, 'optimizer': 'adam', 'show_logs': True, 'log_level': 6, 'data_params': {'dataset_path': '../../data/timbre', 'batch_size': 16, 'num_workers': 0, 'spectrogram': {'type': 'mel', 'stft': {'spectrogram_dims': [80, 63]}, 'mel': {'frame_size': 1024, 'hop_length': 256, 'spectrogram_dims': [80, 63], 'segment_signal_length': 16000}}, 'saver': {'enabled': False, 'save_dir': '../out'}, 'visualizer': {'enabled': False, 'save_dir': '../out'}, 'csv': {'enabled': True, 'path': '../log'}}, 'model_params': {'name': 'MusicVAEFlat', 'spectrogram_dims': [1, 80, 63], 'conv2d_channels': [128, 64, 32, 16], 'latent_dim': 32, 'stride': [2, 1], 'kernel_size': [3, 3], 'padding': [1, 1], 'output_padding': [1, 0], 'loss': {'function': 'L1'}}, 'exp_params': {'LR': 0.0011391439687285032, 'weight_decay': 0.0, 'scheduler_gamma': 0.95, 'kld_weight': 1e-06, 'manual_seed': 1265}, 'trainer_params': {'gpus': [], 'max_epochs': 100}, 'logging_params': {'save_dir': 'logs/', 'name': 'MusicVAEFlat'}}
+Epoch 0:   3%|████▎                                                                                                                                   | 5/160 [00:16<08:33,  3.31s/it, loss=0.308, v_num=18]
+=== Training step. batchidx: 5, optimizeridx: 0 ===
+{'exp_params.LR': 0.0011391439687285032, 'optimizer': 'adam', 'show_logs': True, 'log_level': 6, 'data_params': {'dataset_path': '../../data/timbre', 'batch_size': 16, 'num_workers': 0, 'spectrogram': {'type': 'mel', 'stft': {'spectrogram_dims': [80, 63]}, 'mel': {'frame_size': 1024, 'hop_length': 256, 'spectrogram_dims': [80, 63], 'segment_signal_length': 16000}}, 'saver': {'enabled': False, 'save_dir': '../out'}, 'visualizer': {'enabled': False, 'save_dir': '../out'}, 'csv': {'enabled': True, 'path': '../log'}}, 'model_params': {'name': 'MusicVAEFlat', 'spectrogram_dims': [1, 80, 63], 'conv2d_channels': [128, 64, 32, 16], 'latent_dim': 32, 'stride': [2, 1], 'kernel_size': [3, 3], 'padding': [1, 1], 'output_padding': [1, 0], 'loss': {'function': 'L1'}}, 'exp_params': {'LR': 0.0011391439687285032, 'weight_decay': 0.0, 'scheduler_gamma': 0.95, 'kld_weight': 1e-06, 'manual_seed': 1265}, 'trainer_params': {'gpus': [], 'max_epochs': 100}, 'logging_params': {'save_dir': 'logs/', 'name': 'MusicVAEFlat'}}
+Epoch 0:   4%|█████                                                                                                                                   | 6/160 [00:19<08:23,  3.27s/it, loss=0.267, v_num=18]
+=== Training step. batchidx: 6, optimizeridx: 0 ===
+{'exp_params.LR': 0.0011391439687285032, 'optimizer': 'adam', 'show_logs': True, 'log_level': 6, 'data_params': {'dataset_path': '../../data/timbre', 'batch_size': 16, 'num_workers': 0, 'spectrogram': {'type': 'mel', 'stft': {'spectrogram_dims': [80, 63]}, 'mel': {'frame_size': 1024, 'hop_length': 256, 'spectrogram_dims': [80, 63], 'segment_signal_length': 16000}}, 'saver': {'enabled': False, 'save_dir': '../out'}, 'visualizer': {'enabled': False, 'save_dir': '../out'}, 'csv': {'enabled': True, 'path': '../log'}}, 'model_params': {'name': 'MusicVAEFlat', 'spectrogram_dims': [1, 80, 63], 'conv2d_channels': [128, 64, 32, 16], 'latent_dim': 32, 'stride': [2, 1], 'kernel_size': [3, 3], 'padding': [1, 1], 'output_padding': [1, 0], 'loss': {'function': 'L1'}}, 'exp_params': {'LR': 0.0011391439687285032, 'weight_decay': 0.0, 'scheduler_gamma': 0.95, 'kld_weight': 1e-06, 'manual_seed': 1265}, 'trainer_params': {'gpus': [], 'max_epochs': 100}, 'logging_params': {'save_dir': 'logs/', 'name': 'MusicVAEFlat'}}
+Epoch 0:   4%|█████▉                                                                                                                                  | 7/160 [00:22<08:17,  3.25s/it, loss=0.241, v_num=18]
+=== Training step. batchidx: 7, optimizeridx: 0 ===
+{'exp_params.LR': 0.0011391439687285032, 'optimizer': 'adam', 'show_logs': True, 'log_level': 6, 'data_params': {'dataset_path': '../../data/timbre', 'batch_size': 16, 'num_workers': 0, 'spectrogram': {'type': 'mel', 'stft': {'spectrogram_dims': [80, 63]}, 'mel': {'frame_size': 1024, 'hop_length': 256, 'spectrogram_dims': [80, 63], 'segment_signal_length': 16000}}, 'saver': {'enabled': False, 'save_dir': '../out'}, 'visualizer': {'enabled': False, 'save_dir': '../out'}, 'csv': {'enabled': True, 'path': '../log'}}, 'model_params': {'name': 'MusicVAEFlat', 'spectrogram_dims': [1, 80, 63], 'conv2d_channels': [128, 64, 32, 16], 'latent_dim': 32, 'stride': [2, 1], 'kernel_size': [3, 3], 'padding': [1, 1], 'output_padding': [1, 0], 'loss': {'function': 'L1'}}, 'exp_params': {'LR': 0.0011391439687285032, 'weight_decay': 0.0, 'scheduler_gamma': 0.95, 'kld_weight': 1e-06, 'manual_seed': 1265}, 'trainer_params': {'gpus': [], 'max_epochs': 100}, 'logging_params': {'save_dir': 'logs/', 'name': 'MusicVAEFlat'}}
+Epoch 0:   5%|██████▊                                                                                                                                 | 8/160 [00:25<08:11,  3.23s/it, loss=0.217, v_num=18]
+=== Training step. batchidx: 8, optimizeridx: 0 ===
+{'exp_params.LR': 0.0011391439687285032, 'optimizer': 'adam', 'show_logs': True, 'log_level': 6, 'data_params': {'dataset_path': '../../data/timbre', 'batch_size': 16, 'num_workers': 0, 'spectrogram': {'type': 'mel', 'stft': {'spectrogram_dims': [80, 63]}, 'mel': {'frame_size': 1024, 'hop_length': 256, 'spectrogram_dims': [80, 63], 'segment_signal_length': 16000}}, 'saver': {'enabled': False, 'save_dir': '../out'}, 'visualizer': {'enabled': False, 'save_dir': '../out'}, 'csv': {'enabled': True, 'path': '../log'}}, 'model_params': {'name': 'MusicVAEFlat', 'spectrogram_dims': [1, 80, 63], 'conv2d_channels': [128, 64, 32, 16], 'latent_dim': 32, 'stride': [2, 1], 'kernel_size': [3, 3], 'padding': [1, 1], 'output_padding': [1, 0], 'loss': {'function': 'L1'}}, 'exp_params': {'LR': 0.0011391439687285032, 'weight_decay': 0.0, 'scheduler_gamma': 0.95, 'kld_weight': 1e-06, 'manual_seed': 1265}, 'trainer_params': {'gpus': [], 'max_epochs': 100}, 'logging_params': {'save_dir': 'logs/', 'name': 'MusicVAEFlat'}}
+Epoch 0:   6%|███████▊                                                                                                                                  | 9/160 [00:28<08:06,  3.22s/it, loss=0.2, v_num=18]
+=== Training step. batchidx: 9, optimizeridx: 0 ===
+{'exp_params.LR': 0.0011391439687285032, 'optimizer': 'adam', 'show_logs': True, 'log_level': 6, 'data_params': {'dataset_path': '../../data/timbre', 'batch_size': 16, 'num_workers': 0, 'spectrogram': {'type': 'mel', 'stft': {'spectrogram_dims': [80, 63]}, 'mel': {'frame_size': 1024, 'hop_length': 256, 'spectrogram_dims': [80, 63], 'segment_signal_length': 16000}}, 'saver': {'enabled': False, 'save_dir': '../out'}, 'visualizer': {'enabled': False, 'save_dir': '../out'}, 'csv': {'enabled': True, 'path': '../log'}}, 'model_params': {'name': 'MusicVAEFlat', 'spectrogram_dims': [1, 80, 63], 'conv2d_channels': [128, 64, 32, 16], 'latent_dim': 32, 'stride': [2, 1], 'kernel_size': [3, 3], 'padding': [1, 1], 'output_padding': [1, 0], 'loss': {'function': 'L1'}}, 'exp_params': {'LR': 0.0011391439687285032, 'weight_decay': 0.0, 'scheduler_gamma': 0.95, 'kld_weight': 1e-06, 'manual_seed': 1265}, 'trainer_params': {'gpus': [], 'max_epochs': 100}, 'logging_params': {'save_dir': 'logs/', 'name': 'MusicVAEFlat'}}
+Epoch 0:   6%|████████▍                                                                                                                              | 10/160 [00:32<08:01,  3.21s/it, loss=0.182, v_num=18]
+=== Training step. batchidx: 10, optimizeridx: 0 ===

@@ -1,6 +1,6 @@
 #!/bin/bash
 #PJM -g gk77
-#PJM -L rscgrp=share
+#PJM -L rscgrp=share-short
 #PJM -L gpu=4
 #PJM -N MusicVAEFlat
 #PJM -j

@@ -1,0 +1,16 @@
+#program: "run-timbre-vae.py -c config/music-vae.yaml"
+command:
+  - python3
+  - run-timbre-vae.py
+  - -c
+  - configs/music_vae.yaml
+method: bayes
+metric:
+  name: val_loss
+  goal: minimize
+parameters:
+  exp_params.LR:
+    min: 0.0001
+    max: 0.01
+project: "music-vae"
+entity: "auditory-grounding"

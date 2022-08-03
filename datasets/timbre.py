@@ -100,7 +100,7 @@ class TimbreDataset(Dataset):
         visualize_path = self.dataset_path / self.dataset_config.visualizer.save_dir / 'spectrogram_img'
         if not visualize_path.exists():
             os.makedirs(visualize_path)
-        visualizer = Visualizer(visualize_path, self.dataset_config.spectrogram.frame_size, self.dataset_config.spectrogram.hop_length)
+        visualizer = Visualizer(visualize_path, self.dataset_config.spectrogram.frame_size, self.dataset_config.spectrogram.hop_length, self.dataset_config)
         self.preprocessing_pipeline.visualizer = visualizer
 
     def __getitem__(self, key):  # Get random segment
@@ -114,6 +114,17 @@ class TimbreDataset(Dataset):
 
     def __len__(self):
         return len(self.clips)
+
+    def get_whole_clip(self, key):
+        offset = 0
+        batches = []
+        while offset + self.batch_duration <= self.dataset_config.load.clip_duration:
+            print(offset)
+            batch = self.preprocessing_pipeline.process_file(self.clips[key], offset, False)
+            batches.append(batch)
+            offset += self.batch_duration
+        print(len(batches))
+        return batches
 
 
 class TimbreDataModule(LightningDataModule, ABC):

@@ -42,7 +42,7 @@ class Loader:
 
     def load(self, file_path, offset, load_duration=None):
         if load_duration is None:
-            load_duration = self.load_duration # to override the load duration
+            load_duration = self.load_duration  # to override the load duration
 
         signal = librosa.load(file_path,
                               sr=self.sample_rate,
@@ -97,7 +97,8 @@ class LogSpectrogramExtractor:
                                 n_fft=self.frame_size,
                                 hop_length=self.hop_length)[:-1]
             log("Shape of stft: " + str(stft.shape), 2)
-            spectrogram = np.abs(stft)  # https://librosa.org/doc/main/generated/librosa.stft.html abs gives the magnitude
+            spectrogram = np.abs(
+                stft)  # https://librosa.org/doc/main/generated/librosa.stft.html abs gives the magnitude
             phases = np.angle(stft)
             log_spectrogram = librosa.amplitude_to_db(spectrogram)
             return log_spectrogram, phases
@@ -107,7 +108,6 @@ class LogSpectrogramExtractor:
                                                  hop_length=self.hop_length,
                                                  n_mels=self.spectrogram_config.mel.spectrogram_dims[0])
             return mel, None
-
 
 
 class FeatureExtractor:  # Not used!!
@@ -187,10 +187,11 @@ class Saver:  # Not used!!
 
 
 class Visualizer:
-    def __init__(self, file_dir, frame_size, hop_length):
+    def __init__(self, file_dir, frame_size, hop_length, config):
         self.file_dir = file_dir
         self.frame_size = frame_size
         self.hop_length = hop_length
+        self.config = config
 
     def visualize(self, spectrogram, file_name, suffix=None):
         file_name = self.file_dir / file_name
@@ -214,7 +215,8 @@ class Visualizer:
         fig.savefig(file_name.parents[0] / name)
         plt.close(fig)
 
-    def visualize_multiple(self, spectrograms, suffix=None, file_dir=None, max_rows=5, col_titles=[], title="", filename=None):
+    def visualize_multiple(self, spectrograms, suffix=None, file_dir=None, max_rows=5, col_titles=[], title="",
+                           filename=None):
         # print("in visualize mul")
         if file_dir is not None and not file_dir.exists():
             os.makedirs(file_dir)
@@ -233,12 +235,20 @@ class Visualizer:
             # print(i)
             for j in range(ncols):
                 try:
-
-                    img = librosa.display.specshow(spectrograms[j][i, :, :],
-                                                      n_fft=self.frame_size,
-                                                      hop_length=self.hop_length,
-                                                      y_axis='log', x_axis='s', ax=ax[i][j])
-
+                    if self.config.spectrogram.type == "stft":
+                        img = librosa.display.specshow(spectrograms[j][i, :, :],
+                                                       n_fft=self.frame_size,
+                                                       hop_length=self.hop_length,
+                                                       y_axis='log',
+                                                       x_axis='s', ax=ax[i][j])
+                    else:
+                        img = librosa.display.specshow(spectrograms[j][i, :, :],
+                                                       n_fft=self.frame_size,
+                                                       hop_length=self.hop_length,
+                                                       x_axis='time',
+                                                       y_axis='mel',
+                                                       sr=self.config.load.sample_rate,
+                                                       ax=ax[i][j])
                     # img_reamped = librosa.display.specshow(batch[i, :, :],
                     #                                   n_fft=self.frame_size,
                     #                                   hop_length=self.hop_length,
@@ -378,18 +388,20 @@ class PreprocessingPipeline:
         for i in range(0, self.config.batch_size):
             segment_features.append([
                 norm_feature[
-                    :,
-                    i * segment_spectrogram_width: (i+1) * segment_spectrogram_width
+                :,
+                i * segment_spectrogram_width: (i + 1) * segment_spectrogram_width
                 ]
             ])  # Adding in a list to specify the channel. we will just have one channel
             segment_features_di.append([
                 norm_feature_di[
-                    :,
-                    i * segment_spectrogram_width: (i+1) * segment_spectrogram_width
+                :,
+                i * segment_spectrogram_width: (i + 1) * segment_spectrogram_width
                 ]
             ])  # Adding in a list to specify the channel. we will just have one channel
-            segment_signal.append(signal[i * segment_signal_width: i * segment_signal_width + desired_segment_signal_width])
-            segment_signal_di.append(signal_di[i * segment_signal_width: i * segment_signal_width + desired_segment_signal_width])
+            segment_signal.append(
+                signal[i * segment_signal_width: i * segment_signal_width + desired_segment_signal_width])
+            segment_signal_di.append(
+                signal_di[i * segment_signal_width: i * segment_signal_width + desired_segment_signal_width])
 
         # save_path = self.saver.save_feature(norm_feature, phases, file_name)
         # self.saver.save_min_max_values(file_name, feature.min(), feature.max())
@@ -401,8 +413,8 @@ class PreprocessingPipeline:
                 self.visualizer.visualize(segment_features[i][0], clip_name, f"{offset:.2f}-{i}")
                 self.visualizer.visualize(segment_features_di[i][0], 'DI.wav', f"{offset:.2f}-{i}")
 
-        return np.array(segment_features), np.array(segment_features_di), np.array(segment_signal), np.array(segment_signal_di)
-
+        return np.array(segment_features), np.array(segment_features_di), np.array(segment_signal), np.array(
+            segment_signal_di)
 
     def _is_padding_necessary(self, signal):
         if len(signal) < self._num_expected_samples:

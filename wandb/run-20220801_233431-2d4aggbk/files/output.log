@@ -1,0 +1,654 @@
+GPU available: False, used: False
+TPU available: False, using: 0 TPU cores
+IPU available: False, using: 0 IPUs
+Global seed set to 1265
+initializing distributed: GLOBAL_RANK: 0, MEMBER: 1/1
+----------------------------------------------------------------------------------------------------
+distributed_backend=gloo
+All distributed processes registered. Starting with 1 processes
+----------------------------------------------------------------------------------------------------
+/opt/anaconda3/lib/python3.8/site-packages/pytorch_lightning/core/datamodule.py:469: LightningDeprecationWarning: DataModule.setup has already been called, so it will not be called again. In v1.6 this behavior will change to always call DataModule.setup.
+  rank_zero_deprecation(
+MusicVAEFlat(
+  (encoder): Sequential(
+    (0): Sequential(
+      (conv2d_0): Conv2d(1, 128, kernel_size=(3, 3), stride=(2, 1), padding=(1, 1))
+      (batchNorm2d_0): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (leakyReLU_0): LeakyReLU(negative_slope=0.01)
+    )
+    (1): Sequential(
+      (conv2d_1): Conv2d(128, 64, kernel_size=(3, 3), stride=(2, 1), padding=(1, 1))
+      (batchNorm2d_1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (leakyReLU_1): LeakyReLU(negative_slope=0.01)
+    )
+    (2): Sequential(
+      (conv2d_2): Conv2d(64, 32, kernel_size=(3, 3), stride=(2, 1), padding=(1, 1))
+      (batchNorm2d_2): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (leakyReLU_2): LeakyReLU(negative_slope=0.01)
+    )
+  )
+  (fc_mu): Sequential(
+    (conv2d_fc_mu): Conv2d(32, 16, kernel_size=(3, 3), stride=(2, 1), padding=(1, 1))
+    (batchNorm2d_fc_mu): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (leakyReLU_fc_mu): LeakyReLU(negative_slope=0.01)
+  )
+  (fc_var): Sequential(
+    (conv2d_fc_var): Conv2d(32, 16, kernel_size=(3, 3), stride=(2, 1), padding=(1, 1))
+    (batchNorm2d_fc_var): BatchNorm2d(16, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (leakyReLU_fc_var): LeakyReLU(negative_slope=0.01)
+  )
+  (decoder): Sequential(
+    (0): Sequential(
+      (convTranspose2d_1): ConvTranspose2d(16, 32, kernel_size=(3, 3), stride=(2, 1), padding=(1, 1), output_padding=(1, 0))
+      (batchnorm2d_1): BatchNorm2d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (leakyReLU_1): LeakyReLU(negative_slope=0.01)
+    )
+    (1): Sequential(
+      (convTranspose2d_2): ConvTranspose2d(32, 64, kernel_size=(3, 3), stride=(2, 1), padding=(1, 1), output_padding=(1, 0))
+      (batchnorm2d_2): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (leakyReLU_2): LeakyReLU(negative_slope=0.01)
+    )
+    (2): Sequential(
+      (convTranspose2d_3): ConvTranspose2d(64, 128, kernel_size=(3, 3), stride=(2, 1), padding=(1, 1), output_padding=(1, 0))
+      (batchnorm2d_3): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+      (leakyReLU_3): LeakyReLU(negative_slope=0.01)
+    )
+  )
+  (final_layer): Sequential(
+    (final_convTranspose2d): ConvTranspose2d(128, 128, kernel_size=(3, 3), stride=(2, 1), padding=(1, 1), output_padding=(1, 0))
+    (final_batchNorm2d): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (final_leakyReLU): LeakyReLU(negative_slope=0.01)
+    (final_Conv2d): Conv2d(128, 1, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (final_tanH): Sigmoid()
+  )
+)
+======= Training MusicVAEFlat =======
+  | Name  | Type         | Params
+---------------------------------------
+0 | model | MusicVAEFlat | 349 K
+---------------------------------------
+349 K     Trainable params
+0         Non-trainable params
+349 K     Total params
+1.399     Total estimated model params size (MB)
+/opt/anaconda3/lib/python3.8/site-packages/pytorch_lightning/trainer/data_loading.py:116: UserWarning: The dataloader, val_dataloader 0, does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` (try 8 which is the number of cpus on this machine) in the `DataLoader` init to improve performance.
+  rank_zero_warn(
+Validation sanity check:   0% 0/2 [00:00<?, ?it/s]
+/opt/anaconda3/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/logger_connector/result.py:220: UserWarning: You called `self.log('_timestamp', ...)` in your `validation_step` but the value needs to be floating point. Converting it to torch.float32.
+  warning_cache.warn(
+/opt/anaconda3/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/logger_connector/result.py:220: UserWarning: You called `self.log('_runtime', ...)` in your `validation_step` but the value needs to be floating point. Converting it to torch.float32.
+
+
+Validation sanity check:  50% 1/2 [00:02<00:02,  2.50s/it]
+Global seed set to 1265
+/opt/anaconda3/lib/python3.8/site-packages/pytorch_lightning/trainer/data_loading.py:116: UserWarning: The dataloader, train_dataloader, does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` (try 8 which is the number of cpus on this machine) in the `DataLoader` init to improve performance.
+  rank_zero_warn(
+Epoch 0:   0% 0/160 [00:00<?, ?it/s]
+/opt/anaconda3/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/logger_connector/result.py:220: UserWarning: You called `self.log('_timestamp', ...)` in your `training_step` but the value needs to be floating point. Converting it to torch.float32.
+  warning_cache.warn(
+/opt/anaconda3/lib/python3.8/site-packages/pytorch_lightning/trainer/connectors/logger_connector/result.py:220: UserWarning: You called `self.log('_runtime', ...)` in your `training_step` but the value needs to be floating point. Converting it to torch.float32.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Epoch 0:  50% 80/160 [03:53<03:53,  2.91s/it, loss=0.969, v_num=11]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Epoch 1:  50% 80/160 [03:47<03:47,  2.84s/it, loss=0.0419, v_num=11]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Epoch 2:  50% 80/160 [03:45<03:45,  2.82s/it, loss=0.24, v_num=11]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Epoch 3:  50% 80/160 [03:45<03:45,  2.82s/it, loss=3.23, v_num=11]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Validating:  92% 74/80 [01:52<00:09,  1.53s/it]
+/opt/anaconda3/lib/python3.8/site-packages/pytorch_lightning/trainer/trainer.py:685: UserWarning: Detected KeyboardInterrupt, attempting graceful shutdown...
+
+Validating:  94% 75/80 [01:54<00:07,  1.58s/it]

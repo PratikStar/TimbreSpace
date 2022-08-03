@@ -7,9 +7,9 @@ data_params:
   num_workers: 0
 
   spectrogram:
-    type: "mel" # "stft" or "mel"
+    type: "stft" # "stft" or "mel"
     stft:
-      spectrogram_dims: [80, 63]
+      spectrogram_dims: [256, 64]
     mel:
       frame_size: 1024
       hop_length: 256
@@ -29,11 +29,11 @@ data_params:
 
 model_params:
   name: 'MusicVAEFlat'
-  spectrogram_dims: [1, 80, 63] # (C, H, W). dependant on data_params.stft.segment_duration
+  spectrogram_dims: [1, 256, 64] # (C, H, W). dependant on data_params.spectrogram....
   conv2d_channels: [128, 64, 32, 16] # These are conv2d channels. Encoder: (1, 256, 64) -> (32, 128, 32) -> (64, 64, 16) -> (128, 32, 8) -> (256, 16, 4) -> (512, 8, 2)
   latent_dim: 32
-  stride: [2, 1]
-  kernel_size: [3, 3]
+  stride: [1, 1]
+  kernel_size: [4, 4]
   padding: [1, 1]
   output_padding: [1, 0]
   loss:
@@ -57,4 +57,3 @@ trainer_params:
 logging_params:
   save_dir: "logs/"
   name: "MusicVAEFlat"
-  

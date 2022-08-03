@@ -8,6 +8,18 @@ from prodict import Prodict
 import yaml
 
 
+def re_nest_configs(dictionary):
+    resultDict = dict()
+    for key, value in dictionary.items():
+        parts = key.split(".")
+        d = resultDict
+        for part in parts[:-1]:
+            if part not in d:
+                d[part] = dict()
+            d = d[part]
+        d[parts[-1]] = value
+    return resultDict
+
 def data_loader(fn):
     """
     Decorator to handle the deprecation of data_loader from 0.7

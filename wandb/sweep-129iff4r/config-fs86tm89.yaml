@@ -1,0 +1,6 @@
+wandb_version: 1
+
+exp_params.LR:
+  value: 0.00984144142940037
+optimizer:
+  value: sgd

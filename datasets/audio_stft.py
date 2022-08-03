@@ -65,26 +65,13 @@ class AudioSTFT(Dataset):
         # self.preprocessing_pipeline.visualizer = visualizer
 
     def __getitem__(self, key):  # Get random segment. key in the param is not used
-        batch, batch_di, key, offset = next(iter(self.timbre_dl))
-
-        # Get signal!!
-        file_name = self.timbre_data.dataset.dataset_path / 'clips' / self.timbre_data.dataset.clips[key]
-        signal = self.timbre_data.dataset.preprocessing_pipeline.loader.load(file_name, offset)
-        s = []
-        signal_segment_width = signal.shape[0] // self.dataset_config.timbre.batch_size
-        for i in range(0, self.dataset_config.timbre.batch_size):
-            s.append(signal[i * signal_segment_width: (i + 1) * signal_segment_width])
-
+        batch, batch_di, signal, signal_di, key, offset = next(iter(self.timbre_dl))
 
         if self.dataset_config.audio == "original":
-
-
-
-            return batch_di, signal_di
-        elif self.dataset_config.audio == "reconstruction":
+            return torch.squeeze(batch_di, 0), torch.squeeze(signal_di, 0)
+        elif self.dataset_config.audio == "reconstructed":
             di_recons, _, _, _, z = self.timbre_model.forward(torch.squeeze(batch, 0))
-
-            return di_recons, signal_di
+            return torch.squeeze(di_recons, 1), torch.squeeze(signal_di, 0)
 
 
 

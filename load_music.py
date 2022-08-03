@@ -17,7 +17,7 @@ import numpy as np
 
 ## Load model
 config = get_config(os.path.join(os.getcwd(), 'configs/music_vae.yaml'))
-chk_path = os.path.join(os.getcwd(), f"logw/logs/{config['model_params']['name']}/version_11/checkpoints/last.ckpt")
+chk_path = os.path.join(os.getcwd(), f"logw/logs/{config['model_params']['name']}/version_14/checkpoints/last.ckpt")
 
 # chkpt = torch.load(chk_path, map_location=torch.device('cpu'))
 model = MusicVAELightningModule.load_from_checkpoint(checkpoint_path=chk_path,
@@ -28,10 +28,10 @@ model = MusicVAELightningModule.load_from_checkpoint(checkpoint_path=chk_path,
 data = TimbreDataModule(config.data_params, pin_memory=len(config['trainer_params']['gpus']) != 0)
 data.setup()
 dl = data.train_dataloader()
-batch, batch_di, key, offset = next(iter(dl))
-exit()
+batch, batch_di, _, _, key, offset = next(iter(dl))
+# exit()
 times = 1
-for step, (batch, batch_di, key, offset) in enumerate(dl):
+for step, (batch, batch_di, _, _, key, offset) in enumerate(dl):
     batch = torch.squeeze(batch, 0)
     di_recons, _, _, _, z = model.forward(batch)
 
@@ -39,12 +39,12 @@ for step, (batch, batch_di, key, offset) in enumerate(dl):
     batch_di = torch.squeeze(batch_di, 0).cpu().numpy()
     batch = batch.cpu().numpy()
     clip_name = data.dataset.clips[key]
-
+    exit()
     if step == times:
         break
     data.dataset.preprocessing_pipeline.visualizer.visualize_multiple(
         [batch[:, 0, :, :], batch_di[:, 0, :, :], di_recons[:, 0, :, :]],
-        file_dir=Path(chk_path).parents[1] / 'recons',
+        file_dir=Path(chk_path).parents[1],
         col_titles=["Reamped", "Expected DI", "Reconstruction DI"],
         title=f"Name: {model.config_dump['model_params']['name']}, Epochs: {model.config_dump['trainer_params']['max_epochs']}, Samples: {model.config_dump['model_params']['spectrogram_dims'][-1]}, Loss: {model.config_dump['model_params']['loss']['function']}")
 

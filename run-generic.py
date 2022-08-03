@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 from experiment_music import MusicVAELightningModule
+from experiment_timbre_transfer import TimbreTransferLM
 from models import *
 from experiment import VAELightningModule
 from pytorch_lightning import Trainer
@@ -38,16 +39,16 @@ fb = next(iter(dl))
 # model = MusicTimbreVAE(**config['model_params'], )
 # vae = MusicTimbreVAELightningModule(model,
 #                                config['exp_params'])
-vae = None
+lightning_module = None
 if 'load_path' in config['model_params']:
     print(f"Loading model from {config['model_params']['load_path']}")
     chk_path = os.path.join(os.getcwd(), config['model_params']['load_path'])
-    vae = MusicVAELightningModule.load_from_checkpoint(checkpoint_path=chk_path,
-                                                         map_location=torch.device(device))
+    lightning_module = TimbreTransferLM.load_from_checkpoint(checkpoint_path=chk_path,
+                                                                    map_location=torch.device(device))
 else:
-    model = vae_models[config['model_params']['name']](**config['model_params'])
-    vae = MusicVAELightningModule(model,
-                                  config=config)
+    model = vae_models[config['model_params']['name']](config['model_params'])
+    lightning_module = TimbreTransferLM(model,
+                                               config=config)
 
 trainer = Trainer(logger=tb_logger,
                   # check_val_every_n_epoch=5,
@@ -65,4 +66,4 @@ trainer = Trainer(logger=tb_logger,
                   **config['trainer_params'])
 # exit()
 print(f"======= Training {config['model_params']['name']} =======")
-trainer.fit(vae, datamodule=data)
+trainer.fit(lightning_module, datamodule=data)

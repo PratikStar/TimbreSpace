@@ -10,6 +10,8 @@ from torch import optim
 from models import BaseVAE, MusicTimbreVAE, MusicVAE
 from models.types_ import *
 from pytorch_lightning.utilities.types import _METRIC_COLLECTION, EPOCH_OUTPUT, STEP_OUTPUT
+import wandb
+from utils import re_nest_configs
 
 
 class MusicVAELightningModule(pl.LightningModule, ABC):
@@ -21,16 +23,17 @@ class MusicVAELightningModule(pl.LightningModule, ABC):
                  ) -> None:
         super(MusicVAELightningModule, self).__init__()
         self.save_hyperparameters()
-
-        # print(config)
+        wandb.init(project="music-vae",
+                   entity="auditory-grounding")
+        wandb.config.update(re_nest_configs({**self.hparams.config, **wandb.config}))
+        wandb.watch(vae_model)
+        print(vae_model)
         self.model = vae_model
-        self.config = config['exp_params']
-        self.config_dump = config
-        # self.config = config
+        self.config = wandb.config
         self.curr_device = None
         self.hold_graph = False
         try:
-            self.hold_graph = self.config['retain_first_backpass']
+            self.hold_graph = self.config['exp_params']['retain_first_backpass']
         except:
             pass
 
@@ -38,7 +41,8 @@ class MusicVAELightningModule(pl.LightningModule, ABC):
         return self.model(input, **kwargs)
 
     def training_step(self, batch_item, batch_idx, optimizer_idx=0):
-        # print(f'\n=== Training step. batchidx: {batch_idx}, optimizeridx: {optimizer_idx} ===')
+        print(f'\n=== Training step. batchidx: {batch_idx}, optimizeridx: {optimizer_idx} ===')
+        print(self.config)
         batch, batch_di, _, _, key, offset = batch_item
         batch = torch.squeeze(batch, 0)
         batch_di = torch.squeeze(batch_di, 0)
@@ -47,16 +51,19 @@ class MusicVAELightningModule(pl.LightningModule, ABC):
 
         music_results = self.model.forward(batch)
         music_train_loss = self.model.loss_function(*music_results, batch_di,
-                                              M_N=self.config['kld_weight'],  # al_img.shape[0]/ self.num_train_imgs,
+                                              M_N=self.config['exp_params']['kld_weight'],  # al_img.shape[0]/ self.num_train_imgs,
                                               optimizer_idx=optimizer_idx,
                                               batch_idx=batch_idx)
-        self.log_dict({key: val.item() for key, val in music_train_loss.items()}, sync_dist=True)
-        # print(music_train_loss)
+        log_dict = {key: val.item() for key, val in music_train_loss.items()}
+        wandb.log(log_dict)
+        self.log_dict(log_dict, sync_dist=True)
         return music_train_loss['loss']
 
 
     def validation_step(self, batch_item, batch_idx, ):
-        # print(f'\n=== Validation step. batchidx: {batch_idx} ===')
+        print(f'\n=== Validation step. batchidx: {batch_idx} ===')
+        print(self.config)
+
         batch, batch_di, _, _, key, offset = batch_item
 
         batch = torch.squeeze(batch, 0)
@@ -67,17 +74,19 @@ class MusicVAELightningModule(pl.LightningModule, ABC):
 
         music_results = self.model.forward(batch)
         music_val_loss = self.model.loss_function(*music_results, batch_di,
-                                              M_N=self.config['kld_weight'],  # al_img.shape[0]/ self.num_train_imgs,
+                                              M_N=self.config['exp_params']['kld_weight'],  # al_img.shape[0]/ self.num_train_imgs,
                                               optimizer_idx=None,
                                               batch_idx=batch_idx)
         # print(music_val_loss)
-        self.log_dict({f"val_{key}": val.item() for key, val in music_val_loss.items()}, sync_dist=True)
+        log_dict = {f"val_{key}": val.item() for key, val in music_val_loss.items()}
+        wandb.log(log_dict)
+        self.log_dict(log_dict, sync_dist=True)
 
     def configure_optimizers(self):
 
         music_optimizer = optim.Adam(self.model.parameters(),
-                               lr=self.config['LR'],
-                               weight_decay=self.config['weight_decay'])
+                               lr=self.config['exp_params']['LR'],
+                               weight_decay=self.config['exp_params']['weight_decay'])
 
         return music_optimizer
 
