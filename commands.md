@@ -9,7 +9,7 @@ cd /Users/pratik/data/timbre
 rsync -avz "/Users/pratik/data/timbre" w:/work/gk77/k77021/data
 
 # 3. Logs from wisteria
-watch -d -n5 "rsync -avz w:/work/gk77/k77021/repos/TimbreSpace/logs \"/Users/pratik/repos/TimbreSpace/logw\""
+watch -d -n5 "rsync -avz --exclude-from=\".rsyncignore_download\" w:/work/gk77/k77021/repos/TimbreSpace/logs/TimbreTransferFlatten \"/Users/pratik/repos/TimbreSpace/logw/logs\""
 
 ```
 # Notes

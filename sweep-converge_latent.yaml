@@ -1,0 +1,15 @@
+#program: "run-timbre-vae.py -c config/music-vae.yaml"
+command:
+  - python3
+  - run-generic.py
+  - -c
+  - configs/timbre_transfer_flatten.yaml
+method: grid
+metric:
+  name: val_loss
+  goal: minimize
+parameters:
+  model_params.timbre_encoder.converge_latent:
+    values: [first, mean, max]
+project: "try"
+entity: "auditory-grounding"

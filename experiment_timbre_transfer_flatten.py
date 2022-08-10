@@ -7,7 +7,7 @@ import torch
 import torchvision.utils as vutils
 from torch import optim
 
-from models import TimbreTransfer
+from models import TimbreTransfer, TimbreTransferFlatten
 from models.types_ import *
 from pytorch_lightning.utilities.types import _METRIC_COLLECTION, EPOCH_OUTPUT, STEP_OUTPUT
 import wandb
@@ -15,14 +15,14 @@ from utils import re_nest_configs
 from prodict import Prodict
 
 
-class TimbreTransferLM(pl.LightningModule, ABC):
+class TimbreTransferFlattenLM(pl.LightningModule, ABC):
 
     def __init__(self,
-                 model: TimbreTransfer,  # contains Music vae
+                 model: TimbreTransferFlatten,  # contains Music vae
                  config: dict,
                  # config_dump: dict, # This is for logging
                  ) -> None:
-        super(TimbreTransferLM, self).__init__()
+        super(TimbreTransferFlattenLM, self).__init__()
         self.save_hyperparameters()
 
         wandb.config.update(re_nest_configs({**self.hparams.config, **wandb.config}))
@@ -46,12 +46,15 @@ class TimbreTransferLM(pl.LightningModule, ABC):
         self.curr_device = re_b.device
         # print(type(batch.device))
 
-        recons, mu, log_var, _ = self.model.forward(re_a, di_a, re_b, di_b)
+        recons, mu_t, log_var_t, _, mu_m, log_var_m, _ = self.model.forward(re_a, di_a, re_b, di_b)
         music_train_loss = self.model.loss_function(recons=recons,
                                                     re_b=re_b,
-                                                    kld_weight=self.config['exp_params']['kld_weight'],
-                                                    mu=mu,
-                                                    log_var=log_var
+                                                    kld_weight_timbre=self.config['exp_params']['kld_weight_timbre'],
+                                                    kld_weight_music=self.config['exp_params']['kld_weight_music'],
+                                                    mu_t=mu_t,
+                                                    log_var_t=log_var_t,
+                                                    mu_m=mu_m,
+                                                    log_var_m=log_var_m
                                                     )
 
         log_dict = {key: val.item() for key, val in music_train_loss.items()}
@@ -66,13 +69,16 @@ class TimbreTransferLM(pl.LightningModule, ABC):
 
         self.curr_device = re_b.device
 
-        recons, mu, log_var, _ = self.model.forward(re_a, di_a, re_b, di_b)
+        recons, mu_t, log_var_t, _, mu_m, log_var_m, _ = self.model.forward(re_a, di_a, re_b, di_b)
         music_val_loss = self.model.loss_function(recons=recons,
-                                                  re_b=re_b,
-                                                  kld_weight=self.config['exp_params']['kld_weight'],
-                                                  mu=mu,
-                                                  log_var=log_var
-                                                  )
+                                                    re_b=re_b,
+                                                    kld_weight_timbre=self.config['exp_params']['kld_weight_timbre'],
+                                                    kld_weight_music=self.config['exp_params']['kld_weight_music'],
+                                                    mu_t=mu_t,
+                                                    log_var_t=log_var_t,
+                                                    mu_m=mu_m,
+                                                    log_var_m=log_var_m
+                                                    )
         # print(music_val_loss)
         log_dict = {f"val_{key}": val.item() for key, val in music_val_loss.items()}
         log_dict['epoch'] = self.trainer.current_epoch
@@ -91,7 +97,7 @@ class TimbreTransferLM(pl.LightningModule, ABC):
         # Get sample reconstruction image
         batch_item = next(iter(self.trainer.datamodule.val_dataloader())) # this does not return current device correctly
         re_a, di_a, re_b, di_b = self.create_input_batch(batch_item)
-        recons, mu, log_var, _ = self.model.forward(re_a.to(self.curr_device), di_a.to(self.curr_device), re_b.to(self.curr_device), di_b.to(self.curr_device))
+        recons, mu_t, log_var_t, _, mu_m, log_var_m, _ = self.model.forward(re_a.to(self.curr_device), di_a.to(self.curr_device), re_b.to(self.curr_device), di_b.to(self.curr_device))
 
         di_b = di_b.detach().to("cpu").numpy()
         re_b = re_b.detach().to("cpu").numpy()

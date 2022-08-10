@@ -17,15 +17,7 @@ class TimbreTransfer(BaseVAE, ABC):
         super(TimbreTransfer, self).__init__()
         self.timbre_encoder_config = config['timbre_encoder']
         self.decoder_config = config['decoder']
-        # self.spectrogram_dims = spectrogram_dims
-        # self.latent_dim = latent_dim
-        # self.conv2d_channels = conv2d_channels
-        # self.stride = tuple(stride)
-        # self.kernel_size = tuple(kernel_size)
-        # self.padding = tuple(padding)
-        # self.output_padding = tuple(output_padding)
-        # self.loss_func = loss['function']
-
+        self.config = config
 
         # Build Timbre Encoder
         modules = []
@@ -59,74 +51,105 @@ class TimbreTransfer(BaseVAE, ABC):
         self.fc_mu = nn.Linear(conv_layers_output_dim, self.timbre_encoder_config.latent_dim)
         self.fc_var = nn.Linear(conv_layers_output_dim, self.timbre_encoder_config.latent_dim)
 
+
+
         # Build Decoder
+        in_channels = self.decoder_config.di_spectrogram_dims[0]
+        h, w = self.decoder_config.di_spectrogram_dims[1:]
+        assert h == self.timbre_encoder_config.latent_dim
+        print(f"Decoder Input dims: {self.decoder_config.di_spectrogram_dims}")
+        if self.config.merge_encoding == "sandwich": # z di_b z
+            w += 2
+        else:
+            raise Exception("merge_encoding not defined")
+        print(f"Concatenated Decoder Input dims: ({self.decoder_config.conv2d_channels[0]}, {h}, {w})")
+
+        # First decoder transformation to adjust size
+        self.merge_encoding_layer = nn.Sequential(
+                collections.OrderedDict(
+                    [
+                        (f"conv2d_merge_layer", nn.Conv2d(in_channels, out_channels=self.decoder_config.conv2d_channels[0],
+                                                  kernel_size=self.decoder_config.kernel_size,
+                                                  stride=(1, 1),
+                                                  padding=(self.decoder_config.padding[0], 1))),
+                        (f"batchNorm2d_merge_layer", nn.BatchNorm2d(self.decoder_config.conv2d_channels[0])),
+                        (f"leakyReLU_merge_layer", nn.LeakyReLU())
+                    ]
+                )
+            )
+        in_channels = self.decoder_config.conv2d_channels[0]
+        h = math.floor((h + 2 * self.decoder_config.padding[0] - 1 * (self.decoder_config.kernel_size[0] - 1) - 1) / self.decoder_config.stride[0] + 1)
+        w = math.floor((w + 2 * self.decoder_config.padding[1] - 1 * (self.decoder_config.kernel_size[1] - 1) - 1) / self.decoder_config.stride[1] + 1)
+
+        h = math.floor((h + 2 * self.decoder_config.padding[0] - 1 * (self.decoder_config.kernel_size[0] - 1) - 1) / 1 + 1)
+        w = math.floor((w + 2 * 1 - 1 * (self.decoder_config.kernel_size[1] - 1) - 1) / 1 + 1)
+        assert self.decoder_config.di_spectrogram_dims[1] == h
+        assert self.decoder_config.di_spectrogram_dims[2] == w
+        print(f"Adjusted decoder input layer dims (upchanneled): ({in_channels}, {h}, {w})")
+
+
         modules = []
-        for i in range(len(self.conv2d_channels) - 1, 0, -1):
+        for i in range(1, len(self.decoder_config.conv2d_channels)):
             modules.append(
                 nn.Sequential(
                     collections.OrderedDict(
                         [
-                            (f"convTranspose2d_{len(self.conv2d_channels) - i}",
-                             nn.ConvTranspose2d(self.conv2d_channels[i],
-                                                self.conv2d_channels[i - 1],
-                                                kernel_size=self.kernel_size,
-                                                stride=self.stride,
-                                                padding=self.padding,
-                                                output_padding=self.output_padding)),
-                            (f"batchnorm2d_{len(self.conv2d_channels) - i}",
-                             nn.BatchNorm2d(self.conv2d_channels[i - 1])),
-                            (f"leakyReLU_{len(self.conv2d_channels) - i}", nn.LeakyReLU()),
+                            (f"conv2d_{i}", nn.Conv2d(in_channels, out_channels=self.decoder_config.conv2d_channels[i],
+                                                      kernel_size=self.decoder_config.kernel_size, stride=self.decoder_config.stride,
+                                                      padding=self.decoder_config.padding)),
+                            (f"batchNorm2d_{i}", nn.BatchNorm2d(self.decoder_config.conv2d_channels[i])),
+                            (f"leakyReLU_{i}", nn.LeakyReLU())
                         ]
                     )
                 )
             )
-            h = (h - 1) * self.stride[0] - 2 * self.padding[0] + 1 * (self.kernel_size[0] - 1) + self.output_padding[
-                0] + 1
-            w = (w - 1) * self.stride[1] - 2 * self.padding[1] + 1 * (self.kernel_size[1] - 1) + self.output_padding[
-                1] + 1
-            print(f"ConvTranspose layer dims: ({self.conv2d_channels[i - 1]}, {h}, {w})")
+            in_channels = self.decoder_config.conv2d_channels[i]
+            h = math.floor((h + 2 * self.decoder_config.padding[0] - 1 * (self.decoder_config.kernel_size[0] - 1) - 1) / self.decoder_config.stride[0] + 1)
+            w = math.floor((w + 2 * self.decoder_config.padding[1] - 1 * (self.decoder_config.kernel_size[1] - 1) - 1) / self.decoder_config.stride[1] + 1)
+            print(f"Decoder Conv layer dims: ({self.decoder_config.conv2d_channels[i]}, {h}, {w})")
 
         self.decoder = nn.Sequential(*modules)
 
         self.final_layer = nn.Sequential(collections.OrderedDict([
-            (f"final_convTranspose2d", nn.ConvTranspose2d(self.conv2d_channels[0],
-                                                          self.conv2d_channels[0],
-                                                          kernel_size=self.kernel_size,
-                                                          stride=self.stride,
-                                                          padding=self.padding,
-                                                          output_padding=self.output_padding)),
-            (f"final_batchNorm2d", nn.BatchNorm2d(self.conv2d_channels[0])),
-            (f"final_leakyReLU", nn.LeakyReLU()),
-            (f"final_Conv2d", nn.Conv2d(self.conv2d_channels[0], out_channels=1, stride=1,
-                                        kernel_size=3, padding=1)),  # output shape is: (1, 256, 64)
-            (f"final_tanH", nn.Sigmoid())]))
+            # (f"final_convTranspose2d", nn.ConvTranspose2d(1,
+            #                                               1,
+            #                                               kernel_size=self.decoder_config.kernel_size,
+            #                                               stride=(1, 1),
+            #                                               padding=(2, 2),
+            #                                               output_padding=(0,0))),
+            # (f"final_batchNorm2d", nn.BatchNorm2d(1)),
+            # (f"final_leakyReLU", nn.LeakyReLU()),
+            # (f"final_Conv2d", nn.Conv2d(in_channels=1, out_channels=1, stride=1,
+            #                             kernel_size=5, padding=2)),
+            (f"final_sigmoid", nn.Sigmoid())]))
 
-        # Final convtranspose2d layer
-        h = (h - 1) * self.stride[0] - 2 * self.padding[0] + 1 * (self.kernel_size[0] - 1) + self.output_padding[0] + 1
-        w = (w - 1) * self.stride[1] - 2 * self.padding[1] + 1 * (self.kernel_size[1] - 1) + self.output_padding[1] + 1
-        print(f"final ConvTranspose layer dims: ({self.conv2d_channels[0]}, {h}, {w})")
-        # Final conv layer
-        h = math.floor((h + 2 * self.padding[0] - 1 * (self.kernel_size[0] - 1) - 1) / 1 + 1)
-        w = math.floor((w + 2 * self.padding[1] - 1 * (self.kernel_size[1] - 1) - 1) / 1 + 1)
-        print(f"final Conv layer dims: (1, {h}, {w})")
+        # # Final convtranspose2d layer
+        # h = (h - 1) * 1 - 2 * 2 + 1 * (5 - 1) + 0 + 1
+        # w = (w - 1) * 1 - 2 * 2 + 1 * (5 - 1) + 0 + 1
+        # print(f"final ConvTranspose layer dims: ({self.decoder_config.conv2d_channels[-1]}, {h}, {w})")
+        # # Final conv layer
+        # h = math.floor((h + 2 * self.decoder_config.padding[0] - 1 * (self.decoder_config.kernel_size[0] - 1) - 1) / self.decoder_config.stride[0] + 1)
+        # w = math.floor((w + 2 * self.decoder_config.padding[1] - 1 * (self.decoder_config.kernel_size[1] - 1) - 1) / self.decoder_config.stride[1] + 1)
+        # print(f"final Conv layer dims: ({self.decoder_config.conv2d_channels[-1]}, {h}, {w})")
 
-        assert h == self.spectrogram_dims[1] and w == self.spectrogram_dims[
-            2], f"The input {self.spectrogram_dims[1:]} and output {[h, w]} dims of the VAE don't match"
+        assert h == self.decoder_config.di_spectrogram_dims[1] and w == self.decoder_config.di_spectrogram_dims[
+            2], f"The input {self.decoder_config.di_spectrogram_dims[1:]} and output {[h, w]} dims of the VAE don't match"
 
-    def forward(self, input: Tensor, **kwargs) -> List[Tensor]:
-        mu, log_var = self.encode(input)
+    def forward(self, re_a, di_a, re_b, di_b) -> List[Tensor]:
+        # Encode the reamped. reparameterize, and get z
+        mu, log_var = self.encode(re_a)
         z = self.reparameterize(mu, log_var)
-        return [self.decode(z), input, mu, log_var, z]
 
-    def encode(self, input: Tensor) -> List[Tensor]:
-        """
-        Encodes the input by passing through the encoder network
-        and returns the latent codes.
-        :param input: (Tensor) Input tensor to encoder [N x C x H x W]
-        :return: (Tensor) List of latent codes
-        """
-        result = self.encoder(input)
-        # result = torch.flatten(result, start_dim=1)
+        # transform di input
+        adjusted_decoder_input = self.merge_encoding(di_b, z)
+        # run decoder
+        recons = self.decode(adjusted_decoder_input)
+        return [recons, mu, log_var, z]
+
+    def encode(self, re_a: Tensor) -> List[Tensor]:
+
+        result = self.encoder(re_a)
+        result = torch.flatten(result, start_dim=1)
 
         mu = self.fc_mu(result)
         log_var = self.fc_var(result)
@@ -145,51 +168,41 @@ class TimbreTransfer(BaseVAE, ABC):
         eps = torch.randn_like(std)
         return eps * std + mu
 
-    def decode(self, z: Tensor) -> Tensor:
+    def decode(self, input: Tensor) -> Tensor:
         """
         Maps the given latent codes
         onto the image space.
         :param z: (Tensor) [B x D]
         :return: (Tensor) [B x C x H x W]
         """
-
-        # result = self.decoder_input(z)
-        # result = result.view(-1, self.conv2d_channels[-1],
-        #                      int(self.spectrogram_dims[0] / math.pow(2, len(self.conv2d_channels))),
-        #                      int(self.spectrogram_dims[1] / math.pow(2, len(self.conv2d_channels))))
-        result = self.decoder(z)
+        result = self.decoder(input)
         result = self.final_layer(result)
         return result
 
-    def loss_function(self,
-                      *args,
-                      **kwargs) -> dict:
-        """
-        Computes the VAE loss function.
-        KL(N(\mu, \sigma), N(0, 1)) = \log \frac{1}{\sigma} + \frac{\sigma^2 + \mu^2}{2} - \frac{1}{2}
-        :param args:
-        :param kwargs:
-        :return:
-        """
-        recons = args[0]
-        input = args[1]
-        mu = args[2]
-        log_var = args[3]
-        di = args[5]
-        # print(f"recons: {recons.shape}")
-        # print(f"di: {di.shape}")
-
-        kld_weight = kwargs['M_N']  # Account for the minibatch samples from the dataset
-        if self.loss_func == "L1":
-            recons_loss = F.l1_loss(recons, di)
+    def merge_encoding(self, di_b, z):
+        if self.config.merge_encoding == "sandwich":
+            z = torch.unsqueeze(z, 1)
+            z = torch.unsqueeze(z, 3)
+            merged_input = torch.cat((z, di_b, z), 3)
+            res = self.merge_encoding_layer(merged_input)
+            return res
         else:
-            recons_loss = F.mse_loss(recons, di)
-        # print(f"recons_loss: {recons_loss.shape}, {recons_loss}")
-        # print(f"mu: {mu.shape}")
-        # print(f"log_var: {log_var.shape}")
-        kld_loss = torch.mean(-0.5 * torch.sum(1 + log_var - mu ** 2 - log_var.exp(), dim=(1, 2, 3)), dim=0)
-        # print(f"kld_loss: {kld_loss.shape}, {kld_loss}")
+            raise Exception("merge_encoding not defined")
+
+    def loss_function(self,
+                      recons: Tensor,
+                      re_b: Tensor,
+                      kld_weight: float,
+                      log_var: Tensor,
+                      mu) -> dict:
+
+        if self.config.loss.function == "L1":
+            recons_loss = F.l1_loss(recons, re_b)
+        elif self.config.loss.function == "L2":
+            recons_loss = F.mse_loss(recons, re_b)
+        else:
+            raise Exception("Loss function not defined")
+        kld_loss = torch.mean(-0.5 * torch.sum(1 + log_var - mu ** 2 - log_var.exp(), dim=1), dim=0)
 
         loss = recons_loss + kld_weight * kld_loss
-        # print(f"Shape of loss: {loss.shape}, {loss}")
         return {'loss': loss, 'Reconstruction_Loss': recons_loss.detach(), 'KLD': -kld_loss.detach()}

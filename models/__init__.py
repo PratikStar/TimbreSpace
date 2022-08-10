@@ -1,6 +1,7 @@
 from .base import *
 from .music_vae_flat import MusicVAEFlat
 from .music_vae import MusicVAE
+from .timbre_transfer_flatten import TimbreTransferFlatten
 from .vanilla_vae import *
 from .vq_vae import *
 from .timbre_vae import *
@@ -14,4 +15,6 @@ vae_models = {'VQVAE':VQVAE,
               'MusicVAE': MusicVAE,
               'MusicVAEFlat': MusicVAEFlat,
               'MusicTimbreVAE': MusicTimbreVAE,
-              'TimbreTransfer': TimbreTransfer}
+              'TimbreTransfer': TimbreTransfer,
+              'TimbreTransferFlatten': TimbreTransferFlatten,
+              }

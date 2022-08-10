@@ -10,3 +10,4 @@ out
 venv
 .idea
 samples
+wandb

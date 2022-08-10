@@ -124,7 +124,7 @@ class MusicVAEFlat(BaseVAE, ABC):
             (f"final_leakyReLU", nn.LeakyReLU()),
             (f"final_Conv2d", nn.Conv2d(self.conv2d_channels[0], out_channels=1, stride=1,
                                         kernel_size=3, padding=1)),  # output shape is: (1, 256, 64)
-            (f"final_tanH", nn.Sigmoid())]))
+            (f"final_sigmoid", nn.Sigmoid())]))
 
         # Final convtranspose2d layer
         h = (h - 1) * self.stride[0] - 2 * self.padding[0] + 1 * (self.kernel_size[0] - 1) + self.output_padding[0] + 1

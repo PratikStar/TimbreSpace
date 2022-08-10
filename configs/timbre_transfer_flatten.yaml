@@ -3,7 +3,8 @@ log_level: 6
 
 wandb:
   entity: "auditory-grounding"
-  project: "timbre-transfer"
+  project: "try"
+#  project: "timbre-transfer-flatten"
 
 data_params:
   dataset_path: '../../data/timbre'
@@ -13,7 +14,7 @@ data_params:
   spectrogram:
     type: "stft" # "stft" or "mel"
     stft:
-      spectrogram_dims: [512, 64]
+      spectrogram_dims: [256, 16]
     mel:
       frame_size: 1024
       hop_length: 256
@@ -32,43 +33,53 @@ data_params:
 
 
 model_params:
-  name: 'TimbreTransfer'
+  name: 'TimbreTransferFlatten'
   timbre_encoder:
     spectrogram_dims: [1, 256, 16] # (C, H, W). dependant on data_params.spectrogram....
-    conv2d_channels: [128, 64, 32, 16]
+    conv2d_channels: [32, 64, 128, 256]
     stride: [2, 2]
-    kernel_size: [7, 7] # 5X5 needs padding=2, and 7X7 needs padding=3. All when stride=2
-    padding: [3, 3]
+    kernel_size: [5, 5] # 5X5 needs padding=2, and 7X7 needs padding=3. All when stride=2
+    padding: [2, 2]
+    latent_dim: 32
+    converge_latent: "first"
+  music_encoder:
+    spectrogram_dims: [1, 256, 16] # (C, H, W). dependant on data_params.spectrogram....
+    conv2d_channels: [32, 64, 128, 256]
+    stride: [2, 2]
+    kernel_size: [5, 5] # 5X5 needs padding=2, and 7X7 needs padding=3. All when stride=2
+    padding: [2, 2]
     latent_dim: 256
-    converge_latent: "first" # TODO: not used
-  loss:
-    function: "L1"
-  merge_encoding: "sandwich" # z di_b z
+  merge_encoding: "cat" # z di_b z
   decoder:
     di_spectrogram_dims: [1, 256, 16] # (C, H, W). dependant on data_params.spectrogram....
-    conv2d_channels: [32, 8, 2, 1] # These are conv2d channels. Encoder: (1, 256, 64) -> (32, 128, 32) -> (64, 64, 16) -> (128, 32, 8) -> (256, 16, 4) -> (512, 8, 2)
-    stride: [1, 1]
+    conv2d_channels: [256, 128, 64, 32] # These are conv2d channels. Encoder: (1, 256, 64) -> (32, 128, 32) -> (64, 64, 16) -> (128, 32, 8) -> (256, 16, 4) -> (512, 8, 2)
+    stride: [2, 2]
     kernel_size: [5, 5]
     padding: [2, 2]
-  load_path: "/work/gk77/k77021/repos/TimbreSpace/logs/TimbreTransfer/version_4/checkpoints/last.ckpt"
+    output_padding: [1, 1]
+  loss:
+    function: "L1"
+
+#  load_path: "/work/gk77/k77021/repos/TimbreSpace/logs/TimbreTransfer/version_4/checkpoints/last.ckpt"
 
 
 exp_params:
   LR: 0.0001
   weight_decay: 0.0
-  kld_weight: 0.000001
+  kld_weight_timbre: 0.000001
+  kld_weight_music : 0.000001
   manual_seed: 1265
   model_checkpoint: # Diecrtly passed to ModelCheckpoint()
-    save_top_k: 10
-    every_n_epochs: 30
+    save_top_k: 100
+    every_n_epochs: 50
     monitor: "val_loss"
     save_last: True
 
 
 
 trainer_params: # This directly goes to trainer
-  gpus: [0, 1, 2, 3]
-  max_epochs: 2000
+  gpus: []
+  max_epochs: 1000
   log_every_n_steps: 10
 
 
