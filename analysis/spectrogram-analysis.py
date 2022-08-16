@@ -23,11 +23,15 @@ sr = 22050
 spectrogram_widths = [128, 64, 32, 16]
 frame_sizes = [2048, 1024, 512, 256]
 hop_length_divisors = [2, 4, 8]
-path = "../../spectrogram-analysis-out/80D_Line6_Badonk"
+path = "../../spectrogram-analysis-out/di"
 
-for spectrogram_width in spectrogram_widths:
-    for frame_size in frame_sizes:
-        for hop_length_divisor in hop_length_divisors:
+# for spectrogram_width in spectrogram_widths:
+#     for frame_size in frame_sizes:
+#         for hop_length_divisor in hop_length_divisors:
+
+for spectrogram_width in [32]:
+    for frame_size in [256]:
+        for hop_length_divisor in [4]:
 
             hop_length = frame_size // hop_length_divisor
             batch = 0
@@ -39,14 +43,14 @@ for spectrogram_width in spectrogram_widths:
             if not os.path.exists(f"{path}/{dirname}"):
                 print(f"Creating dir: {dirname}")
                 os.makedirs(f"{path}/{dirname}")
-            else:
-                continue
+            # else:
+            #     continue
             while True:
 
                 offset = batch * load_duration
                 if offset + load_duration > 101:
                     break
-                y, sr = librosa.load("/Users/pratik/data/timbre/clips/08D Line 6 Badonk.wav",
+                y, sr = librosa.load("/Users/pratik/data/timbre/DI.wav",
                                      sr=sr,
                                      duration=load_duration,
                                      offset=offset,

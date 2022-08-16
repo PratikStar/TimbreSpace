@@ -3,7 +3,7 @@ log_level: 6
 
 wandb:
   entity: "auditory-grounding"
-  project: "timbre-transfer"
+  project: "try"
 
 data_params:
   dataset_path: '../../data/timbre'
@@ -14,6 +14,7 @@ data_params:
     type: "stft" # "stft" or "mel"
     stft:
       spectrogram_dims: [512, 64]
+      hop_length: 256
     mel:
       frame_size: 1024
       hop_length: 256
@@ -34,7 +35,7 @@ data_params:
 model_params:
   name: 'TimbreTransfer'
   timbre_encoder:
-    spectrogram_dims: [1, 256, 16] # (C, H, W). dependant on data_params.spectrogram....
+    spectrogram_dims: [1, 512, 64] # (C, H, W). dependant on data_params.spectrogram....
     conv2d_channels: [128, 64, 32, 16]
     stride: [2, 2]
     kernel_size: [7, 7] # 5X5 needs padding=2, and 7X7 needs padding=3. All when stride=2
@@ -45,12 +46,12 @@ model_params:
     function: "L1"
   merge_encoding: "sandwich" # z di_b z
   decoder:
-    di_spectrogram_dims: [1, 256, 16] # (C, H, W). dependant on data_params.spectrogram....
+    di_spectrogram_dims: [1, 512, 64] # (C, H, W). dependant on data_params.spectrogram....
     conv2d_channels: [32, 8, 2, 1] # These are conv2d channels. Encoder: (1, 256, 64) -> (32, 128, 32) -> (64, 64, 16) -> (128, 32, 8) -> (256, 16, 4) -> (512, 8, 2)
     stride: [1, 1]
     kernel_size: [5, 5]
     padding: [2, 2]
-  load_path: "/work/gk77/k77021/repos/TimbreSpace/logs/TimbreTransfer/version_4/checkpoints/last.ckpt"
+#  load_path: "/work/gk77/k77021/repos/TimbreSpace/logs/TimbreTransfer/version_4/checkpoints/last.ckpt"
 
 
 exp_params:
@@ -67,7 +68,7 @@ exp_params:
 
 
 trainer_params: # This directly goes to trainer
-  gpus: [0, 1, 2, 3]
+  gpus: []
   max_epochs: 2000
   log_every_n_steps: 10
 

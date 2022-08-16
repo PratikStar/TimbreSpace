@@ -60,7 +60,7 @@ class TimbreDataset(Dataset):
 
         if self.dataset_config.spectrogram.type == "stft":
             self.dataset_config.spectrogram.frame_size = self.dataset_config.spectrogram.stft.spectrogram_dims[0] * 2
-            self.dataset_config.spectrogram.hop_length = self.dataset_config.spectrogram.frame_size // 2
+            self.dataset_config.spectrogram.hop_length = self.dataset_config.spectrogram.stft.hop_length
             self.batch_duration = self.dataset_config.spectrogram.hop_length * self.dataset_config.batch_size * \
                                   self.dataset_config.spectrogram.stft.spectrogram_dims[1] / self.dataset_config.load.sample_rate
         elif self.dataset_config.spectrogram.type == "mel":
@@ -109,7 +109,7 @@ class TimbreDataset(Dataset):
         # print(f"Getting segment from clip: {key} -> {self.clips[key]}")
         # print(f"Offset: {offset}")
 
-        features, features_di, signal, signal_di = self.preprocessing_pipeline.process_file(self.clips[key], offset, self.dataset_config.visualizer.enabled)
+        features, features_di, signal, signal_di, _, _ = self.preprocessing_pipeline.process_file(self.clips[key], offset, self.dataset_config.visualizer.enabled)
         return features, features_di, signal, signal_di, key, offset
 
     def __len__(self):

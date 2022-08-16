@@ -1,0 +1,10 @@
+program: analysis/wandb_sweeps.py
+method: grid
+metric:
+  name: validation_loss
+  goal: minimize
+parameters:
+  learning_rate:
+    values: [[1,1], [2,2], [3,3]]
+  optimizer:
+    values: ["adam", "sgd"]

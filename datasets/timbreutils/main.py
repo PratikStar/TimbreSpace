@@ -133,12 +133,12 @@ class MinMaxNormaliser:
         self.min = min_val
         self.max = max_val
 
-    def normalise(self, array):
-        norm_array = (array - array.min()) / (array.max() - array.min())
+    def normalise(self, array, min_ref, max_ref):
+        norm_array = (array - min_ref) / (max_ref - min_ref)
         norm_array = norm_array * (self.max - self.min) + self.min
-        log("Shape of normalized array: " + str(norm_array.shape), 2)
-        log("Max of norm_array: " + str((array.max())), 2)
-        log("Min of norm_array: " + str((array.min())), 2)
+        # log("Shape of normalized array: " + str(norm_array.shape), 2)
+        # log("Max of norm_array: " + str((array.max())), 2)
+        # log("Min of norm_array: " + str((array.min())), 2)
         return norm_array
 
     def denormalise(self, norm_array, original_min, original_max):
@@ -372,10 +372,12 @@ class PreprocessingPipeline:
             signal_di = self._apply_padding(signal_di)
         feature_di, phases_di = self.spectrogram_extractor.extract(signal_di)
 
-        norm_feature = self.normaliser.normalise(feature)
+        min_ref = min(feature.min(), feature_di.min())
+        max_ref = max(feature.max(), feature_di.max())
+        norm_feature = self.normaliser.normalise(feature, min_ref, max_ref)
         log(f"Shape of complete spectrogram: {norm_feature.shape}")
 
-        norm_feature_di = self.normaliser.normalise(feature_di)
+        norm_feature_di = self.normaliser.normalise(feature_di, min_ref, max_ref)
 
         segment_features = []
         segment_features_di = []
@@ -414,7 +416,7 @@ class PreprocessingPipeline:
                 self.visualizer.visualize(segment_features_di[i][0], 'DI.wav', f"{offset:.2f}-{i}")
 
         return np.array(segment_features), np.array(segment_features_di), np.array(segment_signal), np.array(
-            segment_signal_di)
+            segment_signal_di), min_ref, max_ref
 
     def _is_padding_necessary(self, signal):
         if len(signal) < self._num_expected_samples:

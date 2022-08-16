@@ -72,5 +72,5 @@ def parse_args():
                         help='path to the config file',
                         default='configs/vae.yaml')
 
-    args = parser.parse_args()
+    args, unknown = parser.parse_known_args()
     return args
