@@ -1,6 +1,0 @@
-wandb_version: 1
-
-exp_params.LR:
-  value: 0.008640266095918645
-optimizer:
-  value: adam

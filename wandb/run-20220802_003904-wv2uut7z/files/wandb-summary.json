@@ -1,1 +1,0 @@
-{"val_loss": 0.4850503206253052, "val_Reconstruction_Loss": 0.4850475490093231, "val_KLD": -2.771435260772705, "_timestamp": 1659368610, "_runtime": 266, "_step": 63, "loss": 1.8200554847717285, "Reconstruction_Loss": 0.06518136709928513, "KLD": -1754874.125}

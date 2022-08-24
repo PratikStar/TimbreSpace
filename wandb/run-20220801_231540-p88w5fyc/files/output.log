@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/Users/pratik/repos/TimbreSpace/run-timbre-vae.py", line 49, in <module>
-    vae = MusicVAELightningModule(model,
-  File "/Users/pratik/repos/TimbreSpace/experiment_music.py", line 28, in __init__
-    self.model = vae_model
-KeyboardInterrupt
