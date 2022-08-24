@@ -118,6 +118,7 @@ class VanillaVAE(BaseVAE):
         z = self.reparameterize(mu, log_var)
         print("shape of embedding layer")
         print(z.shape)
+
         return [self.decode(z), input, mu, log_var, z]
 
     def loss_function(self,

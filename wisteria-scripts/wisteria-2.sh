@@ -9,3 +9,4 @@
 
 # run commands
 python3 run-vae.py -c configs/vae-gpu.yaml
+

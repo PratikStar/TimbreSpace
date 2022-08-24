@@ -27,7 +27,11 @@ model = VQVAE(num_hiddens, num_residual_layers, num_residual_hiddens,
               commitment_cost, decay).to(device)
 optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
+<<<<<<< HEAD
 checkpoint = torch.load('/work/gk77/k77021/repos/TimbreSpace/logs/VQVAECustom/checkpoints/vq-vae-140.pt')
+=======
+checkpoint = torch.load('/work/gk77/k77021/repos/PyTorch-VAE/logs/VQVAECustom/checkpoints/vq-vae-140.pt')
+>>>>>>> 3b9af4709ba064743a85d04694e9838532a11ccb
 
 model.load_state_dict(checkpoint['model_state_dict'])
 optimizer.load_state_dict(checkpoint['optimizer_state_dict'])

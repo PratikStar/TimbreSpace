@@ -36,7 +36,6 @@ def data_loader(fn):
 
     return func_wrapper
 
-
 class dotdict(dict):
     """dot.notation access to dictionary attributes"""
 
