@@ -35,29 +35,18 @@ def log(logline, log_level=1):
 class Loader:
     """Loader is responsible for loading an audio file."""
 
-    def __init__(self, sample_rate, mono, load_duration):
+    def __init__(self, sample_rate, mono):
         self.sample_rate = sample_rate
-        self.load_duration = load_duration
         self.mono = mono
 
     def load(self, file_path, offset, load_duration=None):
-        if load_duration is None:
-            load_duration = self.load_duration  # to override the load duration
-
         signal = librosa.load(file_path,
                               sr=self.sample_rate,
                               duration=load_duration,
                               offset=offset,
                               mono=self.mono)[0]
         log("Shape of the loaded signal: " + str(signal.shape), 2)
-        log("Mean of the loaded signal: " + str(np.mean(signal)), 5)
-        log("Min of the loaded signal: " + str(np.amin(signal)), 5)
-        log("Max of the loaded signal: " + str(np.amax(signal)), 5)
-        log("Raw signal: " + str(signal), 6)
         return signal
-
-    # def save(self, filepath, signal):
-    #     sf.write(os.path.join(self.audio_segments_save_dir, filepath), signal, self.sample_rate)
 
 
 class Padder:
@@ -96,7 +85,6 @@ class LogSpectrogramExtractor:
             stft = librosa.stft(signal,
                                 n_fft=self.frame_size,
                                 hop_length=self.hop_length)[:-1]
-            log("Shape of stft: " + str(stft.shape), 2)
             spectrogram = np.abs(
                 stft)  # https://librosa.org/doc/main/generated/librosa.stft.html abs gives the magnitude
             phases = np.angle(stft)
@@ -136,9 +124,6 @@ class MinMaxNormaliser:
     def normalise(self, array, min_ref, max_ref):
         norm_array = (array - min_ref) / (max_ref - min_ref)
         norm_array = norm_array * (self.max - self.min) + self.min
-        # log("Shape of normalized array: " + str(norm_array.shape), 2)
-        # log("Max of norm_array: " + str((array.max())), 2)
-        # log("Min of norm_array: " + str((array.min())), 2)
         return norm_array
 
     def denormalise(self, norm_array, original_min, original_max):
@@ -332,6 +317,7 @@ class PreprocessingPipeline:
     def __init__(self, dataset_path, config):
         self.dataset_path = dataset_path
         self.config = config
+        self.loader = None
         self.padder = None
         self.spectrogram_extractor = None
         self.feature_extractor = None
@@ -340,17 +326,6 @@ class PreprocessingPipeline:
         self.visualizer = None
         self.reconstructor = None
         self.min_max_values = {}
-        self._loader = None
-        self._num_expected_samples = None
-
-    @property
-    def loader(self):
-        return self._loader
-
-    @loader.setter
-    def loader(self, loader):
-        self._loader = loader
-        self._num_expected_samples = int(loader.sample_rate * loader.load_duration)
 
     # Processes Single file
     # this method loads the clip for the batch duration --> converts to spectrogram --> splits the spectrogram
@@ -360,57 +335,57 @@ class PreprocessingPipeline:
         file_name = self.dataset_path / 'clips' / clip_name
         log(f"Processing Segment: {file_name}")
 
-        signal = self.loader.load(file_name, offset)
-        signal_di = self.loader.load(file_name_di, offset)
-        # print(signal.shape)
-
-        if self._is_padding_necessary(signal):
-            signal = self._apply_padding(signal)
-        feature, phases = self.spectrogram_extractor.extract(signal)
-        # print(feature.shape)
-        if self._is_padding_necessary(signal_di):
-            signal_di = self._apply_padding(signal_di)
-        feature_di, phases_di = self.spectrogram_extractor.extract(signal_di)
-
-        min_ref = min(feature.min(), feature_di.min())
-        max_ref = max(feature.max(), feature_di.max())
-        norm_feature = self.normaliser.normalise(feature, min_ref, max_ref)
-        log(f"Shape of complete spectrogram: {norm_feature.shape}")
-
-        norm_feature_di = self.normaliser.normalise(feature_di, min_ref, max_ref)
+        # min_reamp, max_reamp = self.get_batch_min_max(file_name, offset, self.config.batch_duration)
+        # min_di, max_di = self.get_batch_min_max(file_name_di, offset, self.config.batch_duration)
+        min_ref = math.inf
+        max_ref = math.inf * -1
 
         segment_features = []
         segment_features_di = []
         segment_signal = []
         segment_signal_di = []
 
-        segment_spectrogram_width = self.config.spectrogram.get(self.config.spectrogram.type).spectrogram_dims[1]
-        segment_signal_width = signal.shape[0] // self.config.batch_size
-        desired_segment_signal_width = self.config.spectrogram.mel.segment_signal_length if self.config.spectrogram.type == "mel" else segment_signal_width
-        for i in range(0, self.config.batch_size):
-            segment_features.append([
-                norm_feature[
-                :,
-                i * segment_spectrogram_width: (i + 1) * segment_spectrogram_width
-                ]
-            ])  # Adding in a list to specify the channel. we will just have one channel
-            segment_features_di.append([
-                norm_feature_di[
-                :,
-                i * segment_spectrogram_width: (i + 1) * segment_spectrogram_width
-                ]
-            ])  # Adding in a list to specify the channel. we will just have one channel
-            segment_signal.append(
-                signal[i * segment_signal_width: i * segment_signal_width + desired_segment_signal_width])
-            segment_signal_di.append(
-                signal_di[i * segment_signal_width: i * segment_signal_width + desired_segment_signal_width])
+        for batch in range(self.config.batch_size):
 
-        # save_path = self.saver.save_feature(norm_feature, phases, file_name)
-        # self.saver.save_min_max_values(file_name, feature.min(), feature.max())
+            signal = self.loader.load(file_name, offset, self.config.load_duration)
+            signal_di = self.loader.load(file_name_di, offset, self.config.load_duration)
+
+            feature, phases = self.spectrogram_extractor.extract(signal)
+            feature_di, phases_di = self.spectrogram_extractor.extract(signal_di)
+
+            min_ref = feature.min() if feature.min() < min_ref else min_ref
+            min_ref = feature_di.min() if feature_di.min() < min_ref else min_ref
+
+            max_ref = feature.max() if feature.max() > max_ref else max_ref
+            max_ref = feature_di.max() if feature_di.max() > max_ref else max_ref
+
+            segment_features.append(feature)
+            segment_features_di.append(feature_di)
+            segment_signal.append(signal)
+            segment_signal_di.append(signal_di)
+
+            offset += self.config.load_duration
+
+        for i in range(self.config.batch_size):
+            feature = segment_features[i]
+            norm_feature = self.normaliser.normalise(feature, min_ref, max_ref)
+            segment_features[i] = [norm_feature]
+
+            feature_di = segment_features_di[i]
+            norm_feature_di = self.normaliser.normalise(feature_di, min_ref, max_ref)
+            segment_features_di[i] = [norm_feature_di]
+
+            assert norm_feature.min() >= 0
+            assert norm_feature.max() <= 1
+            assert norm_feature_di.min() >= 0
+            assert norm_feature_di.max() <= 1
+
+
+
 
         if visualize:
-            self.visualizer.visualize(norm_feature, clip_name, f"{offset:.2f}-batch")
-            self.visualizer.visualize(norm_feature_di, 'DI.wav', f"{offset:.2f}-batch")
+            self.visualizer.visualize(np.concatenate(segment_features, axis=2), clip_name, f"{offset:.2f}-batch")
+            self.visualizer.visualize(np.concatenate(segment_features_di, axis=2), 'DI.wav', f"{offset:.2f}-batch")
             for i in range(len(segment_features)):
                 self.visualizer.visualize(segment_features[i][0], clip_name, f"{offset:.2f}-{i}")
                 self.visualizer.visualize(segment_features_di[i][0], 'DI.wav', f"{offset:.2f}-{i}")
@@ -418,15 +393,3 @@ class PreprocessingPipeline:
         return np.array(segment_features), np.array(segment_features_di), np.array(segment_signal), np.array(
             segment_signal_di), min_ref, max_ref
 
-    def _is_padding_necessary(self, signal):
-        if len(signal) < self._num_expected_samples:
-            log("Padding necessary", 1)
-            log("Actual Signal length: " + str(len(signal)), 5)
-            log("Expected samples in signal: " + str(self._num_expected_samples), 5)
-            return True
-        return False
-
-    def _apply_padding(self, signal):
-        num_missing_samples = self._num_expected_samples - len(signal)
-        padded_signal = self.padder.right_pad(signal, num_missing_samples)
-        return padded_signal

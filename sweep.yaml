@@ -1,0 +1,29 @@
+#program: "run-timbre-vae.py -c config/music-vae.yaml"
+command:
+  - python3
+  - run-generic.py
+  - -c
+  - configs/timbre_transfer.yaml
+
+method: bayes
+metric:
+  name: val_loss
+  goal: minimize
+
+parameters:
+  data_params.spectrogram.stft.params:
+    values: [[512, 256], [512, 128], [1024, 256], [1024, 128]]
+  model_params.timbre_encoder.kernel_size:
+    values: [[4, 4], [8, 8], [16, 16]]
+  model_params.loss.function:
+    values: ["L1"]
+
+#  exp_params.LR:
+#    min: 0.0001
+#    max: 0.001
+#  exp_params.kld_weight:
+#    min: 0.000001
+#    max: 0.0001
+
+project: "timbre-transfer"
+entity: "auditory-grounding"

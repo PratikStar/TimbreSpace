@@ -2,10 +2,10 @@
 #PJM -g gk77
 #PJM -L rscgrp=regular-a
 #PJM -L node=1
-#PJM -N TimbreTransferFlatten
+#PJM -N TimbreTransfer
 #PJM -j
 #PJM -m b
 #PJM -m e
 
 # run commands
-python run-generic.py -c configs/timbre_transfer_flatten.yaml
+wandb agent auditory-grounding/timbre-transfer/2bi3lm32

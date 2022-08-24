@@ -18,9 +18,4 @@ config = wandb.config
 
 # Set up your model
 print(config)
-print(config.learning_rate)
-print(type(config.learning_rate))
 
-# Log metrics inside your training loop
-for i in range(5, 0, -1):
-    wandb.log({"validation_loss": i})

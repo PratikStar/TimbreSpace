@@ -3,7 +3,7 @@ log_level: 6
 
 wandb:
   entity: "auditory-grounding"
-  project: "try"
+  project: "timbre-transfer"
 
 data_params:
   dataset_path: '../../data/timbre'
@@ -13,8 +13,8 @@ data_params:
   spectrogram:
     type: "stft" # "stft" or "mel"
     stft:
-      spectrogram_dims: [512, 64]
-      hop_length: 256
+      params: [512, 64] # [framesize, hop_length]
+      load_duration: 1 # in sec
     mel:
       frame_size: 1024
       hop_length: 256
@@ -35,19 +35,23 @@ data_params:
 model_params:
   name: 'TimbreTransfer'
   timbre_encoder:
-    spectrogram_dims: [1, 512, 64] # (C, H, W). dependant on data_params.spectrogram....
+    # (C, H, W). dependant on data_params.spectrogram....
+    spectrogram_dims: [1, "inferred from data params", "inferred from data params"]
     conv2d_channels: [128, 64, 32, 16]
     stride: [2, 2]
-    kernel_size: [7, 7] # 5X5 needs padding=2, and 7X7 needs padding=3. All when stride=2
+    kernel_size: [8, 8]
     padding: [3, 3]
-    latent_dim: 256
-    converge_latent: "first" # TODO: not used
+    latent_dim: "inferred from framesize. framesize/2"
+    # converge_latent: first, none, average
+    converge_latent: "first"
   loss:
+    # function: L1, L2
     function: "L1"
   merge_encoding: "sandwich" # z di_b z
   decoder:
-    di_spectrogram_dims: [1, 512, 64] # (C, H, W). dependant on data_params.spectrogram....
-    conv2d_channels: [32, 8, 2, 1] # These are conv2d channels. Encoder: (1, 256, 64) -> (32, 128, 32) -> (64, 64, 16) -> (128, 32, 8) -> (256, 16, 4) -> (512, 8, 2)
+    # (C, H, W). dependant on data_params.spectrogram....
+    di_spectrogram_dims: [1, "inferred from data params", "inferred from data params"]
+    conv2d_channels: [32, 8, 2, 1]
     stride: [1, 1]
     kernel_size: [5, 5]
     padding: [2, 2]
@@ -68,7 +72,7 @@ exp_params:
 
 
 trainer_params: # This directly goes to trainer
-  gpus: []
+  gpus: [0,1,2,3]
   max_epochs: 2000
   log_every_n_steps: 10
 

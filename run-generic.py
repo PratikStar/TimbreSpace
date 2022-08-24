@@ -3,6 +3,7 @@ from pathlib import Path
 
 from experiment_music import MusicVAELightningModule
 from experiment_timbre_transfer_flatten import TimbreTransferFlattenLM
+from experiment_timbre_transfer import TimbreTransferLM
 from models import *
 from experiment import VAELightningModule
 from pytorch_lightning import Trainer
@@ -23,7 +24,6 @@ device = 'cuda' if torch.cuda.device_count() > 0 else 'cpu'
 print(f"Device: {device}")
 
 config = get_config(parse_args().filename)
-print(config)
 tb_logger = TensorBoardLogger(save_dir=config['logging_params']['save_dir'],
                               name=config['model_params']['name'], )
 # For reproducibility
@@ -35,17 +35,26 @@ data.setup()
 dl = data.train_dataloader()
 fb = next(iter(dl))
 
+# config update for dependant params
+config.model_params.timbre_encoder.spectrogram_dims[1] = fb[0].shape[-2]
+config.model_params.timbre_encoder.spectrogram_dims[2] = fb[0].shape[-1]
+config.model_params.decoder.di_spectrogram_dims[1] = fb[0].shape[-2]
+config.model_params.decoder.di_spectrogram_dims[2] = fb[0].shape[-1]
+
+config.model_params.timbre_encoder.latent_dim = fb[0].shape[-2]
+
+
 # model stuff
 wandb.init(**config['wandb'])
 lightning_module = None
 if 'load_path' in config['model_params']:
     print(f"Loading model from {config['model_params']['load_path']}")
     chk_path = os.path.join(os.getcwd(), config['model_params']['load_path'])
-    lightning_module = TimbreTransferFlattenLM.load_from_checkpoint(checkpoint_path=chk_path,
+    lightning_module = TimbreTransferLM.load_from_checkpoint(checkpoint_path=chk_path,
                                                              map_location=torch.device(device))
 else:
     model = vae_models[config['model_params']['name']](config['model_params'])
-    lightning_module = TimbreTransferFlattenLM(model,
+    lightning_module = TimbreTransferLM(model,
                                         config=config)
 
 trainer = Trainer(logger=tb_logger,

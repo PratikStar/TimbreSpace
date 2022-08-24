@@ -30,11 +30,11 @@ class TimbreTransfer(BaseVAE, ABC):
                 nn.Sequential(
                     collections.OrderedDict(
                         [
-                            (f"conv2d_{i}", nn.Conv2d(in_channels, out_channels=self.timbre_encoder_config.conv2d_channels[i],
+                            (f"timbre_encoder_conv2d_{i}", nn.Conv2d(in_channels, out_channels=self.timbre_encoder_config.conv2d_channels[i],
                                                       kernel_size=self.timbre_encoder_config.kernel_size, stride=self.timbre_encoder_config.stride,
                                                       padding=self.timbre_encoder_config.padding)),
-                            (f"batchNorm2d_{i}", nn.BatchNorm2d(self.timbre_encoder_config.conv2d_channels[i])),
-                            (f"leakyReLU_{i}", nn.LeakyReLU())
+                            (f"timbre_encoder_batchNorm2d_{i}", nn.BatchNorm2d(self.timbre_encoder_config.conv2d_channels[i])),
+                            (f"timbre_encoder_leakyReLU_{i}", nn.LeakyReLU())
                         ]
                     )
                 )
@@ -68,12 +68,12 @@ class TimbreTransfer(BaseVAE, ABC):
         self.merge_encoding_layer = nn.Sequential(
                 collections.OrderedDict(
                     [
-                        (f"conv2d_merge_layer", nn.Conv2d(in_channels, out_channels=self.decoder_config.conv2d_channels[0],
+                        (f"decoder_first_conv2d_merge_layer", nn.Conv2d(in_channels, out_channels=self.decoder_config.conv2d_channels[0],
                                                   kernel_size=self.decoder_config.kernel_size,
                                                   stride=(1, 1),
                                                   padding=(self.decoder_config.padding[0], 1))),
-                        (f"batchNorm2d_merge_layer", nn.BatchNorm2d(self.decoder_config.conv2d_channels[0])),
-                        (f"leakyReLU_merge_layer", nn.LeakyReLU())
+                        (f"decoder_first_batchNorm2d_merge_layer", nn.BatchNorm2d(self.decoder_config.conv2d_channels[0])),
+                        (f"decoder_first_leakyReLU_merge_layer", nn.LeakyReLU())
                     ]
                 )
             )
@@ -94,11 +94,11 @@ class TimbreTransfer(BaseVAE, ABC):
                 nn.Sequential(
                     collections.OrderedDict(
                         [
-                            (f"conv2d_{i}", nn.Conv2d(in_channels, out_channels=self.decoder_config.conv2d_channels[i],
+                            (f"decoder_conv2d_{i}", nn.Conv2d(in_channels, out_channels=self.decoder_config.conv2d_channels[i],
                                                       kernel_size=self.decoder_config.kernel_size, stride=self.decoder_config.stride,
                                                       padding=self.decoder_config.padding)),
-                            (f"batchNorm2d_{i}", nn.BatchNorm2d(self.decoder_config.conv2d_channels[i])),
-                            (f"leakyReLU_{i}", nn.LeakyReLU())
+                            (f"decoder_batchNorm2d_{i}", nn.BatchNorm2d(self.decoder_config.conv2d_channels[i])),
+                            (f"decoder_leakyReLU_{i}", nn.LeakyReLU())
                         ]
                     )
                 )
@@ -111,26 +111,8 @@ class TimbreTransfer(BaseVAE, ABC):
         self.decoder = nn.Sequential(*modules)
 
         self.final_layer = nn.Sequential(collections.OrderedDict([
-            # (f"final_convTranspose2d", nn.ConvTranspose2d(1,
-            #                                               1,
-            #                                               kernel_size=self.decoder_config.kernel_size,
-            #                                               stride=(1, 1),
-            #                                               padding=(2, 2),
-            #                                               output_padding=(0,0))),
-            # (f"final_batchNorm2d", nn.BatchNorm2d(1)),
-            # (f"final_leakyReLU", nn.LeakyReLU()),
-            # (f"final_Conv2d", nn.Conv2d(in_channels=1, out_channels=1, stride=1,
-            #                             kernel_size=5, padding=2)),
             (f"final_sigmoid", nn.Sigmoid())]))
 
-        # # Final convtranspose2d layer
-        # h = (h - 1) * 1 - 2 * 2 + 1 * (5 - 1) + 0 + 1
-        # w = (w - 1) * 1 - 2 * 2 + 1 * (5 - 1) + 0 + 1
-        # print(f"final ConvTranspose layer dims: ({self.decoder_config.conv2d_channels[-1]}, {h}, {w})")
-        # # Final conv layer
-        # h = math.floor((h + 2 * self.decoder_config.padding[0] - 1 * (self.decoder_config.kernel_size[0] - 1) - 1) / self.decoder_config.stride[0] + 1)
-        # w = math.floor((w + 2 * self.decoder_config.padding[1] - 1 * (self.decoder_config.kernel_size[1] - 1) - 1) / self.decoder_config.stride[1] + 1)
-        # print(f"final Conv layer dims: ({self.decoder_config.conv2d_channels[-1]}, {h}, {w})")
 
         assert h == self.decoder_config.di_spectrogram_dims[1] and w == self.decoder_config.di_spectrogram_dims[
             2], f"The input {self.decoder_config.di_spectrogram_dims[1:]} and output {[h, w]} dims of the VAE don't match"

@@ -8,4 +8,4 @@
 #PJM -m e
 
 # run commands
-python run-generic.py -c configs/timbre_transfer.yaml
+wandb agent auditory-grounding/timbre-transfer/2bi3lm32
