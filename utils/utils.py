@@ -1,12 +1,13 @@
 import argparse
-
+import json
+import re
 import pytorch_lightning as pl
 import inspect
 from prodict import Prodict
 ## Utils to handle newer PyTorch Lightning changes from version 0.6
 ## ==================================================================================================== ##
 import yaml
-
+from functools import reduce
 
 def re_nest_configs(dictionary):
     resultDict = dict()
@@ -36,6 +37,7 @@ def data_loader(fn):
 
     return func_wrapper
 
+
 class dotdict(dict):
     """dot.notation access to dictionary attributes"""
 
@@ -52,8 +54,23 @@ class dotdict(dict):
     __delattr__ = dict.__delitem__
     __call__ = dict.__call__
 
+def merge(a, b, path=None): # merge nested dict
+    "merges b into a"
+    if path is None: path = []
+    for key in b:
+        if key in a:
+            if isinstance(a[key], dict) and isinstance(b[key], dict):
+                merge(a[key], b[key], path + [str(key)])
+            elif a[key] == b[key]:
+                pass # same leaf value
+            else:
+                a[key] = b[key] # override
+        else:
+            a[key] = b[key]
+    return a
 
 def get_config(f):
+
     with open(f, 'r') as file:
         try:
             config = Prodict.from_dict(yaml.safe_load(file))
@@ -72,4 +89,30 @@ def parse_args():
                         default='configs/vae.yaml')
 
     args, unknown = parser.parse_known_args()
-    return args
+
+    d = {}
+    for param in unknown:
+        k, v = param.split('=')
+        if v[0] == "[":  # list
+            v = json.loads(v)
+        elif len(re.findall('[0-9]*\.[0-9]*|[0-9]*', v)) > 0:  # number
+            matches = re.findall('[0-9]*\.[0-9]*|[0-9]*', v)
+            for match in matches:
+                if match != '':
+                    v = match
+        elif v == "True":
+            v = True
+        elif v == "False":
+            v = False
+        else:
+            print(f"Invalid value {v} for key {k}. Ignoring")
+            continue
+
+        ksub = k.split('.')
+        ksub.reverse()
+        t = {ksub[0]: v}
+        for i in ksub[1:-1]:
+            temp = {i: t}
+            t = temp
+        d[ksub[-1]] = t
+    return args, d

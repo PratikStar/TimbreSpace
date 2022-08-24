@@ -23,7 +23,11 @@ print(f"CUDA #devices: {torch.cuda.device_count()}")
 device = 'cuda' if torch.cuda.device_count() > 0 else 'cpu'
 print(f"Device: {device}")
 
-config = get_config(parse_args().filename)
+args, overrides = parse_args()
+config = get_config(args.filename)
+
+config = Prodict.from_dict(merge(config, overrides))
+
 tb_logger = TensorBoardLogger(save_dir=config['logging_params']['save_dir'],
                               name=config['model_params']['name'], )
 # For reproducibility
