@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e62d320a-2b24-43cc-9e96-fcc166b46bb4" name="Changes" comment="before sweeps">
-      <change beforePath="$PROJECT_DIR$/x-misc/testcondconv.py" beforeDir="false" afterPath="$PROJECT_DIR$/x-misc/testcondconv.py" afterDir="false" />
-    </list>
+    <list default="true" id="e62d320a-2b24-43cc-9e96-fcc166b46bb4" name="Changes" comment="before sweeps" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -385,6 +383,11 @@
           <url>file:///opt/anaconda3/lib/python3.8/site-packages/condconv/condconv.py</url>
           <line>103</line>
           <option name="timeStamp" value="127" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file:///opt/anaconda3/lib/python3.8/site-packages/condconv/condconv.py</url>
+          <line>19</line>
+          <option name="timeStamp" value="128" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
