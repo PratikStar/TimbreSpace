@@ -14,7 +14,7 @@ class Model(nn.Module):
 
 
 
-m = Model(5)
+m = Model(128)
 
 
 
