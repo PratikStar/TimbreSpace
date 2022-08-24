@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e62d320a-2b24-43cc-9e96-fcc166b46bb4" name="Changes" comment="before sweeps" />
+    <list default="true" id="e62d320a-2b24-43cc-9e96-fcc166b46bb4" name="Changes" comment="before sweeps">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -52,7 +54,7 @@
       <recent name="$PROJECT_DIR$/playing" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.run-generic">
+  <component name="RunManager" selected="Python.condconv">
     <configuration name="Load Music" type="PythonConfigurationType" factoryName="Python">
       <module name="TimbreSpace" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -66,6 +68,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/load_music.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="condconv" type="PythonConfigurationType" factoryName="Python">
+      <module name="TimbreSpace" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/opt/anaconda3/bin/python3" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/x-misc/testcondconv.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -141,6 +164,7 @@
       <item itemvalue="Python.Load Music" />
       <item itemvalue="Python.stft ds test" />
       <item itemvalue="Python.run-generic" />
+      <item itemvalue="Python.condconv" />
       <item itemvalue="Python.spectrogram-analysis" />
     </list>
     <recent_temporary>
@@ -356,6 +380,11 @@
           <url>file://$PROJECT_DIR$/datasets/timbreutils/main.py</url>
           <line>385</line>
           <option name="timeStamp" value="125" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file:///opt/anaconda3/lib/python3.8/site-packages/condconv/condconv.py</url>
+          <line>103</line>
+          <option name="timeStamp" value="127" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
