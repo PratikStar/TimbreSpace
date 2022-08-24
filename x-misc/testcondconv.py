@@ -18,4 +18,4 @@ m = Model(5)
 
 
 
-m(torch.Tensor(1, 1,64,64))
+m(torch.randn(1, 1,64,64))
