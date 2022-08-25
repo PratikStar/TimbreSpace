@@ -23,7 +23,7 @@ parameters:
   model_params.timbre_encoder.kernel_size:
     values: [[4, 4], [8, 8], [16, 16]]
   model_params.timbre_encoder.latent_dim:
-    values: [32, 64, 128]
+    values: [16, 32, 64, 128]
   model_params.timbre_encoder.converge_latent:
     values: ["first", "mean", "max"]
   model_params.loss.function:
