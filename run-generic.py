@@ -45,7 +45,10 @@ config.model_params.timbre_encoder.spectrogram_dims[2] = fb[0].shape[-1]
 config.model_params.decoder.di_spectrogram_dims[1] = fb[0].shape[-2]
 config.model_params.decoder.di_spectrogram_dims[2] = fb[0].shape[-1]
 
-# config.model_params.timbre_encoder.latent_dim = fb[0].shape[-2] # this depends upon merge method
+if config.model_params.merge_encoding == "sandwich":
+    config.model_params.timbre_encoder.latent_dim = fb[0].shape[-2] # this depends upon merge method
+elif config.model_params.merge_encoding == "condconv":
+    pass # keep same as input
 
 
 # model stuff
