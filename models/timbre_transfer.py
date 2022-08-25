@@ -69,7 +69,7 @@ class TimbreTransfer(BaseVAE, ABC):
                                          padding=self.decoder_config.padding)
         else:
             raise Exception("merge_encoding not defined")
-        print(f"Concatenated Decoder Input dims: ({self.decoder_config.conv2d_channels[0]}, {h}, {w})")
+        print(f"Decoder dims after merging timbre encoding {self.config.merge_encoding}: ({self.decoder_config.conv2d_channels[0]}, {h}, {w})")
 
         # First decoder transformation to adjust size
         self.merge_encoding_layer = nn.Sequential(
