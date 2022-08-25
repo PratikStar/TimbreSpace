@@ -15,6 +15,8 @@ parameters:
     values: [[512, 256], [512, 128], [1024, 256], [1024, 128]]
   model_params.timbre_encoder.kernel_size:
     values: [[4, 4], [8, 8], [16, 16]]
+  model_params.timbre_encoder.latent_dim:
+    values: [32, 64, 128]
   model_params.loss.function:
     values: ["L1", "L2]
 
