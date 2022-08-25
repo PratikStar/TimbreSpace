@@ -61,15 +61,19 @@ class TimbreTransfer(BaseVAE, ABC):
         print(f"Decoder Input dims: {self.decoder_config.di_spectrogram_dims}")
         if self.config.merge_encoding == "sandwich": # z di_b z
             w += 2
+            print(
+                f"Decoder dims after merging timbre encoding {self.config.merge_encoding}: ({self.decoder_config.conv2d_channels[0]}, {h}, {w})")
         elif self.config.merge_encoding == "condconv":
             self.condconv2d = CondConv2D(in_channels=in_channels, out_channels=self.decoder_config.conv2d_channels[0],
                                          kernel_size=self.decoder_config.kernel_size,
                                          stride=self.decoder_config.stride,
                                          num_experts=self.timbre_encoder_config.latent_dim,
                                          padding=self.decoder_config.padding)
+            print(
+                f"Decoder dims after merging timbre encoding {self.config.merge_encoding}: ({self.decoder_config.conv2d_channels[0]}, {h}, {w})")
+
         else:
             raise Exception("merge_encoding not defined")
-        print(f"Decoder dims after merging timbre encoding {self.config.merge_encoding}: ({self.decoder_config.conv2d_channels[0]}, {h}, {w})")
 
         # First decoder transformation to adjust size
         self.merge_encoding_layer = nn.Sequential(
