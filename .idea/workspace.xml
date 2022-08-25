@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e62d320a-2b24-43cc-9e96-fcc166b46bb4" name="Changes" comment="before sweeps">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/timbre_transfer.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/timbre_transfer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/x-misc/testcondconv.py" beforeDir="false" afterPath="$PROJECT_DIR$/x-misc/testcondconv.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -55,7 +55,7 @@
       <recent name="$PROJECT_DIR$/playing" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.run-generic">
+  <component name="RunManager" selected="Python.condconv">
     <configuration name="Load Music" type="PythonConfigurationType" factoryName="Python">
       <module name="TimbreSpace" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -384,13 +384,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/models/timbre_transfer.py</url>
-          <line>56</line>
+          <line>57</line>
           <option name="timeStamp" value="129" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/models/timbre_transfer.py</url>
-          <line>117</line>
+          <line>121</line>
           <option name="timeStamp" value="130" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file:///opt/anaconda3/lib/python3.8/site-packages/condconv/condconv.py</url>
+          <line>103</line>
+          <option name="timeStamp" value="131" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
