@@ -57,9 +57,10 @@ class TimbreTransfer(BaseVAE, ABC):
         # Build Decoder
         in_channels = self.decoder_config.di_spectrogram_dims[0]
         h, w = self.decoder_config.di_spectrogram_dims[1:]
-        assert h == self.timbre_encoder_config.latent_dim
         print(f"Decoder Input dims: {self.decoder_config.di_spectrogram_dims}")
+
         if self.config.merge_encoding == "sandwich": # z di_b z
+            assert h == self.timbre_encoder_config.latent_dim
             w += 2
             print(
                 f"Decoder dims after merging timbre encoding {self.config.merge_encoding}: ({self.decoder_config.conv2d_channels[0]}, {h}, {w})")
