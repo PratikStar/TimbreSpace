@@ -49,6 +49,7 @@ class TimbreTransfer(BaseVAE, ABC):
         print(f"Encoder conv2d layers output dims: {conv_layers_output_dim}")
 
         self.encoder = nn.Sequential(*modules)
+
         self.fc_mu = nn.Linear(conv_layers_output_dim, self.timbre_encoder_config.latent_dim)
         self.fc_var = nn.Linear(conv_layers_output_dim, self.timbre_encoder_config.latent_dim)
 

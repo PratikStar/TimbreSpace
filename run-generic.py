@@ -45,7 +45,7 @@ config.model_params.timbre_encoder.spectrogram_dims[2] = fb[0].shape[-1]
 config.model_params.decoder.di_spectrogram_dims[1] = fb[0].shape[-2]
 config.model_params.decoder.di_spectrogram_dims[2] = fb[0].shape[-1]
 
-config.model_params.timbre_encoder.latent_dim = fb[0].shape[-2]
+# config.model_params.timbre_encoder.latent_dim = fb[0].shape[-2]
 
 
 # model stuff
