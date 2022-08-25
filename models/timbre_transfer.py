@@ -63,41 +63,50 @@ class TimbreTransfer(BaseVAE, ABC):
             w += 2
             print(
                 f"Decoder dims after merging timbre encoding {self.config.merge_encoding}: ({self.decoder_config.conv2d_channels[0]}, {h}, {w})")
+
+            # First decoder transformation to adjust size
+            self.merge_encoding_layer = nn.Sequential(
+                collections.OrderedDict(
+                    [
+                        (f"decoder_first_conv2d_merge_layer",
+                         nn.Conv2d(in_channels, out_channels=self.decoder_config.conv2d_channels[0],
+                                   kernel_size=self.decoder_config.kernel_size,
+                                   stride=(1, 1),
+                                   padding=(self.decoder_config.padding[0], 1))),
+                        (f"decoder_first_batchNorm2d_merge_layer",
+                         nn.BatchNorm2d(self.decoder_config.conv2d_channels[0])),
+                        (f"decoder_first_leakyReLU_merge_layer", nn.LeakyReLU())
+                    ]
+                )
+            )
+            in_channels = self.decoder_config.conv2d_channels[0]
+            h = math.floor((h + 2 * self.decoder_config.padding[0] - 1 * (self.decoder_config.kernel_size[0] - 1) - 1) /
+                           self.decoder_config.stride[0] + 1)
+            w = math.floor((w + 2 * self.decoder_config.padding[1] - 1 * (self.decoder_config.kernel_size[1] - 1) - 1) /
+                           self.decoder_config.stride[1] + 1)
+
+            h = math.floor(
+                (h + 2 * self.decoder_config.padding[0] - 1 * (self.decoder_config.kernel_size[0] - 1) - 1) / 1 + 1)
+            w = math.floor((w + 2 * 1 - 1 * (self.decoder_config.kernel_size[1] - 1) - 1) / 1 + 1)
+            assert self.decoder_config.di_spectrogram_dims[1] == h
+            assert self.decoder_config.di_spectrogram_dims[2] == w
+            print(f"Adjusted decoder input layer dims (upchanneled): ({in_channels}, {h}, {w})")
         elif self.config.merge_encoding == "condconv":
             self.condconv2d = CondConv2D(in_channels=in_channels, out_channels=self.decoder_config.conv2d_channels[0],
                                          kernel_size=self.decoder_config.kernel_size,
                                          stride=self.decoder_config.stride,
                                          num_experts=self.timbre_encoder_config.latent_dim,
                                          padding=self.decoder_config.padding)
+            in_channels = self.decoder_config.conv2d_channels[1]
+            h = math.floor((h + 2 * self.decoder_config.padding[0] - 1 * (self.decoder_config.kernel_size[0] - 1) - 1) / self.decoder_config.stride[0] + 1)
+            w = math.floor((w + 2 * self.decoder_config.padding[1] - 1 * (self.decoder_config.kernel_size[1] - 1) - 1) / self.decoder_config.stride[1] + 1)
+            print(f"Decoder Conv layer dims: ({self.decoder_config.conv2d_channels[i]}, {h}, {w})")
+
             print(
                 f"Decoder dims after merging timbre encoding {self.config.merge_encoding}: ({self.decoder_config.conv2d_channels[0]}, {h}, {w})")
 
         else:
             raise Exception("merge_encoding not defined")
-
-        # First decoder transformation to adjust size
-        self.merge_encoding_layer = nn.Sequential(
-                collections.OrderedDict(
-                    [
-                        (f"decoder_first_conv2d_merge_layer", nn.Conv2d(in_channels, out_channels=self.decoder_config.conv2d_channels[0],
-                                                  kernel_size=self.decoder_config.kernel_size,
-                                                  stride=(1, 1),
-                                                  padding=(self.decoder_config.padding[0], 1))),
-                        (f"decoder_first_batchNorm2d_merge_layer", nn.BatchNorm2d(self.decoder_config.conv2d_channels[0])),
-                        (f"decoder_first_leakyReLU_merge_layer", nn.LeakyReLU())
-                    ]
-                )
-            )
-        in_channels = self.decoder_config.conv2d_channels[0]
-        h = math.floor((h + 2 * self.decoder_config.padding[0] - 1 * (self.decoder_config.kernel_size[0] - 1) - 1) / self.decoder_config.stride[0] + 1)
-        w = math.floor((w + 2 * self.decoder_config.padding[1] - 1 * (self.decoder_config.kernel_size[1] - 1) - 1) / self.decoder_config.stride[1] + 1)
-
-        h = math.floor((h + 2 * self.decoder_config.padding[0] - 1 * (self.decoder_config.kernel_size[0] - 1) - 1) / 1 + 1)
-        w = math.floor((w + 2 * 1 - 1 * (self.decoder_config.kernel_size[1] - 1) - 1) / 1 + 1)
-        assert self.decoder_config.di_spectrogram_dims[1] == h
-        assert self.decoder_config.di_spectrogram_dims[2] == w
-        print(f"Adjusted decoder input layer dims (upchanneled): ({in_channels}, {h}, {w})")
-
 
         modules = []
         for i in range(1, len(self.decoder_config.conv2d_channels)):
