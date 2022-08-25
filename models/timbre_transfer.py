@@ -63,7 +63,7 @@ class TimbreTransfer(BaseVAE, ABC):
             assert h == self.timbre_encoder_config.latent_dim
             w += 2
             print(
-                f"Decoder dims after merging timbre encoding {self.config.merge_encoding}: ({self.decoder_config.conv2d_channels[0]}, {h}, {w})")
+                f"Decoder dims after merging timbre encoding ({self.config.merge_encoding}): ({self.decoder_config.conv2d_channels[0]}, {h}, {w})")
 
             # First decoder transformation to adjust size
             self.merge_encoding_layer = nn.Sequential(
