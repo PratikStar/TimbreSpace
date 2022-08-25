@@ -100,7 +100,7 @@ class TimbreTransfer(BaseVAE, ABC):
             h = math.floor((h + 2 * self.decoder_config.padding[0] - 1 * (self.decoder_config.kernel_size[0] - 1) - 1) / self.decoder_config.stride[0] + 1)
             w = math.floor((w + 2 * self.decoder_config.padding[1] - 1 * (self.decoder_config.kernel_size[1] - 1) - 1) / self.decoder_config.stride[1] + 1)
             print(
-                f"Decoder dims after merging timbre encoding {self.config.merge_encoding}: ({self.decoder_config.conv2d_channels[0]}, {h}, {w})")
+                f"Decoder dims after merging timbre encoding ({self.config.merge_encoding}): ({self.decoder_config.conv2d_channels[0]}, {h}, {w})")
             in_channels = self.decoder_config.conv2d_channels[0]
 
         else:
