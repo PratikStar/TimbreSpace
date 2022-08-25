@@ -365,9 +365,14 @@
           <option name="timeStamp" value="101" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file:///opt/anaconda3/lib/python3.8/site-packages/condconv/condconv.py</url>
-          <line>101</line>
-          <option name="timeStamp" value="138" />
+          <url>file://$PROJECT_DIR$/models/timbre_transfer.py</url>
+          <line>191</line>
+          <option name="timeStamp" value="140" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/experiment_timbre_transfer.py</url>
+          <line>91</line>
+          <option name="timeStamp" value="141" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
