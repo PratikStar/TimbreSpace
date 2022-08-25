@@ -111,7 +111,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run-generic.py" />
-      <option name="PARAMETERS" value="-c configs/timbre_transfer.yaml &quot;trainer_params.gpus=[]&quot;" />
+      <option name="PARAMETERS" value="-c configs/timbre_transfer.yaml &quot;trainer_params.gpus=[]&quot; &quot;trainer_params.max_epochs=2&quot; &quot;wandb.project=try&quot;" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
