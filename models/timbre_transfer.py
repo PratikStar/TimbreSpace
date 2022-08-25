@@ -81,14 +81,15 @@ class TimbreTransfer(BaseVAE, ABC):
                     ]
                 )
             )
-            in_channels = self.decoder_config.conv2d_channels[0]
 
             h = math.floor(
                 (h + 2 * self.decoder_config.padding[0] - 1 * (self.decoder_config.kernel_size[0] - 1) - 1) / 1 + 1)
             w = math.floor((w + 2 * 1 - 1 * (self.decoder_config.kernel_size[1] - 1) - 1) / 1 + 1)
             assert self.decoder_config.di_spectrogram_dims[1] == h
             assert self.decoder_config.di_spectrogram_dims[2] == w
-            print(f"Adjusted decoder input layer dims (upchanneled): ({in_channels}, {h}, {w})")
+            print(f"Adjusted decoder input layer dims (upchanneled): ({self.decoder_config.conv2d_channels[0]}, {h}, {w})")
+
+            in_channels = self.decoder_config.conv2d_channels[0]
 
         elif self.config.merge_encoding == "condconv":
             self.condconv2d = CondConv2D(in_channels=in_channels, out_channels=self.decoder_config.conv2d_channels[0],
@@ -96,12 +97,12 @@ class TimbreTransfer(BaseVAE, ABC):
                                          stride=self.decoder_config.stride,
                                          num_experts=self.timbre_encoder_config.latent_dim,
                                          padding=self.decoder_config.padding)
-            in_channels = self.decoder_config.conv2d_channels[1]
             h = math.floor((h + 2 * self.decoder_config.padding[0] - 1 * (self.decoder_config.kernel_size[0] - 1) - 1) / self.decoder_config.stride[0] + 1)
             w = math.floor((w + 2 * self.decoder_config.padding[1] - 1 * (self.decoder_config.kernel_size[1] - 1) - 1) / self.decoder_config.stride[1] + 1)
             print(f"Decoder Conv layer dims: ({self.decoder_config.conv2d_channels[i]}, {h}, {w})")
             print(
                 f"Decoder dims after merging timbre encoding {self.config.merge_encoding}: ({self.decoder_config.conv2d_channels[0]}, {h}, {w})")
+            in_channels = self.decoder_config.conv2d_channels[0]
 
         else:
             raise Exception("merge_encoding not defined")
