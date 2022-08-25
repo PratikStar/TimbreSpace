@@ -27,14 +27,14 @@ parameters:
   model_params.timbre_encoder.converge_latent:
     values: ["first", "mean", "max"]
   model_params.loss.function:
-    values: ["L1", "L2]
+    values: ["L1", "L2"]
 
-#  exp_params.LR:
-#    min: 0.0001
-#    max: 0.001
-#  exp_params.kld_weight:
-#    min: 0.000001
-#    max: 0.0001
+  exp_params.LR:
+    min: 0.0001
+    max: 0.001
+  exp_params.kld_weight:
+    min: 0.000001
+    max: 0.0001
 
 project: "timbre-transfer"
 entity: "auditory-grounding"
