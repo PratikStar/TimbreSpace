@@ -95,11 +95,16 @@ def parse_args():
         k, v = param.split('=')
         if v[0] == "[":  # list
             v = json.loads(v)
-        elif len(re.findall('[0-9]*\.[0-9]*|[0-9]*', v)) > 0:  # number
-            matches = re.findall('[0-9]*\.[0-9]*|[0-9]*', v)
+        elif len(re.findall('[0-9]*\.[0-9]*', v)) > 0:  # number
+            matches = re.findall('[0-9]*\.[0-9]*', v)
             for match in matches:
                 if match != '':
-                    v = match
+                    v = float(match)
+        elif len(re.findall('[0-9]*', v)) > 0:  # number
+            matches = re.findall('[0-9]*', v)
+            for match in matches:
+                if match != '':
+                    v = int(match)
         elif v == "True":
             v = True
         elif v == "False":
