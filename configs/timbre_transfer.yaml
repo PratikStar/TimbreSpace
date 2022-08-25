@@ -41,7 +41,7 @@ model_params:
     kernel_size: [8, 8]
     padding: [3, 3]
     latent_dim: 64
-    # converge_latent: first, none, average
+    # converge_latent: first, none, mean, max
     converge_latent: "first"
 
   merge_encoding: "condconv" # z di_b z
