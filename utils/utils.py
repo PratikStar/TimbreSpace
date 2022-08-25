@@ -114,6 +114,6 @@ def parse_args():
         for i in ksub[1:]:
             temp = {i: t}
             t = temp
-            
+
         d = merge(d, t)
     return args, d
