@@ -46,7 +46,7 @@ model_params:
   loss:
     # function: L1, L2
     function: "L1"
-  merge_encoding: "condconv" # z di_b z
+  merge_encoding: "sandwich" # z di_b z
   decoder:
     # (C, H, W). dependant on data_params.spectrogram....
     di_spectrogram_dims: [1, "inferred from data params", "inferred from data params"]
