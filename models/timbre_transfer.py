@@ -82,10 +82,6 @@ class TimbreTransfer(BaseVAE, ABC):
                 )
             )
             in_channels = self.decoder_config.conv2d_channels[0]
-            # h = math.floor((h + 2 * self.decoder_config.padding[0] - 1 * (self.decoder_config.kernel_size[0] - 1) - 1) /
-            #                self.decoder_config.stride[0] + 1)
-            # w = math.floor((w + 2 * self.decoder_config.padding[1] - 1 * (self.decoder_config.kernel_size[1] - 1) - 1) /
-            #                self.decoder_config.stride[1] + 1)
 
             h = math.floor(
                 (h + 2 * self.decoder_config.padding[0] - 1 * (self.decoder_config.kernel_size[0] - 1) - 1) / 1 + 1)
