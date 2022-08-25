@@ -140,6 +140,7 @@ class TimbreTransfer(BaseVAE, ABC):
         # Encode the reamped. reparameterize, and get z
         mu, log_var = self.encode(re_a)
         z = self.reparameterize(mu, log_var)
+        z = self.converge_timbre_latent(z)
 
         # transform di input
         adjusted_decoder_input = self.merge_encoding(di_b, z)
@@ -168,6 +169,20 @@ class TimbreTransfer(BaseVAE, ABC):
         std = torch.exp(0.5 * logvar)
         eps = torch.randn_like(std)
         return eps * std + mu
+
+    def converge_timbre_latent(self, z):
+
+        if self.config.timbre_encoder.converge_latent == "first":
+            z = z[0].repeat(z.shape[0], 1)
+        elif self.config.timbre_encoder.converge_latent == "mean":
+            z = z.mean(dim=0)
+        elif self.config.timbre_encoder.converge_latent == "max":
+            z = z.max(dim=0).values
+        elif self.config.timbre_encoder.converge_latent == "none":
+            pass
+        else:
+            raise Exception("merge_encoding is not valid")
+        return z
 
     def decode(self, input: Tensor) -> Tensor:
         """
