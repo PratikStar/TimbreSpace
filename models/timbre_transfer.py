@@ -61,7 +61,8 @@ class TimbreTransfer(BaseVAE, ABC):
         if self.config.merge_encoding == "sandwich": # z di_b z
             w += 2
         elif self.config.merge_encoding == "condconv":
-
+            self.condconv2d = CondConv2D(in_channels=1, out_channels=32, kernel_size=3, num_experts=num_experts,
+                                         padding=1)
             raise Exception("merge_encoding not defined")
         print(f"Concatenated Decoder Input dims: ({self.decoder_config.conv2d_channels[0]}, {h}, {w})")
 
