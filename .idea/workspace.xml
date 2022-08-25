@@ -364,6 +364,11 @@
           <line>221</line>
           <option name="timeStamp" value="101" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file:///opt/anaconda3/lib/python3.8/site-packages/condconv/condconv.py</url>
+          <line>101</line>
+          <option name="timeStamp" value="138" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
