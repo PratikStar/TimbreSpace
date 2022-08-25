@@ -111,7 +111,7 @@ def parse_args():
         ksub = k.split('.')
         ksub.reverse()
         t = {ksub[0]: v}
-        for i in ksub[1:-1]:
+        for i in ksub[1:]:
             temp = {i: t}
             t = temp
         d = merge(d, t)
