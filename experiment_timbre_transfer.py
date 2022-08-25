@@ -31,7 +31,8 @@ class TimbreTransferLM(pl.LightningModule, ABC):
 
         self.model = model
         self.config = Prodict.from_dict(wandb.config)
-        # print(self.config)
+        print(self.config)
+        
         self.curr_device = None
         self.hold_graph = False
         try:
