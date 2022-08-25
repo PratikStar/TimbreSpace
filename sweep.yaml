@@ -17,6 +17,8 @@ parameters:
     values: [[4, 4], [8, 8], [16, 16]]
   model_params.timbre_encoder.latent_dim:
     values: [32, 64, 128]
+  model_params.timbre_encoder.converge_latent:
+    values: ["first", "average"]
   model_params.loss.function:
     values: ["L1", "L2]
 
