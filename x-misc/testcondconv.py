@@ -18,4 +18,4 @@ m = Model(128)
 
 
 
-m(torch.randn(1, 1,64,64))
+m(torch.randn(16, 1,64,64))
