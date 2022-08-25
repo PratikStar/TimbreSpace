@@ -16,7 +16,7 @@ parameters:
   model_params.timbre_encoder.kernel_size:
     values: [[4, 4], [8, 8], [16, 16]]
   model_params.loss.function:
-    values: ["L1"]
+    values: ["L1", "L2]
 
 #  exp_params.LR:
 #    min: 0.0001
