@@ -13,7 +13,7 @@ data_params:
   spectrogram:
     type: "stft" # "stft" or "mel"
     stft:
-      params: [512, 64] # [framesize, hop_length]
+      params: [1024, 128] # [framesize, hop_length]
       load_duration: 1 # in sec
     mel:
       frame_size: 1024
