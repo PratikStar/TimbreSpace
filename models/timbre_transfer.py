@@ -186,6 +186,9 @@ class TimbreTransfer(BaseVAE, ABC):
             merged_input = torch.cat((z, di_b, z), 3)
             res = self.merge_encoding_layer(merged_input)
             return res
+        if self.config.merge_encoding == "condconv":
+            res = self.condconv2d(di_b, z)
+            return res
         else:
             raise Exception("merge_encoding not defined")
 
