@@ -31,7 +31,6 @@ data_params:
     path: "../log" # relative to dataset_path
 
 
-
 model_params:
   name: 'TimbreTransfer'
   timbre_encoder:
