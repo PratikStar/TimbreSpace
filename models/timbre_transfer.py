@@ -175,9 +175,9 @@ class TimbreTransfer(BaseVAE, ABC):
         if self.config.timbre_encoder.converge_latent == "first":
             z = z[0].repeat(z.shape[0], 1)
         elif self.config.timbre_encoder.converge_latent == "mean":
-            z = z.mean(dim=0)
+            z = z.mean(dim=0).repeat(z.shape[0], 1)
         elif self.config.timbre_encoder.converge_latent == "max":
-            z = z.max(dim=0).values
+            z = z.max(dim=0).repeat(z.shape[0], 1)
         elif self.config.timbre_encoder.converge_latent == "none":
             pass
         else:
