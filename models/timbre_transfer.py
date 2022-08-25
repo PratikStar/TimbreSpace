@@ -112,7 +112,7 @@ class TimbreTransfer(BaseVAE, ABC):
                 nn.Sequential(
                     collections.OrderedDict(
                         [
-                            (f"decoder_conv2d_{i}", nn.Conv2d(in_channels, out_channels=self.decoder_config.conv2d_channels[i],
+                            (f"decoder_conv2d_{i}", nn.Conv2d(in_channels=in_channels, out_channels=self.decoder_config.conv2d_channels[i],
                                                       kernel_size=self.decoder_config.kernel_size, stride=self.decoder_config.stride,
                                                       padding=self.decoder_config.padding)),
                             (f"decoder_batchNorm2d_{i}", nn.BatchNorm2d(self.decoder_config.conv2d_channels[i])),
