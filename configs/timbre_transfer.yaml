@@ -43,9 +43,7 @@ model_params:
     latent_dim: 64
     # converge_latent: first, none, average
     converge_latent: "first"
-  loss:
-    # function: L1, L2
-    function: "L1"
+
   merge_encoding: "condconv" # z di_b z
   decoder:
     # (C, H, W). dependant on data_params.spectrogram....
@@ -54,6 +52,9 @@ model_params:
     stride: [1, 1]
     kernel_size: [5, 5]
     padding: [2, 2]
+  loss:
+    # function: L1, L2
+    function: "L1"
 #  load_path: "/work/gk77/k77021/repos/TimbreSpace/logs/TimbreTransfer/version_4/checkpoints/last.ckpt"
 
 
