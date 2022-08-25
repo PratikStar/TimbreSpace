@@ -76,7 +76,8 @@ class TimbreTransfer(BaseVAE, ABC):
                                    padding=(self.decoder_config.padding[0], 1))),
                         (f"decoder_first_batchNorm2d_merge_layer",
                          nn.BatchNorm2d(self.decoder_config.conv2d_channels[0])),
-                        (f"decoder_first_leakyReLU_merge_layer", nn.LeakyReLU())
+                        (f"decoder_first_leakyReLU_merge_layer",
+                         nn.LeakyReLU())
                     ]
                 )
             )
