@@ -8,7 +8,7 @@ from torch.nn import functional as F
 from .types_ import *
 import math
 import collections
-from condconv import CondConv2D
+from .utils.condconv import CondConv2D
 
 
 class TimbreTransfer(BaseVAE, ABC):

@@ -15,6 +15,10 @@ from pytorch_lightning.plugins import DDPPlugin
 from utils import *
 from datasets import TimbreDataModule
 from torchsummary import summary
+import torch
+print(torch.__version__)
+print(torch.__file__)
+exit()
 import wandb
 
 print(f"torch: {torch.__version__}")

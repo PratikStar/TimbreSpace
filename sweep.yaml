@@ -1,4 +1,4 @@
-#program: "run-timbre-vae.py -c config/music-vae.yaml"
+#program: "run-generic.py -c config/music-vae.yaml"
 command:
   - python3
   - run-generic.py
@@ -11,6 +11,8 @@ metric:
   goal: minimize
 
 parameters:
+  data_params.batch_size:
+    values: [8, 16, 32]
   data_params.spectrogram.stft.params:
     values: [[512, 256], [512, 128], [1024, 256], [1024, 128]]
   data_params.spectrogram.stft.load_duration:
@@ -38,5 +40,5 @@ parameters:
     min: 0.000001
     max: 0.0001
 
-project: "timbre-transfer"
+project: "condconv"
 entity: "auditory-grounding"

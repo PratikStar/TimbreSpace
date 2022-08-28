@@ -12,3 +12,4 @@ tensorflow-macos
 scipy
 librosa
 soundfile
+wandb==0.12.21

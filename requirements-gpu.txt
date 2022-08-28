@@ -1,9 +1,10 @@
-pytorch-lightning==1.5.6
 PyYAML==6.0
-tensorboard>=2.2.0
 torch==1.9.0+cu111
+pytorch-lightning==1.5.6
+opencv-python
+tensorboard>=2.2.0
 torchsummary==1.5.1
 torchvision==0.10.0
-opencv-python
 scipy
 matplotlib==3.3.4
+wandb==0.12.21
