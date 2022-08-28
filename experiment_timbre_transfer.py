@@ -18,19 +18,17 @@ from prodict import Prodict
 class TimbreTransferLM(pl.LightningModule, ABC):
 
     def __init__(self,
-                 model: TimbreTransfer,  # contains Music vae
+                 model: TimbreTransfer,
                  config: dict,
-                 # config_dump: dict, # This is for logging
                  ) -> None:
         super(TimbreTransferLM, self).__init__()
         self.save_hyperparameters()
 
-        wandb.config.update(re_nest_configs({**self.hparams.config, **wandb.config}))
         wandb.watch(model)
         print(model)
 
         self.model = model
-        self.config = Prodict.from_dict(wandb.config)
+        self.config = config
         print(self.config)
 
         self.curr_device = None

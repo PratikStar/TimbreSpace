@@ -5,12 +5,15 @@ command:
   - -c
   - configs/timbre_transfer.yaml
 
+
 method: bayes
 metric:
   name: val_loss
   goal: minimize
 
 parameters:
+
+  ## Data params
   data_params.batch_size:
     values: [8, 16, 32]
   data_params.spectrogram.stft.params:
@@ -19,6 +22,8 @@ parameters:
     distribution: uniform
     min: 0.5
     max: 3.0
+
+  ## Model params
   model_params.timbre_encoder.conv2d_channels:
     values: [[128, 64, 32, 16], [64, 32, 16, 8], # 4 layers
              [64, 32, 16], [32, 16, 8]] # 3 layers
@@ -31,6 +36,7 @@ parameters:
   model_params.loss.function:
     values: ["L1", "L2"]
 
+  ## Exp params
   exp_params.LR:
     distribution: uniform
     min: 0.0001

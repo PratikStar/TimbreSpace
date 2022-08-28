@@ -2,18 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e62d320a-2b24-43cc-9e96-fcc166b46bb4" name="Changes" comment="before sweeps">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/create_comparision_figure.py" beforeDir="false" afterPath="$PROJECT_DIR$/x-misc/create_comparision_figure.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dataset-test.py" beforeDir="false" afterPath="$PROJECT_DIR$/x-misc/dataset-test.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/playing/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/x-misc/dataset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/reconstruction.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sample-male.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/sweep-converge_latent.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test-spectrogram.py" beforeDir="false" afterPath="$PROJECT_DIR$/x-misc/test-spectrogram.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test_stft2audio_ds.py" beforeDir="false" afterPath="$PROJECT_DIR$/x-misc/test_stft2audio_ds.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/watch-acp.sh" beforeDir="false" afterPath="$PROJECT_DIR$/watch-acp.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wisteria-2.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/timbre.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/timbre.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment_timbre_transfer.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment_timbre_transfer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements-gpu.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements-gpu.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run-generic.py" beforeDir="false" afterPath="$PROJECT_DIR$/run-generic.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sweep.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/sweep.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisteria-scripts/interactive.sh" beforeDir="false" afterPath="$PROJECT_DIR$/wisteria-scripts/interactive.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -381,7 +376,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/experiment_timbre_transfer.py</url>
-          <line>92</line>
+          <line>90</line>
           <option name="timeStamp" value="141" />
         </line-breakpoint>
       </breakpoints>

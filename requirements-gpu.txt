@@ -1,10 +1,14 @@
-PyYAML==6.0
+librosa==0.9.1
+# PyYAML==6.0
 torch==1.9.0+cu111
 pytorch-lightning==1.5.6
-opencv-python
 tensorboard>=2.2.0
 torchsummary==1.5.1
 torchvision==0.10.0
 scipy
 matplotlib==3.3.4
 wandb==0.12.21
+prodict==0.8.18
+
+# for celeba
+opencv-python==4.6.0.66

@@ -16,9 +16,6 @@ from utils import *
 from datasets import TimbreDataModule
 from torchsummary import summary
 import torch
-print(torch.__version__)
-print(torch.__file__)
-exit()
 import wandb
 
 print(f"torch: {torch.__version__}")
@@ -29,8 +26,14 @@ print(f"Device: {device}")
 
 args, overrides = parse_args()
 config = get_config(args.filename)
-
 config = Prodict.from_dict(merge(config, overrides))
+
+wandb.init(**config['wandb'])
+config_wandb = re_nest_configs(wandb.config)
+
+wandb.config.update(merge(config, config_wandb))
+config = Prodict.from_dict(wandb.config)
+print(config)
 
 tb_logger = TensorBoardLogger(save_dir=config['logging_params']['save_dir'],
                               name=config['model_params']['name'], )
@@ -56,7 +59,6 @@ elif config.model_params.merge_encoding == "condconv":
 
 
 # model stuff
-wandb.init(**config['wandb'])
 lightning_module = None
 if 'load_path' in config['model_params']:
     print(f"Loading model from {config['model_params']['load_path']}")
