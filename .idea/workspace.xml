@@ -2,19 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e62d320a-2b24-43cc-9e96-fcc166b46bb4" name="Changes" comment="before sweeps">
-      <change afterPath="$PROJECT_DIR$/models/utils/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/utils/condconv.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wisteria-scripts/dependencies.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/timbre_transfer.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/timbre_transfer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements-gpu.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements-gpu.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run-generic.py" beforeDir="false" afterPath="$PROJECT_DIR$/run-generic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sweep.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/sweep.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wisteria-interactive.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wisteria-scripts/regular.sh" beforeDir="false" afterPath="$PROJECT_DIR$/wisteria-scripts/regular.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wisteria-scripts/wisteria-dependencies.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/wisteria-scripts/wisteria-interactive.sh" beforeDir="false" afterPath="$PROJECT_DIR$/wisteria-scripts/interactive.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/create_comparision_figure.py" beforeDir="false" afterPath="$PROJECT_DIR$/x-misc/create_comparision_figure.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dataset-test.py" beforeDir="false" afterPath="$PROJECT_DIR$/x-misc/dataset-test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/playing/dataset.py" beforeDir="false" afterPath="$PROJECT_DIR$/x-misc/dataset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reconstruction.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sample-male.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sweep-converge_latent.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test-spectrogram.py" beforeDir="false" afterPath="$PROJECT_DIR$/x-misc/test-spectrogram.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_stft2audio_ds.py" beforeDir="false" afterPath="$PROJECT_DIR$/x-misc/test_stft2audio_ds.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/watch-acp.sh" beforeDir="false" afterPath="$PROJECT_DIR$/watch-acp.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisteria-2.sh" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,11 +58,11 @@
       <recent name="$PROJECT_DIR$/models" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/x-misc" />
+      <recent name="$PROJECT_DIR$//" />
       <recent name="$PROJECT_DIR$/analysis" />
       <recent name="$PROJECT_DIR$/datasets" />
-      <recent name="$PROJECT_DIR$/x-misc" />
       <recent name="$PROJECT_DIR$/utils" />
-      <recent name="$PROJECT_DIR$/playing" />
     </key>
   </component>
   <component name="RunManager" selected="Python.run-generic">
@@ -163,7 +162,7 @@
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test_stft2audio_ds.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/x-misc/test_stft2audio_ds.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -278,7 +277,14 @@
       <option name="project" value="LOCAL" />
       <updated>1661346632837</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="before sweeps">
+      <created>1661666780001</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1661666780001</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -329,12 +335,12 @@
           <option name="timeStamp" value="31" />
         </line-breakpoint>
         <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test_stft2audio_ds.py</url>
+          <url>file://$PROJECT_DIR$/x-misc/test_stft2audio_ds.py</url>
           <line>22</line>
           <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test_stft2audio_ds.py</url>
+          <url>file://$PROJECT_DIR$/x-misc/test_stft2audio_ds.py</url>
           <line>27</line>
           <option name="timeStamp" value="52" />
         </line-breakpoint>

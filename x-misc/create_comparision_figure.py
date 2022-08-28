@@ -16,7 +16,7 @@ from utils.utils import *
 import numpy as np
 
 ## Load model
-config = get_config(os.path.join(os.getcwd(), 'configs/music_vae.yaml'))
+config = get_config(os.path.join(os.getcwd(), '../configs/music_vae.yaml'))
 
 chk_paths = [
     os.path.join(os.getcwd(), f"logw/logs/{config['model_params']['name']}/version_0/checkpoints/last.ckpt"),  # 16

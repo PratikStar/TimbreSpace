@@ -7,3 +7,5 @@ __pycache__/
 sliding/
 .DS_Store
 wandb
+.idea
+venv

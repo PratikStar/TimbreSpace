@@ -17,7 +17,7 @@ from utils.utils import *
 import numpy as np
 
 ## Load model
-config = get_config(os.path.join(os.getcwd(), 'configs/vocoder.yaml'))
+config = get_config(os.path.join(os.getcwd(), '../configs/vocoder.yaml'))
 print(config.data_params)
 
 data = AudioSTFTDataModule(config.data_params, pin_memory=False)

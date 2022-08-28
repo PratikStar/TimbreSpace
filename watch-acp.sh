@@ -1,5 +1,5 @@
 #!/bin/bash
-messages=("online debugging" "online editing" "online commit & push" "online development")
+messages=("debugging" "editing" "commit & push" "development")
 
 size=${#messages[@]}
 index=$(($RANDOM % $size))
