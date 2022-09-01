@@ -1,24 +1,16 @@
 program: analysis/wandb_sweeps.py
 method: bayes
 
-metric:
-  name: validation_loss
-  goal: minimize
-
 parameters:
-  data_params.spectrogram.stft.params:
-    values: [[512, 256], [512, 128], [1024, 256], [1024, 128]]
-  model_params.timbre_encoder.kernel_size:
-    values: [[4, 4], [8, 8], [16, 16]]
-  model_params.loss.function:
-    values: ["L1", "L2"]
+  lr:
+    parameters:
+      kld:
+        min: 0.0001
+        max: 0.1
 
-  exp_params.LR:
-    min: 0.0001
-    max: 0.001
-  exp_params.kld_weight:
-    min: 0.000001
-    max: 0.0001
+metric:
+  name: loss
+  goal: minimize
 
 project: try
 entity: auditory-grounding

@@ -3,7 +3,7 @@ log_level: 6
 
 wandb:
   entity: "auditory-grounding"
-  project: "try"
+  project: "condconv"
 
 data_params:
   dataset_path: '../../data/timbre'
@@ -72,7 +72,7 @@ exp_params:
 
 
 trainer_params: # This directly goes to trainer
-  gpus: [0,1,2,3,4,5,6,7]
+  gpus: [0, 1,2,3]
   max_epochs: 1000
   log_every_n_steps: 10
 

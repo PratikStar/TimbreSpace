@@ -56,6 +56,8 @@ class dotdict(dict):
 
 def merge(a, b, path=None): # merge nested dict
     "merges b into a"
+    if len(b.keys()) == 0:
+        return a
     if path is None: path = []
     for key in b:
         if key in a:

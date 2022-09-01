@@ -7,11 +7,12 @@ import torch
 import torchvision.utils as vutils
 from torch import optim
 
+from datasets import TimbreDataModule
 from models import TimbreTransfer
 from models.types_ import *
 from pytorch_lightning.utilities.types import _METRIC_COLLECTION, EPOCH_OUTPUT, STEP_OUTPUT
 import wandb
-from utils import re_nest_configs
+from utils import re_nest_configs, merge
 from prodict import Prodict
 
 
@@ -19,17 +20,17 @@ class TimbreTransferLM(pl.LightningModule, ABC):
 
     def __init__(self,
                  model: TimbreTransfer,
-                 config: dict,
+                 config: Prodict,
                  ) -> None:
         super(TimbreTransferLM, self).__init__()
         self.save_hyperparameters()
 
-        wandb.watch(model)
+        # wandb.watch(model)
         print(model)
 
         self.model = model
         self.config = config
-        print(self.config)
+        # print(self.config)
 
         self.curr_device = None
         self.hold_graph = False
@@ -38,6 +39,8 @@ class TimbreTransferLM(pl.LightningModule, ABC):
         except:
             pass
 
+    def get_data(self):
+        return self.data
     def training_step(self, batch_item, batch_idx, optimizer_idx=0):
         # print(f'\n=== Training step. batchidx: {batch_idx}, optimizeridx: {optimizer_idx} ===')
         re_a, di_a, re_b, di_b = self.create_input_batch(batch_item)
@@ -52,11 +55,12 @@ class TimbreTransferLM(pl.LightningModule, ABC):
                                                     mu=mu,
                                                     log_var=log_var
                                                     )
-
-        log_dict = {key: val.item() for key, val in music_train_loss.items()}
-        log_dict['epoch'] = self.trainer.current_epoch
-        wandb.log(log_dict)
-        self.log_dict(log_dict, sync_dist=True)
+        self.log('epoch', self.trainer.current_epoch)
+        for key, val in music_train_loss.items():
+            self.log(key, val)
+        # log_dict = {key: val.item() for key, val in music_train_loss.items()}
+        # log_dict['epoch'] = self.trainer.current_epoch
+        # self.log(log_dict)
         return music_train_loss['loss']
 
     def validation_step(self, batch_item, batch_idx, ):
@@ -72,11 +76,13 @@ class TimbreTransferLM(pl.LightningModule, ABC):
                                                   mu=mu,
                                                   log_var=log_var
                                                   )
+        for key, val in music_val_loss.items():
+            self.log(f"val_{key}", val)
         # print(music_val_loss)
-        log_dict = {f"val_{key}": val.item() for key, val in music_val_loss.items()}
-        log_dict['epoch'] = self.trainer.current_epoch
-        wandb.log(log_dict)
-        self.log_dict(log_dict, sync_dist=True)
+        # log_dict = {f"val_{key}": val.item() for key, val in music_val_loss.items()}
+        # log_dict['epoch'] = self.trainer.current_epoch
+        # wandb.log(log_dict)
+        self.log('epoch', self.trainer.current_epoch)
 
     def configure_optimizers(self):
 
@@ -100,7 +106,7 @@ class TimbreTransferLM(pl.LightningModule, ABC):
 
         self.trainer.datamodule.dataset.preprocessing_pipeline.visualizer.visualize_multiple(
             spectrograms,
-            file_dir=Path(self.trainer.logger.log_dir) / 'recons',
+            file_dir=Path(self.trainer.logger.save_dir) / 'recons',
             col_titles=["DI", "Expected reamped", "Reconstructed reamped"],
             filename=f"reconstruction-e_{self.trainer.current_epoch}.png",
             title=f"reconstruction for epoch e_{self.trainer.current_epoch}: DI v/s Expected v/s Reconstructed reamped clip"

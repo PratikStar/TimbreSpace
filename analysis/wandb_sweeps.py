@@ -1,21 +1,24 @@
 import wandb
+import random
 # wandb sweep -p try analysis/wandb_sweeps.yaml
 
 
 # Set up your default hyperparameters
 hyperparameter_defaults = dict(
-    channels=[16, 32],
-    batch_size=100,
-    learning_rate=0.001,
-    optimizer="adam",
-    epochs=2,
+    lr= {"kld":1},
+    hello="world"
 )
 
 # Pass your defaults to wandb.init
-wandb.init(config=hyperparameter_defaults)
+wandb.init(config=hyperparameter_defaults,
+           entity="auditory-grounding",
+           project="try")
 # Access all hyperparameter values through wandb.config
 config = wandb.config
-
-# Set up your model
 print(config)
-
+# Log metrics inside your training loop
+loss = 100
+for epoch in range(10):
+    loss = random.uniform(0, loss)
+    print({"loss": loss})
+    wandb.log({"loss": loss})
