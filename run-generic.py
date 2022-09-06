@@ -46,7 +46,7 @@ print(wandb.run.sweep_id)
 print(wandb.run.id)
 
 ## data stuff
-data = TimbreDataModule(config.data_params, pin_memory=len(config['trainer_params']['gpus']) != 0)
+data = TimbreDataModule(config.data_params, pin_memory=torch.cuda.device_count() != 0)
 data.setup()
 dl = data.train_dataloader()
 fb = next(iter(dl))
@@ -109,7 +109,10 @@ trainer = Trainer(logger=wandb_logger,
                       ModelCheckpoint(dirpath=os.path.join(tb_logger.log_dir, "checkpoints"),
                                       **config.exp_params.model_checkpoint),
                   ],
-                  strategy=DDPPlugin(find_unused_parameters=False),
+                  # strategy=DDPPlugin(find_unused_parameters=False),
+                  strategy='ddp',
+                  gpus=-1,
+
                   **config.trainer_params)
 print(f"======= Training {config['model_params']['name']} =======")
 # exit()

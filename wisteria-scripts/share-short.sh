@@ -2,7 +2,7 @@
 #PJM -g gk77
 #PJM -L rscgrp=share-short
 #PJM -L gpu=4
-#PJM -N TimbreTransfer
+#PJM -N CondConv
 #PJM -j
 #PJM -m b
 #PJM -m e
