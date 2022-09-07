@@ -26,7 +26,7 @@ if 'WANDB_SWEEP_ID' in os.environ:
     print(f"WANDB_SWEEP_ID: {os.environ['WANDB_SWEEP_ID']}")
     config.wandb.project = os.environ['WANDB_PROJECT']
     config.wandb.entity = os.environ['WANDB_ENTITY']
-    wandb.init(config=dict(config), reinit=True)
+    wandb.init(config=config.to_dict(), reinit=True)
     print(wandb.config)
     config = Prodict.from_dict(merge(config, dict(wandb.config)))
 

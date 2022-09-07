@@ -12,4 +12,5 @@ tensorflow-macos
 scipy
 librosa
 soundfile
+# Issue with 0.12.21 Solved by: https://github.com/wandb/wandb/issues/3210
 wandb==0.13.2

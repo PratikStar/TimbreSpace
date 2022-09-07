@@ -27,8 +27,10 @@ parameters:
       timbre_encoder:
         parameters:
           conv2d_channels:
-            values: [[128, 64, 32, 16], [64, 32, 16, 8], # 4 layers
-                    [64, 32, 16], [32, 16, 8]] # 3 layers
+            values: [
+#                    [128, 64, 32, 16], [64, 32, 16, 8], # 4 layers
+                    [64, 32, 16], [32, 16, 8]
+            ] # 3 layers
           kernel_size:
             values: [[4, 4], [8, 8], [16, 16]]
           latent_dim:

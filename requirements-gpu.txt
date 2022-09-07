@@ -1,6 +1,6 @@
 librosa==0.9.1
 matplotlib==3.3.4
-wandb==0.12.21
+wandb==0.13.2
 prodict==0.8.18
 opencv-python==4.6.0.66 # for celeba
 pytorch-lightning==1.5.6
