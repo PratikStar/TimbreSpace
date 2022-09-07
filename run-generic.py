@@ -11,29 +11,29 @@ from experiment_timbre_transfer import TimbreTransferLM
 from models import *
 from utils import *
 
+print(f"\n\n\n==================== STARTING ===========================")
 print(f"torch: {torch.__version__}")
 print(f"CUDA #devices: {torch.cuda.device_count()}")
 device = 'cuda' if torch.cuda.device_count() > 0 else 'cpu'
 print(f"Device: {device}")
-print(os.environ)
 
 ### Config command line overrides
 args, overrides = parse_args()
 config = get_config(args.filename)
 config = config_cmd_overrides(config, overrides)
 
+if 'WANDB_SWEEP_ID' in os.environ:
+    print(f"WANDB_SWEEP_ID: {os.environ['WANDB_SWEEP_ID']}")
+    config.wandb.project = os.environ['WANDB_PROJECT']
+    config.wandb.entity = os.environ['WANDB_ENTITY']
+    wandb.init(config=dict(config), reinit=True)
+    print(wandb.config)
+    config = Prodict.from_dict(merge(config, dict(wandb.config)))
 
-# if 'WANDB_SWEEP_ID' in os.environ:
-#     print(f"WANDB_SWEEP_ID: {os.environ['WANDB_SWEEP_ID']}")
-#     config.wandb.project = os.environ['WANDB_PROJECT']
-#     config.wandb.entity = os.environ['WANDB_ENTITY']
-#     wandb.init()
-#     config = Prodict.from_dict(merge(config, dict(wandb.config)))
-#     print(f"sweep-{wandb.run.sweep_id}")
-# else:
-#     wandb.init(project=config.wandb.project, entity=config.wandb.entity)
-#     wandb.config.update(dict(config))
-# print(f"run-{wandb.run.id}")
+if os.environ.get("LOCAL_RANK", None) is None:
+    print("LOCAL_RANK is None")
+logger = get_logger(logger_type="wandb", config=config)
+print(os.environ)
 
 data = TimbreDataModule(config.data_params, pin_memory=torch.cuda.device_count() != 0)
 data.setup()
@@ -41,11 +41,7 @@ config = config_data_overrides(config, data)
 
 config = config_device_overrides(config)
 
-# if 'WANDB_SWEEP_ID' not in os.environ:
-#     wandb.config.update(dict(config), allow_val_change=True)
-
 print(f"FINAL CONFIG: {config}")
-
 # For reproducibility
 seed_everything(config['exp_params']['manual_seed'], True)
 
@@ -61,8 +57,6 @@ else:
     lightning_module = TimbreTransferLM(model,
                                         config=config)
 
-logger = get_logger(logger_type="tensorboard", config=config)
-
 trainer = Trainer(logger=logger,
                   # check_val_every_n_epoch=5,
                   callbacks=[
@@ -76,3 +70,4 @@ trainer = Trainer(logger=logger,
 
 print(f"======= Training {config['model_params']['name']} =======")
 trainer.fit(lightning_module, datamodule=data)
+wandb.finish()

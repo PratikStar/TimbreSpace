@@ -15,6 +15,7 @@ from models.types_ import *
 from pytorch_lightning.utilities.types import _METRIC_COLLECTION, EPOCH_OUTPUT, STEP_OUTPUT
 from utils import re_nest_configs, merge
 from prodict import Prodict
+from pytorch_lightning.loggers import TensorBoardLogger
 
 
 class TimbreTransferLM(pl.LightningModule, ABC):
@@ -87,6 +88,7 @@ class TimbreTransferLM(pl.LightningModule, ABC):
     def on_validation_end(self) -> None:
         # Get sample reconstruction image
         batch_item = next(iter(self.trainer.datamodule.val_dataloader())) # this does not return current device correctly
+        key = batch_item[-2].detach().to("cpu").numpy()[0]
         re_a, di_a, re_b, di_b = self.create_input_batch(batch_item)
         recons, mu, log_var, _ = self.model.forward(re_a.to(self.curr_device), di_a.to(self.curr_device), re_b.to(self.curr_device), di_b.to(self.curr_device))
 
@@ -96,16 +98,22 @@ class TimbreTransferLM(pl.LightningModule, ABC):
 
         spectrograms = [di_b[:, 0, :, :], re_b[:, 0, :, :], recons[:, 0, :, :]]
 
+        if type(self.trainer.logger) == WandbLogger:
+            recons_dir = Path(self.trainer.logger.save_dir) / 'recons'
+        elif type(self.trainer.logger) == TensorBoardLogger:
+            recons_dir = Path(self.trainer.logger.log_dir) / 'recons'
+
         self.trainer.datamodule.dataset.preprocessing_pipeline.visualizer.visualize_multiple(
             spectrograms,
-            file_dir=Path(self.trainer.logger.save_dir) / 'recons',
+            file_dir=recons_dir,
             col_titles=["DI", "Expected reamped", "Reconstructed reamped"],
             filename=f"reconstruction-e_{self.trainer.current_epoch}.png",
-            title=f"reconstruction for epoch e_{self.trainer.current_epoch}: DI v/s Expected v/s Reconstructed reamped clip"
+            title=f"reconstruction for epoch e_{self.trainer.current_epoch}: DI v/s Expected v/s Reconstructed "
+                  f"reamped clip (key={key})"
         )
         if type(self.trainer.logger) == WandbLogger:
             self.trainer.logger.log_image(key=f"epoch-{self.trainer.current_epoch}", images=[
-                str(Path(self.trainer.logger.save_dir) / 'recons' / f"reconstruction-e_{self.trainer.current_epoch}.png")])
+                str(recons_dir / f"reconstruction-e_{self.trainer.current_epoch}.png")])
 
     def create_input_batch(self, batch):
         batch, batch_di, _, _, _, _ = batch

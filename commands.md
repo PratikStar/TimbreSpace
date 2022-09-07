@@ -4,12 +4,14 @@
 cd /Users/pratik/repos/TimbreSpace
 watch -d -n5 "rsync -av --exclude-from=\".rsyncignore_upload\" \"/Users/pratik/repos/TimbreSpace\" w:/work/gk77/k77021/repos"
 
+nohup watch -d -n5 rsync -av --exclude-from=".rsyncignore_upload" "/Users/pratik/repos/TimbreSpace" w:/work/gk77/k77021/repos 0<&- &> /dev/null &
+
 # 2. Rsync data
 cd /Users/pratik/data/timbre
 rsync -avz "/Users/pratik/data/timbre" w:/work/gk77/k77021/data
 
 # 3. Logs from wisteria
-watch -d -n5 "rsync -avz --exclude-from=\".rsyncignore_download\" w:/work/gk77/k77021/repos/TimbreSpace/logs/TimbreTransferFlatten \"/Users/pratik/repos/TimbreSpace/logw/logs\""
+watch -d -n5 "rsync -avz --exclude-from=\".rsyncignore_download\" w:/work/gk77/k77021/repos/TimbreSpace/logs \"/Users/pratik/repos/TimbreSpace/logw\""
 
 ```
 # Notes
