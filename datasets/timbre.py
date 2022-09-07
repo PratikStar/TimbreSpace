@@ -103,7 +103,8 @@ class TimbreDataset(Dataset):
         return features, features_di, signal, signal_di, key, offset
 
     def __len__(self):
-        return len(self.clips)
+        return 3
+        # return len(self.clips)
 
     def get_whole_clip(self, key):
         offset = 0

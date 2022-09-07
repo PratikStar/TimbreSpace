@@ -3,7 +3,7 @@ log_level: 6
 
 wandb:
   entity: "auditory-grounding"
-  project: "condconv"
+  project: "try"
 
 data_params:
   dataset_path: '../../data/timbre'

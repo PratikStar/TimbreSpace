@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e62d320a-2b24-43cc-9e96-fcc166b46bb4" name="Changes" comment="before sweeps">
+    <list default="true" id="e62d320a-2b24-43cc-9e96-fcc166b46bb4" name="Changes" comment="between wandb debugging">
+      <change afterPath="$PROJECT_DIR$/assets/reconstruction-e_0 copy.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/configs/timbre_transfer.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/timbre_transfer.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/datasets/timbre.py" beforeDir="false" afterPath="$PROJECT_DIR$/datasets/timbre.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment_timbre_transfer.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment_timbre_transfer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run-generic.py" beforeDir="false" afterPath="$PROJECT_DIR$/run-generic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sweep.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/sweep.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisteria-scripts/interactive.sh" beforeDir="false" afterPath="$PROJECT_DIR$/wisteria-scripts/interactive.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wisteria-scripts/share-short.sh" beforeDir="false" afterPath="$PROJECT_DIR$/wisteria-scripts/share-short.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wisteria-scripts/wisteria-2.sh" beforeDir="false" afterPath="$PROJECT_DIR$/wisteria-scripts/wisteria-2.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,69 +41,27 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/assets" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/analysis" />
       <recent name="$PROJECT_DIR$/wisteria-scripts" />
       <recent name="$PROJECT_DIR$/configs" />
-      <recent name="$PROJECT_DIR$/models" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets" />
       <recent name="$PROJECT_DIR$/x-misc" />
       <recent name="$PROJECT_DIR$//" />
       <recent name="$PROJECT_DIR$/analysis" />
       <recent name="$PROJECT_DIR$/datasets" />
-      <recent name="$PROJECT_DIR$/utils" />
     </key>
   </component>
   <component name="RunManager" selected="Python.run-generic">
-    <configuration name="Load Music" type="PythonConfigurationType" factoryName="Python">
-      <module name="TimbreSpace" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="/opt/anaconda3/bin/python3" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/load_music.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="condconv" type="PythonConfigurationType" factoryName="Python">
-      <module name="TimbreSpace" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="/opt/anaconda3/bin/python3" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/x-misc/testcondconv.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="run-generic" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="TimbreSpace" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -115,7 +75,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/run-generic.py" />
-      <option name="PARAMETERS" value="-c configs/timbre_transfer.yaml &quot;trainer_params.gpus=[]&quot; &quot;trainer_params.max_epochs=2&quot;" />
+      <option name="PARAMETERS" value="-c configs/timbre_transfer.yaml &quot;trainer_params.max_epochs=2&quot;" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -123,60 +83,32 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="spectrogram-analysis" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="wandb" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="TimbreSpace" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/analysis" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/analysis/spectrogram-analysis.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="stft ds test" type="PythonConfigurationType" factoryName="Python">
-      <module name="TimbreSpace" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="WANDB_DIR" value="$PROJECT_DIR$/wandb" />
       </envs>
       <option name="SDK_HOME" value="/opt/anaconda3/bin/python3" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/x-misc/test_stft2audio_ds.py" />
-      <option name="PARAMETERS" value="" />
+      <option name="SCRIPT_NAME" value="wandb" />
+      <option name="PARAMETERS" value="agent auditory-grounding/condconv/5m9zvyqh" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
+      <option name="MODULE_MODE" value="true" />
       <option name="REDIRECT_INPUT" value="false" />
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.Load Music" />
-      <item itemvalue="Python.stft ds test" />
       <item itemvalue="Python.run-generic" />
-      <item itemvalue="Python.condconv" />
-      <item itemvalue="Python.spectrogram-analysis" />
+      <item itemvalue="Python.wandb" />
     </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Python.spectrogram-analysis" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -278,7 +210,14 @@
       <option name="project" value="LOCAL" />
       <updated>1661666780001</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="between wandb debugging">
+      <created>1662466133708</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1662466133708</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -313,7 +252,8 @@
     <MESSAGE value="after first spectrogram report" />
     <MESSAGE value="changing stft params" />
     <MESSAGE value="before sweeps" />
-    <option name="LAST_COMMIT_MESSAGE" value="before sweeps" />
+    <MESSAGE value="between wandb debugging" />
+    <option name="LAST_COMMIT_MESSAGE" value="between wandb debugging" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -374,9 +314,19 @@
           <option name="timeStamp" value="101" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/run-generic.py</url>
+          <line>125</line>
+          <option name="timeStamp" value="146" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/run-generic.py</url>
+          <line>23</line>
+          <option name="timeStamp" value="147" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/experiment_timbre_transfer.py</url>
-          <line>96</line>
-          <option name="timeStamp" value="141" />
+          <line>135</line>
+          <option name="timeStamp" value="148" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -1,4 +1,5 @@
 import os
+import random
 from abc import ABC
 from pathlib import Path
 
@@ -32,6 +33,7 @@ class TimbreTransferLM(pl.LightningModule, ABC):
         self.config = config
         # print(self.config)
 
+        self.artifact = wandb.Artifact(name=f"run-{wandb.run.id}", type='dataset')
         self.curr_device = None
         self.hold_graph = False
         try:
@@ -111,6 +113,11 @@ class TimbreTransferLM(pl.LightningModule, ABC):
             filename=f"reconstruction-e_{self.trainer.current_epoch}.png",
             title=f"reconstruction for epoch e_{self.trainer.current_epoch}: DI v/s Expected v/s Reconstructed reamped clip"
         )
+        try:
+            self.artifact.add_file(str(Path(self.trainer.logger.save_dir) / 'recons' / f"reconstruction-e_{self.trainer.current_epoch}.png"))
+        except ValueError:
+            self.artifact.add_file(str(Path(self.trainer.logger.save_dir) / 'recons' / f"reconstruction-e_{self.trainer.current_epoch}.png"), name=f"reconstruction-e_{self.trainer.current_epoch}-1.png")
+
 
     def create_input_batch(self, batch):
         batch, batch_di, _, _, _, _ = batch
@@ -124,3 +131,7 @@ class TimbreTransferLM(pl.LightningModule, ABC):
         re_b = batch[b_size:, :]
         di_b = batch_di[b_size:, :]
         return re_a, di_a, re_b, di_b
+
+    def on_fit_end(self) -> None:
+        print("On fit end")
+        wandb.log_artifact(self.artifact)
