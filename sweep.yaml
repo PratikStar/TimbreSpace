@@ -14,18 +14,12 @@ parameters:
   ## Data params
   data_params:
     parameters:
-      batch_size:
-        values: [8, 16, 32] #no
       spectrogram:
         parameters:
           stft:
             parameters:
               params:
                 values: [[512, 256], [512, 128], [1024, 256], [1024, 128]]
-              load_duration: #no
-                distribution: uniform
-                min: 0.5
-                max: 3.0
 
   ## Model params
   model_params:
@@ -38,9 +32,9 @@ parameters:
           kernel_size:
             values: [[4, 4], [8, 8], [16, 16]]
           latent_dim:
-            values: [16, 32, 64, 128] #reduce
+            values: [4, 8, 16]
           converge_latent:
-            values: ["first", "mean", "max"]#nomax!
+            values: ["first", "mean"]
       loss:
         parameters:
           function:

@@ -3,11 +3,14 @@ import json
 import re
 import pytorch_lightning as pl
 import inspect
+
+import wandb
 from prodict import Prodict
 ## Utils to handle newer PyTorch Lightning changes from version 0.6
 ## ==================================================================================================== ##
 import yaml
-from functools import reduce
+import torch
+from pytorch_lightning.loggers import WandbLogger, TensorBoardLogger
 
 def re_nest_configs(dictionary):
     resultDict = dict()
@@ -124,3 +127,44 @@ def parse_args():
 
         d = merge(d, t)
     return args, d
+
+def config_cmd_overrides(config, overrides):
+    return Prodict.from_dict(merge(config, overrides))
+
+def config_data_overrides(config, data):
+    dl = data.train_dataloader()
+    fb = next(iter(dl))
+
+    config.model_params.timbre_encoder.spectrogram_dims[1] = fb[0].shape[-2]
+    config.model_params.timbre_encoder.spectrogram_dims[2] = fb[0].shape[-1]
+    config.model_params.decoder.di_spectrogram_dims[1] = fb[0].shape[-2]
+    config.model_params.decoder.di_spectrogram_dims[2] = fb[0].shape[-1]
+
+    if config.model_params.merge_encoding == "sandwich":
+        config.model_params.timbre_encoder.latent_dim = fb[0].shape[-2]  # this depends upon merge method
+    elif config.model_params.merge_encoding == "condconv":
+        print("merge encoding condconv")
+
+    return config
+
+def config_device_overrides(config):
+    config.trainer_params.gpus = torch.cuda.device_count()
+    return config
+
+
+def get_logger(logger_type="wandb", config=None):
+    path = config.logging_params.save_dir
+    logger = None
+    if logger_type == "wandb":
+        path += config.model_params.name + "/"
+        if wandb.run.sweep_id is not None:
+            path += "sweep-" + str(wandb.run.sweep_id) + "/"
+        if wandb.run.id is not None:
+            path += "run-" + str(wandb.run.id) + "/"
+        logger = WandbLogger(project=config.wandb.project,
+                                   save_dir=path)
+    elif logger_type == "tensorboard":
+        logger = TensorBoardLogger(save_dir=path,
+                                      name=config.model_params['name'], )
+    return logger
+

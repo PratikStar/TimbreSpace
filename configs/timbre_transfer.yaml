@@ -7,14 +7,14 @@ wandb:
 
 data_params:
   dataset_path: '../../data/timbre'
-  batch_size: 32 # set this number twice as actual batch size
+  batch_size: 16 # set this number twice as actual batch size
   num_workers: 0
 
   spectrogram:
     type: "stft" # "stft" or "mel"
     stft:
-      params: [1024, 128] # [framesize, hop_length]
-      load_duration: 2 # in sec
+      params: [512, 256] # [framesize, hop_length]
+      load_duration: 1 # in sec
     mel:
       frame_size: 1024
       hop_length: 256
@@ -36,13 +36,13 @@ model_params:
   timbre_encoder:
     # (C, H, W). dependant on data_params.spectrogram....
     spectrogram_dims: [1, "inferred from data params", "inferred from data params"]
-    conv2d_channels: [128, 64, 32, 16]
+    conv2d_channels: [64, 32, 16]
     stride: [2, 2]
-    kernel_size: [16, 16]
+    kernel_size: [8, 8]
     padding: [3, 3]
-    latent_dim: 128
+    latent_dim: 8
     # converge_latent: first, none, mean, max
-    converge_latent: "max"
+    converge_latent: "first"
 
   merge_encoding: "condconv" # sandwich and condconv
   decoder:

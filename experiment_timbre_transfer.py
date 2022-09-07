@@ -6,13 +6,13 @@ from pathlib import Path
 import pytorch_lightning as pl
 import torch
 import torchvision.utils as vutils
+from pytorch_lightning.loggers import WandbLogger
 from torch import optim
 
 from datasets import TimbreDataModule
 from models import TimbreTransfer
 from models.types_ import *
 from pytorch_lightning.utilities.types import _METRIC_COLLECTION, EPOCH_OUTPUT, STEP_OUTPUT
-import wandb
 from utils import re_nest_configs, merge
 from prodict import Prodict
 
@@ -26,14 +26,12 @@ class TimbreTransferLM(pl.LightningModule, ABC):
         super(TimbreTransferLM, self).__init__()
         self.save_hyperparameters()
 
-        # wandb.watch(model)
         print(model)
 
         self.model = model
         self.config = config
         # print(self.config)
 
-        self.artifact = wandb.Artifact(name=f"run-{wandb.run.id}", type='dataset')
         self.curr_device = None
         self.hold_graph = False
         try:
@@ -60,9 +58,6 @@ class TimbreTransferLM(pl.LightningModule, ABC):
         self.log('epoch', self.trainer.current_epoch)
         for key, val in music_train_loss.items():
             self.log(key, val)
-        # log_dict = {key: val.item() for key, val in music_train_loss.items()}
-        # log_dict['epoch'] = self.trainer.current_epoch
-        # self.log(log_dict)
         return music_train_loss['loss']
 
     def validation_step(self, batch_item, batch_idx, ):
@@ -80,11 +75,6 @@ class TimbreTransferLM(pl.LightningModule, ABC):
                                                   )
         for key, val in music_val_loss.items():
             self.log(f"val_{key}", val)
-        # print(music_val_loss)
-        # log_dict = {f"val_{key}": val.item() for key, val in music_val_loss.items()}
-        # log_dict['epoch'] = self.trainer.current_epoch
-        # wandb.log(log_dict)
-        self.log('epoch', self.trainer.current_epoch)
 
     def configure_optimizers(self):
 
@@ -113,11 +103,9 @@ class TimbreTransferLM(pl.LightningModule, ABC):
             filename=f"reconstruction-e_{self.trainer.current_epoch}.png",
             title=f"reconstruction for epoch e_{self.trainer.current_epoch}: DI v/s Expected v/s Reconstructed reamped clip"
         )
-        try:
-            self.artifact.add_file(str(Path(self.trainer.logger.save_dir) / 'recons' / f"reconstruction-e_{self.trainer.current_epoch}.png"))
-        except ValueError:
-            self.artifact.add_file(str(Path(self.trainer.logger.save_dir) / 'recons' / f"reconstruction-e_{self.trainer.current_epoch}.png"), name=f"reconstruction-e_{self.trainer.current_epoch}-1.png")
-
+        if type(self.trainer.logger) == WandbLogger:
+            self.trainer.logger.log_image(key=f"epoch-{self.trainer.current_epoch}", images=[
+                str(Path(self.trainer.logger.save_dir) / 'recons' / f"reconstruction-e_{self.trainer.current_epoch}.png")])
 
     def create_input_batch(self, batch):
         batch, batch_di, _, _, _, _ = batch
@@ -134,4 +122,3 @@ class TimbreTransferLM(pl.LightningModule, ABC):
 
     def on_fit_end(self) -> None:
         print("On fit end")
-        wandb.log_artifact(self.artifact)
