@@ -112,8 +112,11 @@ class TimbreTransferLM(pl.LightningModule, ABC):
                   f"reamped clip (key={key})"
         )
         if type(self.trainer.logger) == WandbLogger:
-            self.trainer.logger.log_image(key=f"epoch-{self.trainer.current_epoch}", images=[
+            try:
+                self.trainer.logger.log_image(key=f"epoch-{self.trainer.current_epoch}", images=[
                 str(recons_dir / f"reconstruction-e_{self.trainer.current_epoch}.png")])
+            except Exception as e:
+                print(f"Ignoring Exception while wandb.log_image: {e}")
 
     def create_input_batch(self, batch):
         batch, batch_di, _, _, _, _ = batch
