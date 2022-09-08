@@ -11,6 +11,8 @@ from prodict import Prodict
 import yaml
 import torch
 from pytorch_lightning.loggers import WandbLogger, TensorBoardLogger
+import os
+import pathlib
 
 def re_nest_configs(dictionary):
     resultDict = dict()
@@ -162,8 +164,16 @@ def get_logger(logger_type="wandb", config=None):
                 path += "sweep-" + str(wandb.run.sweep_id) + "/"
             if wandb.run.id is not None:
                 path += "run-" + str(wandb.run.id) + "/"
+
+            if os.environ.get('LOCAL_RANK', None) is not None:
+                path += f"rank-{os.environ.get('LOCAL_RANK', None)}" + "/"
+
         else:
-            path += datetime.now().strftime("%Y-%m-%d %H:%M:%S") + "/"
+            path += datetime.now().strftime("%Y%m%d_%H%M%S%f") + "/"
+
+        p = pathlib.Path(path)
+        p.mkdir(parents=True, exist_ok=True)
+        p.chmod(0o777)
 
         logger = WandbLogger(save_dir=path,
                              **config.wandb

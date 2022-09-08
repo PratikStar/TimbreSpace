@@ -12,4 +12,4 @@ source /work/01/gk77/k77021/.bashrc
 export HOME=/work/01/gk77/k77021
 #env
 #python run-generic.py -c configs/timbre_transfer.yaml "wandb.project=condconv"
-wandb agent auditory-grounding/condconv/luhwh61k
+wandb agent auditory-grounding/condconv/5daxpq5n

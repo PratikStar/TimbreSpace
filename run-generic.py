@@ -39,7 +39,7 @@ if 'WANDB_SWEEP_ID' in os.environ:
     # run_id = base64.urlsafe_b64encode(hasher.digest()).decode("utf-8")[:8]
 
     # we need this because the process from all the ranks would try to writ in the same wandb directory resulting in collisions/deadlocks
-    wandb_dir = os.getcwd() + "/"
+    wandb_dir = os.getcwd() + "/wandb/"
     if os.environ.get('LOCAL_RANK', None) is not None:
         wandb_dir += f"rank-{os.environ.get('LOCAL_RANK', None)}"
 

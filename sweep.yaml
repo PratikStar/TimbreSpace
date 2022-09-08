@@ -28,7 +28,7 @@ parameters:
         parameters:
           conv2d_channels:
             values: [
-#                    [128, 64, 32, 16], [64, 32, 16, 8], # 4 layers
+                    [128, 64, 32, 16], [64, 32, 16, 8], # 4 layers
                     [64, 32, 16], [32, 16, 8]
             ] # 3 layers
           kernel_size:
