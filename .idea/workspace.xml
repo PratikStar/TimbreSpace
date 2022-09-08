@@ -4,12 +4,7 @@
     <list default="true" id="e62d320a-2b24-43cc-9e96-fcc166b46bb4" name="Changes" comment="between wandb debugging">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/configs/timbre_transfer.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/configs/timbre_transfer.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/vae-gpu.yaml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/run-generic.py" beforeDir="false" afterPath="$PROJECT_DIR$/run-generic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sweep.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/sweep.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wisteria-scripts/regular.sh" beforeDir="false" afterPath="$PROJECT_DIR$/wisteria-scripts/regular.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/wisteria-scripts/share-short.sh" beforeDir="false" afterPath="$PROJECT_DIR$/wisteria-scripts/share-short.sh" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -322,7 +317,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/run-generic.py</url>
-          <line>98</line>
+          <line>103</line>
           <option name="timeStamp" value="146" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -334,6 +329,11 @@
           <url>file://$PROJECT_DIR$/experiment_timbre_transfer.py</url>
           <line>58</line>
           <option name="timeStamp" value="157" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/run-generic.py</url>
+          <line>92</line>
+          <option name="timeStamp" value="160" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

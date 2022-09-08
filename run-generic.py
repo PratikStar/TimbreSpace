@@ -81,9 +81,14 @@ if 'load_path' in config['model_params']:
     lightning_module = TimbreTransferLM.load_from_checkpoint(checkpoint_path=chk_path,
                                                              map_location=torch.device(device))
 else:
-    model = vae_models[config['model_params']['name']](config['model_params'])
-    lightning_module = TimbreTransferLM(model,
+    try:
+        model = vae_models[config['model_params']['name']](config['model_params'])
+        lightning_module = TimbreTransferLM(model,
                                         config=config)
+    except RuntimeError as e:
+        print("====== Catching the following exception while creating the Model ======")
+        print(e)
+        print("\n")
 
 trainer = Trainer(logger=logger,
                   # check_val_every_n_epoch=5,
@@ -97,5 +102,12 @@ trainer = Trainer(logger=logger,
                   **config.trainer_params)
 
 print(f"======= Training {config['model_params']['name']} =======")
-trainer.fit(lightning_module, datamodule=data)
+
+try:
+    trainer.fit(lightning_module, datamodule=data)
+except AttributeError as ae:
+    print("====== Catching AttributeError while trainer.fit ======")
+    print(ae)
+    print("\n")
+
 wandb.finish()
